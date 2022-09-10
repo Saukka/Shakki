@@ -4,4 +4,4 @@ Opinto-ohjelmani on tietojenkäsittelytieteen kandiohjelma. Dokumentaatiossa kä
 
 Projektin aiheena on tunnettu lautapeli Shakki, jossa pelaaja voi pelata tietokoneen tekoälyä vastaan syöttämällä ohjelmalle siirtonsa. Tavoitteena on kehittää tehokas tekoäly, joka päihittää keskiverron shakin pelaajan. 
 
-Tekoäly toimii minimax-algoritmilla. Aika- ja tilavaativuus tavoitteet ovat minimaxin tyypilliset O(n^k) (aika) ja O(nk) (tila), jossa n on laillisten siirtojen määrä ja k on puun maksimisyvyys. [Lähde](https://cis.temple.edu/~vasilis/Courses/CIS603/)
+Tekoäly toimii minimax-algoritmilla. Aika- ja tilavaativuus tavoitteet ovat minimaxin tyypilliset O(n^k) (aika) ja O(nk) (tila), jossa n on laillisten siirtojen määrä ja k on puun maksimisyvyys. ([Lähde](https://cis.temple.edu/~vasilis/Courses/CIS603/))
