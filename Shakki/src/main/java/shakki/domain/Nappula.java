@@ -2,7 +2,7 @@
 package shakki.domain;
 
 /**
- * Nappula-olion luokka. Luok
+ * Nappula-olion luokka. Luokalla ei tällä hetkellä ole tarkoitusta.
  */
 public class Nappula {
     
