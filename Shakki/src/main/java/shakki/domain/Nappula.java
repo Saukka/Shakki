@@ -2,20 +2,24 @@
 package shakki.domain;
 
 /**
- * Nappula-olion luokka. Luokalla ei tällä hetkellä ole tarkoitusta.
+ * Nappula-olion luokka.
  */
 public class Nappula {
     
-    int numero; // Numero kertoo mikä nappula on kyseessä
-    int arvo; // Arvo kertoo nappulan arvon.
+    int id; // id kertoo mikä nappula on kyseessä
+    int arvo; // Arvo kertoo nappulan arvon
     
-    public Nappula(int numero, int arvo) {
-        this.numero = this.numero;
+    // Nappulan koordinaatit
+    int x;
+    int y;
+    
+    public Nappula(int id, int arvo, int x, int y) {
+        this.id = id;
         this.arvo = arvo;
     }
     
     public int getNumero() {
-        return this.numero;
+        return this.id;
     }
     
     public int getArvo() {

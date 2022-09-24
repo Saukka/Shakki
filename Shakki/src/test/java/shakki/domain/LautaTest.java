@@ -18,15 +18,17 @@ public class LautaTest {
         lauta = new Lauta();
         lauta.asetaLauta();
         
-        int arvo = 0;
+        int summa = 0;
         
         for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 8; x++) {
-                arvo += lauta.lauta[x][y];
+                summa += lauta.lauta[x][y];
             }
         }
         
-        assertEquals(29, arvo);
+        assertEquals(37, summa);
+        
+        // nappuloiden tunnukset: 6 + 5 + 2x4 + 2x3 + 2x2 + 8x1 = 37
         
     }
     
@@ -36,14 +38,14 @@ public class LautaTest {
         lauta = new Lauta();
         lauta.asetaLauta();
         
-        int arvo = 0;
+        int summa = 0;
         
         for (int y = 6; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                arvo += lauta.lauta[x][y];
+                summa += lauta.lauta[x][y];
             }
         }
-        assertEquals(-29, arvo);
+        assertEquals(-37, summa);
     }
         
     
