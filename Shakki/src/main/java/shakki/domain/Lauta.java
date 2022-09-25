@@ -1,4 +1,3 @@
-
 package shakki.domain;
 
 import java.util.ArrayList;
@@ -8,9 +7,7 @@ import java.util.ArrayList;
  * Luokka huolehtii pelilaudan toiminnasta.
  */
 public class Lauta {
-    
     int[][] lauta;
-    
     
     ArrayList<Nappula> valkoisenNappulat;
     ArrayList<Nappula> mustanNappulat;
@@ -23,7 +20,6 @@ public class Lauta {
         mustanNappulat = new ArrayList<>();
         
         asetaLauta();
-        
     }
     
     /**
