@@ -20,14 +20,14 @@ public class PeliUI {
     Pane pane;
     Scene peliNäkymä;
     
-    ImageView[] nappulaIkonit;
+    ImageView[] ikonit;
     
     public PeliUI() {
         pane = new Pane();
-        pane.setBackground(new Background(new BackgroundFill(Color.web("#99ddff"), CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.setBackground(new Background(new BackgroundFill(Color.web("#c7e4f8"), CornerRadii.EMPTY, Insets.EMPTY)));
         peliNäkymä = new Scene(pane, 1050, 850);
         
-        nappulaIkonit = new ImageView[32];
+        ikonit = new ImageView[32];
         
         lisääKoordinaatit();
         maalaaRuudut();
@@ -42,6 +42,7 @@ public class PeliUI {
         for (int i = 0; i < 8; i++) {
             Label kirjain = new Label(String.valueOf(aakkoset.charAt(i)));
             kirjain.relocate(i * 100 + 90 , 820);
+            kirjain.setTextFill(Color.web("#838587"));
             kirjaimet[i] = kirjain;
         }
         pane.getChildren().addAll(kirjaimet);
@@ -50,6 +51,7 @@ public class PeliUI {
         for (int i = 1; i < 9; i++) {
             Label kirjain = new Label(String.valueOf(i));
             kirjain.relocate(20, 840 - i * 100);
+            kirjain.setTextFill(Color.web("#838587"));
             numerot[i-1] = kirjain;
         }
         pane.getChildren().addAll(numerot);
@@ -82,7 +84,6 @@ public class PeliUI {
     
     public void lisääNappulat() {
         
-        ImageView[] ikonit = new ImageView[32];
         String[] nappulat = new String[]{"torni", "ratsu", "lähetti", "kuningatar", "kuningas", "lähetti", "ratsu", "torni"};
         
         
@@ -99,9 +100,9 @@ public class PeliUI {
         for (int i = 0; i < 8; i++) {
             Image kuva = new Image("file:kuvat/sotilas.png");
             ImageView ikoni = new ImageView(kuva);
-            ikoni.relocate(67 + i * ruudunLeveys, 610);
+            ikoni.relocate(60 + i * ruudunLeveys, 610);
             ikoni.setFitHeight(ruudunLeveys - 20);
-            ikoni.setFitWidth(ruudunLeveys - 35);
+            ikoni.setFitWidth(ruudunLeveys - 20);
             ikonit[i+8] = ikoni;
         }
         //mustat takarivin nappulat
@@ -117,9 +118,9 @@ public class PeliUI {
         for (int i = 0; i < 8; i++) {
             Image kuva = new Image("file:kuvat/Msotilas.png");
             ImageView ikoni = new ImageView(kuva);
-            ikoni.relocate(67 + i * ruudunLeveys, 110);
+            ikoni.relocate(60 + i * ruudunLeveys, 110);
             ikoni.setFitHeight(ruudunLeveys - 20);
-            ikoni.setFitWidth(ruudunLeveys - 35);
+            ikoni.setFitWidth(ruudunLeveys - 20);
             ikonit[i+24] = ikoni;
         }
         
@@ -127,8 +128,17 @@ public class PeliUI {
         
     }
     
+    public void siirräNappula(int id, int x, int y) {
+        int uusY = 7 - y;
+        ikonit[id-1].relocate(60 + x * ruudunLeveys, 10 + uusY * ruudunLeveys);
+    }
+    
     public Scene getPeliNäkymä() {
         return peliNäkymä;
+    }
+    
+    public Pane getPane() {
+        return pane;
     }
     
 }

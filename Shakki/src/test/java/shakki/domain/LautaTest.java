@@ -26,9 +26,7 @@ public class LautaTest {
             }
         }
         
-        assertEquals(37, summa);
-        
-        // nappuloiden tunnukset: 6 + 5 + 2x4 + 2x3 + 2x2 + 8x1 = 37
+        assertEquals(136, summa);
         
     }
     
@@ -45,8 +43,28 @@ public class LautaTest {
                 summa += lauta.lauta[x][y];
             }
         }
-        assertEquals(-37, summa);
+        assertEquals(392, summa);
+    }
+    
+    @Test
+    public void siirtoTesti() {
+        lauta = new Lauta();
+        lauta.asetaLauta();
+        lauta.teeSiirto(0, 1, 0, 2);
+        
+        assertEquals(0, lauta.lauta[0][1]);
+        assertEquals(9, lauta.lauta[0][2]);
+        
     }
         
+    @Test
+    public void nappulanOminaisuudet() {
+        lauta = new Lauta();
+        lauta.asetaLauta();
+        
+        assertEquals(5, lauta.valkoisenNappulat.get(0).getArvo());
+        assertEquals(3, lauta.valkoisenNappulat.get(2).getArvo());
+    }
+    
     
 }
