@@ -13,3 +13,8 @@ Virheitä tulee tällä hetkellä aika järkyttävä määrä.
 Sain testauksen toimimaan koneellani ja aloitin testausdokumentin teon.
 
 Käytetyt tunnit: 21h, yhteensä 30h.
+
+
+Shakkilaudan tulisi näyttää tältä
+
+<img width="1050" alt="Shakkilauta" src="https://user-images.githubusercontent.com/80990021/192124529-127fb620-ddba-4913-9977-5f2bbc4110e9.png">
