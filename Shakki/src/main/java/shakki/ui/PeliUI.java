@@ -86,7 +86,6 @@ public class PeliUI {
         
         String[] nappulat = new String[]{"torni", "ratsu", "lähetti", "kuningatar", "kuningas", "lähetti", "ratsu", "torni"};
         
-        
         // Valkoiset takarivin nappulat
         for (int i = 0; i < 8; i++) {
             Image kuva = new Image("file:kuvat/" + nappulat[i] + ".png");
@@ -129,8 +128,11 @@ public class PeliUI {
     }
     
     public void siirräNappula(int id, int x, int y) {
-        int uusY = 7 - y;
-        ikonit[id-1].relocate(60 + x * ruudunLeveys, 10 + uusY * ruudunLeveys);
+        ikonit[id - 1].relocate(60 + x * ruudunLeveys, 10 + y * ruudunLeveys);
+    }
+    
+    public void poistaNappula(int id) {
+        ikonit[id - 1].relocate(-100, -100);
     }
     
     public Scene getPeliNäkymä() {

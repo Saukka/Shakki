@@ -22,7 +22,7 @@ public class LautaTest {
         
         for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 8; x++) {
-                summa += lauta.lauta[x][y];
+                summa += lauta.lauta[x][y].getID();
             }
         }
         
@@ -40,7 +40,7 @@ public class LautaTest {
         
         for (int y = 6; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                summa += lauta.lauta[x][y];
+                summa += lauta.lauta[x][y].getID();
             }
         }
         assertEquals(392, summa);
@@ -52,8 +52,8 @@ public class LautaTest {
         lauta.asetaLauta();
         lauta.teeSiirto(0, 1, 0, 2);
         
-        assertEquals(0, lauta.lauta[0][1]);
-        assertEquals(9, lauta.lauta[0][2]);
+        assertEquals(0, lauta.lauta[0][1].getID());
+        assertEquals(9, lauta.lauta[0][2].getID());
         
     }
         
@@ -62,8 +62,7 @@ public class LautaTest {
         lauta = new Lauta();
         lauta.asetaLauta();
         
-        assertEquals(5, lauta.valkoisenNappulat.get(0).getArvo());
-        assertEquals(3, lauta.valkoisenNappulat.get(2).getArvo());
+        
     }
     
     

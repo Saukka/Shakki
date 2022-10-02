@@ -2,10 +2,15 @@
 package shakki.domain;
 
 public class Koordinaatit {
-    private int x;
-    private int y;
+    int x;
+    int y;
     
     public Koordinaatit(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    public void setKoordinaatit(int x, int y) {
         this.x = x;
         this.y = y;
     }
