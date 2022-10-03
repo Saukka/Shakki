@@ -73,7 +73,6 @@ public class Shakki {
                         ui.poistaNappula(s);
                     }
                     ui.siirräNappula(id, uusX - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
-                    
                     tekoAlySiirra();
                     
                 } else {
@@ -94,6 +93,8 @@ public class Shakki {
         int taVanhaY = taSiirto.get(0).getY();
         int taUusX = taSiirto.get(1).getX();
         int taUusY = taSiirto.get(1).getY();
+        
+        System.out.println("Tekoäly siirto: x: " + taVanhaX + ", y: " + taVanhaY + ", uusi x: " + taUusX + ", uus y: " + taUusY);
         
         int id = lauta.getID(taVanhaX, taVanhaY);
         

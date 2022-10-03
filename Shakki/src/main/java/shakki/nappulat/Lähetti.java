@@ -80,4 +80,23 @@ public class Lähetti extends Nappula {
         
     }
     
+    @Override
+    public Lähetti kopioi() {
+        
+        Lähetti n = new Lähetti(id, x, y, vari);
+        
+        for (int i = 0; i < this.siirrot.size(); i++) {
+            n.siirrot.add(this.siirrot.get(i));
+        }
+        
+        for (int i = 0; i < this.blokit.size(); i++) {
+            n.blokit.add(this.blokit.get(i));
+        }
+        
+        n.onLiikkunut = this.onLiikkunut;
+        
+        return n;
+        
+    }
+    
 }

@@ -19,7 +19,7 @@ public class Lauta {
     
     ArrayList<Koordinaatit> valkoisenNappulat;
     ArrayList<Koordinaatit> mustanNappulat;
-    
+       
     public Lauta() {
 
         leveys = 10;
@@ -63,7 +63,6 @@ public class Lauta {
             valkoisenNappulat.add(new Koordinaatit(ulkoL + i, ulkoP + 1));
             mustanNappulat.add(new Koordinaatit(ulkoL + i, pituus - ulkoP - 2));
         }
-        System.out.println("mustat koko: " + mustanNappulat.size());
         
         for (int i = 0; i < leveys; i++) {
             lauta[i][0] = new EpäNappula(i, 0);
@@ -91,8 +90,12 @@ public class Lauta {
     
     public int teeSiirto(int x, int y, int uusX, int uusY) {
         
+        System.out.println("TEE SIIRTO: x: " + x + ", y: " + y + ", uusi X: " + uusX + ", uusi Y: " + uusY);
+        
         for (int i = 0; i < lauta[x][y].getSiirrot().size(); i++) {
             if (uusX == lauta[x][y].getSiirrot().get(i).getX() && uusY == lauta[x][y].getSiirrot().get(i).getY()) {
+                
+                System.out.println("Siirto: x: " + x + ", y: " + y + ", uusi X: " + uusX + ", uusi Y: " + uusY + " Läpäisty");
                 
                 Nappula n = lauta[x][y];
                 
@@ -119,12 +122,12 @@ public class Lauta {
                     for (int j = 0; j < mustanNappulat.size(); j++) {
                         if (x == mustanNappulat.get(j).getX() && y == mustanNappulat.get(j).getY()) {
                             mustanNappulat.get(j).setKoordinaatit(uusX, uusY);
+                            System.out.println("SETX: " + mustanNappulat.get(j).getX() + ", setY: " + mustanNappulat.get(j).getY());
                             break;
                         }
                     }
                 }
                 paivitaTarvittavat(x, y, uusX, uusY, n.getVari());
-                
                 
                 return s;
                 
@@ -158,6 +161,8 @@ public class Lauta {
         }
         // Sitten mustat nappulat
         for (int i = 0; i < mustanNappulat.size(); i++) {
+            System.out.println("");
+            System.out.println(" siirtojen päivitys x: " + mustanNappulat.get(i).getX() + ", y: " + mustanNappulat.get(i).getY());
             ArrayList<Koordinaatit> siirrot = lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].getSiirrot();
             for (int j = 0; j < siirrot.size(); j++) {
                 if ((x == siirrot.get(j).getX() && y == siirrot.get(j).getY()) || (uusX == siirrot.get(j).getX() && uusY == siirrot.get(j).getY())) {
@@ -214,27 +219,52 @@ public class Lauta {
         
     }
     
-    public ArrayList<ArrayList<Koordinaatit>> mahdollisetSiirrot(int vari) {
-        ArrayList<ArrayList<Koordinaatit>> lista = new ArrayList<>();
+    public void peruSiirto() {
         
-        if (vari == 0) {
-            for (int i = 0; i < valkoisenNappulat.size(); i++) {
-                lista.add(lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].getSiirrot());
-            }
-        } else {
-            for (int i = 0; i < mustanNappulat.size(); i++) {
-                lista.add(lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].getSiirrot());
+    }
+    
+//    public ArrayList<ArrayList<Koordinaatit>> mahdollisetSiirrot(int vari) {
+//        ArrayList<ArrayList<Koordinaatit>> lista = new ArrayList<>();
+//        
+//        if (vari == 0) {
+//            for (int i = 0; i < valkoisenNappulat.size(); i++) {
+//                lista.add(lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].getSiirrot());
+//            }
+//        } else {
+//            for (int i = 0; i < mustanNappulat.size(); i++) {
+//                lista.add(lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].getSiirrot());
+//            }
+//        }
+//        return lista;
+//    }
+    
+    public Lauta kopioi() {
+        Lauta l = new Lauta();
+        
+        for (int x = 0; x < leveys; x++) {
+            for (int y = 0; y < pituus; y++) {
+                if (lauta[x][y] == null) {
+                    l.lauta[x][y] = null;
+                } else {
+                    Nappula n = this.lauta[x][y].kopioi();
+                    l.lauta[x][y] = n;
+                }
             }
         }
-        return lista;
+        l.valkoisenNappulat.clear();
+        l.mustanNappulat.clear();
+        
+        for (int i = 0; i < valkoisenNappulat.size(); i++) {
+            l.valkoisenNappulat.add(new Koordinaatit(valkoisenNappulat.get(i).getX(), valkoisenNappulat.get(i).getY()));
+        }
+        
+        for (int i = 0; i < mustanNappulat.size(); i++) {
+            l.mustanNappulat.add(new Koordinaatit(mustanNappulat.get(i).getX(), mustanNappulat.get(i).getY()));
+        }
+        
+        return l;
     }
     
-    
-    public void mustanSiirto() {
-        
-        
-        
-    }
     
     public int getID (int x, int y) {
         if (lauta[x][y] == null) {

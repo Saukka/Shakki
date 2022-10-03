@@ -65,7 +65,6 @@ public class Sotilas extends Nappula {
             }
             
             if (lauta[x - 1][y - 1] != null) {
-                System.out.println(" x: " + x + ", y: " + y);
                 if (!omaNappula(lauta[x - 1][y - 1].getID()) && (kiinnitys == 0 || kiinnitys == 4)) {
                     this.siirrot.add(new Koordinaatit(x - 1, y - 1));
                 }
@@ -82,7 +81,24 @@ public class Sotilas extends Nappula {
             
         }
         
+    }
+    
+    @Override
+    public Sotilas kopioi() {
         
+        Sotilas n = new Sotilas(id, x, y, vari);
+        
+        for (int i = 0; i < this.siirrot.size(); i++) {
+            n.siirrot.add(this.siirrot.get(i));
+        }
+        
+        for (int i = 0; i < this.blokit.size(); i++) {
+            n.blokit.add(this.blokit.get(i));
+        }
+        
+        n.onLiikkunut = this.onLiikkunut;
+        
+        return n;
         
     }
     

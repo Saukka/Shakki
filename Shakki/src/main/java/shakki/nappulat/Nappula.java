@@ -139,9 +139,11 @@ public abstract class Nappula {
         return this.blokit;
     }
         
+    public Nappula kopioi() {
+        System.out.println("Ei pitäisi näkyä");
+    return this;
+    }
     
     
-
-
     
 }

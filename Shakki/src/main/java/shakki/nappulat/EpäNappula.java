@@ -12,5 +12,14 @@ public class EpäNappula extends Nappula{
         this.arvo = 0;
     }
     
+    @Override
+    public EpäNappula kopioi() {
+        
+        EpäNappula n = new EpäNappula(x, y);
+        
+        return n;
+        
+    }
+    
     
 }

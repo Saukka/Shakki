@@ -38,4 +38,24 @@ public class Kuningas extends Nappula {
         }
     }
     
+    
+    @Override
+    public Kuningas kopioi() {
+        
+        Kuningas n = new Kuningas(id, x, y, vari);
+        
+        for (int i = 0; i < this.siirrot.size(); i++) {
+            n.siirrot.add(this.siirrot.get(i));
+        }
+        
+        for (int i = 0; i < this.blokit.size(); i++) {
+            n.blokit.add(this.blokit.get(i));
+        }
+        
+        n.onLiikkunut = this.onLiikkunut;
+        
+        return n;
+        
+    }
+    
 }

@@ -7,6 +7,7 @@ import shakki.nappulat.Nappula;
 
 
 
+
 /**
  * Luokka arvioi peliä ja tekee siirron minimax-algoritmin avulla. (Ei vielä kehitetty)
  */
@@ -32,9 +33,7 @@ public class TekoAly {
         hashMap = new HashMap();
         hashMap.clear();
         
-        System.out.println(" mustat koko: " + lauta.mustanNappulat.size());
-        
-        int min = minArvo(lauta, -10000, 10000, 3);
+        int min = minArvo(lauta, -10000, 10000, 2);
         
         return hashMap.get(min);
     }
@@ -49,16 +48,17 @@ public class TekoAly {
             int v = 10000;
             
             for (int i = 0; i < pl.mustanNappulat.size(); i++) {
-                System.out.println("mustat koko: " + pl.mustanNappulat.size());
-                ArrayList<Koordinaatit> siirrot = pl.lauta[pl.mustanNappulat.get(i).getX()][pl.mustanNappulat.get(i).getY()].getSiirrot();
-                System.out.println("siirrot koko: " + siirrot.size());
+                int x = pl.mustanNappulat.get(i).getX();
+                int y = pl.mustanNappulat.get(i).getY();
+                ArrayList<Koordinaatit> siirrot = pl.lauta[x][y].getSiirrot();
                 for (int j = 0; j < siirrot.size(); j++) {
-                    pl.teeSiirto(pl.mustanNappulat.get(i).getX(), pl.mustanNappulat.get(i).getY(), siirrot.get(j).getX(), siirrot.get(j).getY());
-                    v = Math.min(v, maxArvo(pl, alpha, beta, syvyys));
+                    Lauta tama = pl.kopioi();
+                    tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
+                    v = Math.min(v, maxArvo(tama, alpha, beta, syvyys));
                     beta = Math.min(beta, v);
-                    if (syvyys == 2) {
+                    if (syvyys == 1) {
                         ArrayList<Koordinaatit> koordit = new ArrayList<>();
-                        koordit.add(new Koordinaatit(pl.mustanNappulat.get(i).getX(), pl.mustanNappulat.get(i).getY()));
+                        koordit.add(new Koordinaatit(x, y));
                         koordit.add(new Koordinaatit(siirrot.get(j).getX(), siirrot.get(j).getY()));
                         hashMap.put(v, koordit);
                     }
@@ -80,18 +80,26 @@ public class TekoAly {
             int v = -10000;
             
             for (int i = 0; i < pl.valkoisenNappulat.size(); i++) {
-                ArrayList<Koordinaatit> siirrot = pl.lauta[pl.valkoisenNappulat.get(i).getX()][pl.valkoisenNappulat.get(i).getY()].getSiirrot();
+                int x = pl.valkoisenNappulat.get(i).getX();
+                int y = pl.valkoisenNappulat.get(i).getY();
+                ArrayList<Koordinaatit> siirrot = pl.lauta[x][y].getSiirrot();
+                System.out.println("max Arvo");
                 for (int j = 0; j < siirrot.size(); j++) {
-                    pl.teeSiirto(pl.valkoisenNappulat.get(i).getX(), pl.valkoisenNappulat.get(i).getY(), siirrot.get(j).getX(), siirrot.get(j).getY());
-                    v = Math.max(v, minArvo(pl, alpha, beta, syvyys));
+                    Lauta tama = new Lauta();
+                    tama = pl.kopioi();
+                    tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
+                    v = Math.max(v, minArvo(tama, alpha, beta, syvyys));
                     alpha = Math.max(alpha, v);
                     if (alpha >= beta) return v;
                 }
             }
-            
-            
             return v;
         }
+        
+//        System.out.println("nappulalistan koko: " + pl.valkoisenNappulat.size());
+//                    System.out.println("siirrotlistan koko: " + siirrot.size());
+//                    System.out.println("i: " + i);
+//                    System.out.println("j: " + j);
         
         
     public int lautaArvio(Nappula[][] peliLauta, ArrayList<Koordinaatit> valkoisenNappulat, ArrayList<Koordinaatit> mustanNappulat) {
@@ -109,7 +117,6 @@ public class TekoAly {
         }
         
         for (int i = 0; i < mustanNappulat.size(); i++) {
-            System.out.println("Arviossa mustan koko: " + mustanNappulat.size());
             int x = mustanNappulat.get(i).getX();
             int y = mustanNappulat.get(i).getY();
             if (x > 2 && x < 7) arvio--;

@@ -57,5 +57,26 @@ public class Ratsu extends Nappula {
         if (lauta[x - 1][y + 2] == null || !omaNappula(lauta[x - 1][y + 2].getID())) {
             this.siirrot.add(new Koordinaatit(x - 1, y + 2));
         }
+    }   
+    
+    
+    @Override
+    public Ratsu kopioi() {
+        
+        Ratsu n = new Ratsu(id, x, y, vari);
+        
+        for (int i = 0; i < this.siirrot.size(); i++) {
+            n.siirrot.add(this.siirrot.get(i));
+        }
+        
+        for (int i = 0; i < this.blokit.size(); i++) {
+            n.blokit.add(this.blokit.get(i));
+        }
+        
+        n.onLiikkunut = this.onLiikkunut;
+        
+        return n;
+        
     }
+
 }
