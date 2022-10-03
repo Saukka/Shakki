@@ -1,7 +1,7 @@
 # Shakki
 Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille
 
-*Ohjelmassa on tällä hetkellä bugi jonka takia pelaaminen ei toimi
+Siirtojen tekeminen toimii nyt jollain tavalla ja tekoäly vastaa (tällä hetkellä erittäin huonoilla) siirroilla. Muita sääntöjä pelissä ei vielä ole kuin nappuloiden siirrot, mutta niissäkin saattaa joissakin tilanteissa syntyä virhe jolloin sovellus lopettaa toimimisen.
 
 ## Dokumentaatio
 [Määrittelydokumentti](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/M%C3%A4%C3%A4rittelydokumentti.md)
