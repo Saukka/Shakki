@@ -90,12 +90,10 @@ public class Lauta {
     
     public int teeSiirto(int x, int y, int uusX, int uusY) {
         
-        System.out.println("TEE SIIRTO: x: " + x + ", y: " + y + ", uusi X: " + uusX + ", uusi Y: " + uusY);
+        //System.out.println("yritetään siirtoa: x: " + x + ", y; " + y + ", uus X: " + uusX + ", uus Y: " + uusY);
         
         for (int i = 0; i < lauta[x][y].getSiirrot().size(); i++) {
             if (uusX == lauta[x][y].getSiirrot().get(i).getX() && uusY == lauta[x][y].getSiirrot().get(i).getY()) {
-                
-                System.out.println("Siirto: x: " + x + ", y: " + y + ", uusi X: " + uusX + ", uusi Y: " + uusY + " Läpäisty");
                 
                 Nappula n = lauta[x][y];
                 
@@ -122,7 +120,6 @@ public class Lauta {
                     for (int j = 0; j < mustanNappulat.size(); j++) {
                         if (x == mustanNappulat.get(j).getX() && y == mustanNappulat.get(j).getY()) {
                             mustanNappulat.get(j).setKoordinaatit(uusX, uusY);
-                            System.out.println("SETX: " + mustanNappulat.get(j).getX() + ", setY: " + mustanNappulat.get(j).getY());
                             break;
                         }
                     }
@@ -161,8 +158,6 @@ public class Lauta {
         }
         // Sitten mustat nappulat
         for (int i = 0; i < mustanNappulat.size(); i++) {
-            System.out.println("");
-            System.out.println(" siirtojen päivitys x: " + mustanNappulat.get(i).getX() + ", y: " + mustanNappulat.get(i).getY());
             ArrayList<Koordinaatit> siirrot = lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].getSiirrot();
             for (int j = 0; j < siirrot.size(); j++) {
                 if ((x == siirrot.get(j).getX() && y == siirrot.get(j).getY()) || (uusX == siirrot.get(j).getX() && uusY == siirrot.get(j).getY())) {
@@ -180,16 +175,16 @@ public class Lauta {
                 }
             }
         }
-        if (vari == 1) {
+        if (vari == 0) {
             if (lauta[uusX + 1][uusY + 1] != null && lauta[uusX + 1][uusY + 1].getID() > 24) {
                 lauta[uusX + 1][uusY + 1].paivitaSiirrot(lauta, 0);
             } else if (lauta[uusX - 1][uusY + 1] != null && lauta[uusX - 1][uusY + 1].getID() > 24) {
                 lauta[uusX - 1][uusY + 1].paivitaSiirrot(lauta, 0);
             }
         } else {
-            if (lauta[uusX + 1][uusY - 1] != null && lauta[uusX + 1][uusY - 1].getArvo() == 1) {
+            if (lauta[uusX + 1][uusY - 1] != null && lauta[uusX + 1][uusY - 1].getArvo() == 10) {
                 lauta[uusX + 1][uusY - 1].paivitaSiirrot(lauta, 0);
-            } else if (lauta[uusX - 1][uusY - 1] != null && lauta[uusX - 1][uusY - 1].getArvo() == 1) {
+            } else if (lauta[uusX - 1][uusY - 1] != null && lauta[uusX - 1][uusY - 1].getArvo() == 10) {
                 lauta[uusX - 1][uusY - 1].paivitaSiirrot(lauta, 0);
             }
         }

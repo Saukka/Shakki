@@ -94,7 +94,7 @@ public class Shakki {
         int taUusX = taSiirto.get(1).getX();
         int taUusY = taSiirto.get(1).getY();
         
-        System.out.println("Tekoäly siirto: x: " + taVanhaX + ", y: " + taVanhaY + ", uusi x: " + taUusX + ", uus y: " + taUusY);
+        System.out.println("Tekoäly siirto: x: " + taVanhaX + ", y: " + taVanhaY + ", uusi x: " + taUusX + ", uusi y: " + taUusY);
         
         int id = lauta.getID(taVanhaX, taVanhaY);
         

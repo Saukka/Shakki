@@ -1,13 +1,15 @@
 
 package shakki.nappulat;
 
+import shakki.domain.Koordinaatit;
+
 
 public class Kuningatar extends Nappula {
     
     public Kuningatar(int id, int x, int y, int vari) {
         super(id, x, y, vari);
         
-        if (vari == 1) {
+        if (vari == 0) {
             this.numero = 5;
             this.arvo = 90;
         } else {
@@ -18,6 +20,7 @@ public class Kuningatar extends Nappula {
 
     @Override
     public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+        this.blokit.clear();
         this.siirrot.clear();
         
         boolean voiSiirtaa = true;
@@ -139,11 +142,11 @@ public class Kuningatar extends Nappula {
         Kuningatar n = new Kuningatar(id, x, y, vari);
         
         for (int i = 0; i < this.siirrot.size(); i++) {
-            n.siirrot.add(this.siirrot.get(i));
+            n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
         }
         
         for (int i = 0; i < this.blokit.size(); i++) {
-            n.blokit.add(this.blokit.get(i));
+            n.blokit.add(new Koordinaatit(this.blokit.get(i).getX(), this.blokit.get(i).getX()));
         }
         
         n.onLiikkunut = this.onLiikkunut;

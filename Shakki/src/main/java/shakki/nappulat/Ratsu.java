@@ -9,7 +9,7 @@ public class Ratsu extends Nappula {
     public Ratsu(int id, int x, int y, int vari) {
         super(id, x, y, vari);
         
-        if (vari == 1) {
+        if (vari == 0) {
             this.numero = 2;
             this.arvo = 30;
         } else {
@@ -20,6 +20,7 @@ public class Ratsu extends Nappula {
     
     @Override
     public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+        this.blokit.clear();
         this.siirrot.clear();
         
         if (kiinnitys != 0) {
@@ -66,11 +67,11 @@ public class Ratsu extends Nappula {
         Ratsu n = new Ratsu(id, x, y, vari);
         
         for (int i = 0; i < this.siirrot.size(); i++) {
-            n.siirrot.add(this.siirrot.get(i));
+            n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
         }
         
         for (int i = 0; i < this.blokit.size(); i++) {
-            n.blokit.add(this.blokit.get(i));
+            n.blokit.add(new Koordinaatit(this.blokit.get(i).getX(), this.blokit.get(i).getX()));
         }
         
         n.onLiikkunut = this.onLiikkunut;

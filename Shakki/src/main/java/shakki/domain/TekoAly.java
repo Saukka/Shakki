@@ -13,11 +13,13 @@ import shakki.nappulat.Nappula;
  */
 public class TekoAly {
     
+    int syvyys;
+    
     Double tilanneArvio = 0.0;
     
     ArrayList<Koordinaatit> parasSiirto;
     
-    HashMap<Integer, ArrayList<Koordinaatit>> hashMap;
+    HashMap<Integer, ArrayList<Koordinaatit>> minArvot;
     
     public TekoAly() {
     }
@@ -25,17 +27,21 @@ public class TekoAly {
     
     public ArrayList<Koordinaatit> LaskeSiirto(Lauta l) {
         
+        syvyys = 2;
+        
         Lauta lauta = l;
         
         this.parasSiirto = new ArrayList<>();
         this.parasSiirto.clear();
         
-        hashMap = new HashMap();
-        hashMap.clear();
+        minArvot = new HashMap();
+        minArvot.clear();
         
-        int min = minArvo(lauta, -10000, 10000, 2);
+        int min = minArvo(lauta, -10000, 10000, syvyys);
         
-        return hashMap.get(min);
+        System.out.println(" hashmap koko " + minArvot.size());
+        
+        return minArvot.get(min);
     }
         
     
@@ -60,7 +66,7 @@ public class TekoAly {
                         ArrayList<Koordinaatit> koordit = new ArrayList<>();
                         koordit.add(new Koordinaatit(x, y));
                         koordit.add(new Koordinaatit(siirrot.get(j).getX(), siirrot.get(j).getY()));
-                        hashMap.put(v, koordit);
+                        minArvot.put(v, koordit);
                     }
                     
                     if (alpha >= beta) return v;
@@ -80,13 +86,14 @@ public class TekoAly {
             int v = -10000;
             
             for (int i = 0; i < pl.valkoisenNappulat.size(); i++) {
+                System.out.println("listan koko: " + pl.valkoisenNappulat.size());
+                System.out.println("yritetään uutta nappulaa, i: " + i);
                 int x = pl.valkoisenNappulat.get(i).getX();
                 int y = pl.valkoisenNappulat.get(i).getY();
                 ArrayList<Koordinaatit> siirrot = pl.lauta[x][y].getSiirrot();
-                System.out.println("max Arvo");
+                System.out.println("Siirtoja: " + siirrot.size());
                 for (int j = 0; j < siirrot.size(); j++) {
-                    Lauta tama = new Lauta();
-                    tama = pl.kopioi();
+                    Lauta tama = pl.kopioi();
                     tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
                     v = Math.max(v, minArvo(tama, alpha, beta, syvyys));
                     alpha = Math.max(alpha, v);
