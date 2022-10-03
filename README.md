@@ -1,6 +1,8 @@
 # Shakki
 Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille
 
+*Ohjelmassa on tällä hetkellä bugi jonka takia pelaaminen ei toimi
+
 ## Dokumentaatio
 [Määrittelydokumentti](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/M%C3%A4%C3%A4rittelydokumentti.md)
 
@@ -13,3 +15,4 @@ Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö 
 [Viikkoraportti 3](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%203.md)
 
 [Viikkoraportti 4](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%204.md)
+
