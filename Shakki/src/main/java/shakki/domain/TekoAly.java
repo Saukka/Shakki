@@ -9,7 +9,7 @@ import shakki.nappulat.Nappula;
 
 
 /**
- * Luokka arvioi peliä ja tekee siirron minimax-algoritmin avulla. (Ei vielä kehitetty)
+ * Luokka arvioi peliä ja tekee siirron minimax-algoritmin avulla. 
  */
 public class TekoAly {
     
@@ -39,14 +39,11 @@ public class TekoAly {
         
         int min = minArvo(lauta, -10000, 10000, syvyys);
         
-        System.out.println(" hashmap koko " + minArvot.size());
-        
         return minArvot.get(min);
     }
         
     
         public int minArvo(Lauta pl, int alpha, int beta, int syvyys) {
-            syvyys --;
             if (syvyys == 0) {
                 return lautaArvio(pl.lauta, pl.valkoisenNappulat, pl.mustanNappulat);
             }
@@ -60,10 +57,10 @@ public class TekoAly {
                 for (int j = 0; j < siirrot.size(); j++) {
                     Lauta tama = pl.kopioi();
                     tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
-                    int max = maxArvo(tama, alpha, beta, syvyys);
+                    int max = maxArvo(tama, alpha, beta, syvyys - 1);
                     v = Math.min(v, max);
                     beta = Math.min(beta, v);
-                    if (syvyys == 1 && v == max) {
+                    if (syvyys <= this.syvyys && v == max) {
                         ArrayList<Koordinaatit> koordit = new ArrayList<>();
                         koordit.add(new Koordinaatit(x, y));
                         koordit.add(new Koordinaatit(siirrot.get(j).getX(), siirrot.get(j).getY()));
@@ -79,7 +76,6 @@ public class TekoAly {
         }
         
         public int maxArvo(Lauta pl, int alpha, int beta, int syvyys) {
-            syvyys--;
             if (syvyys == 0) {
                 return lautaArvio(pl.lauta, pl.valkoisenNappulat, pl.mustanNappulat);
             }
@@ -93,7 +89,7 @@ public class TekoAly {
                 for (int j = 0; j < siirrot.size(); j++) {
                     Lauta tama = pl.kopioi();
                     tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
-                    v = Math.max(v, minArvo(tama, alpha, beta, syvyys));
+                    v = Math.max(v, minArvo(tama, alpha, beta, syvyys - 1));
                     alpha = Math.max(alpha, v);
                     if (alpha >= beta) return v;
                 }
@@ -101,10 +97,6 @@ public class TekoAly {
             return v;
         }
         
-//        System.out.println("nappulalistan koko: " + pl.valkoisenNappulat.size());
-//                    System.out.println("siirrotlistan koko: " + siirrot.size());
-//                    System.out.println("i: " + i);
-//                    System.out.println("j: " + j);
         
         
     public int lautaArvio(Nappula[][] peliLauta, ArrayList<Koordinaatit> valkoisenNappulat, ArrayList<Koordinaatit> mustanNappulat) {
@@ -117,6 +109,7 @@ public class TekoAly {
             if (x > 2 && x < 7) arvio++;
             if (x > 3 && x < 6) arvio += 4;
             if (y > 3) arvio += 3;
+            if (x > 2 && x < 7 && y > 3) arvio += 5;
             
             arvio += peliLauta[x][y].getArvo();
         }
@@ -127,7 +120,7 @@ public class TekoAly {
             if (x > 2 && x < 7) arvio--;
             if (x > 3 && x < 6) arvio -= 4;
             if (y < 8) arvio -= 3;
-            if (x > 2 && x < 7 && y < 8) arvio -= 15;
+            if (x > 2 && x < 7 && y < 8) arvio -= 5;
             arvio += peliLauta[x][y].getArvo();
         }
         

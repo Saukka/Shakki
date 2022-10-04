@@ -103,7 +103,6 @@ public abstract class Nappula {
     public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
         
     }
-    
         public int getNumero() {
         return this.id;
     }

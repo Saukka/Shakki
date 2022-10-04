@@ -29,34 +29,50 @@ public class Ratsu extends Nappula {
         
         if (lauta[x + 1][y + 2] == null || (!omaNappula(lauta[x + 1][y + 2].getID()))) {
             this.siirrot.add(new Koordinaatit(x + 1, y + 2));
+        } else if (lauta[x + 1][y + 2] != null) {
+            this.blokit.add(new Koordinaatit(x + 1, y + 2));
         }
         
         if (x + 2 < 10 && (lauta[x + 2][y + 1] == null || !omaNappula(lauta[x + 2][y + 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x + 2, y + 1));
+        } else if (x + 2 < 10 && lauta[x + 2][y + 1] != null) {
+            this.blokit.add(new Koordinaatit(x + 2, y + 1));
         }
         
         if (x + 2 < 10 && (lauta[x + 2][y - 1] == null || !omaNappula(lauta[x + 2][y - 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x + 2, y - 1));
+        } else if (x + 2 < 10 && lauta[x + 2][y - 1] != null) {
+            this.blokit.add(new Koordinaatit(x + 2, y - 1));
         }
         
         if (lauta[x + 1][y - 2] == null || !omaNappula(lauta[x + 1][y - 2].getID())) {
             this.siirrot.add(new Koordinaatit(x + 1, y - 2));
+        } else if (lauta[x + 1][y - 2] != null) {
+            this.blokit.add(new Koordinaatit(x + 1, y - 2));
         }
         
         if (lauta[x - 1][y - 2] == null || !omaNappula(lauta[x - 1][y - 2].getID())) {
             this.siirrot.add(new Koordinaatit(x - 1, y - 2));
+        } else if (lauta[x - 1][y - 2] != null) {
+            this.blokit.add(new Koordinaatit(x - 1, y - 2));
         }
         
-        if (x - 1 > 0 && (lauta[x - 2][y - 1] == null || !omaNappula(lauta[x - 2][y - 1].getID()))) {
+        if (x - 2 > 0 && (lauta[x - 2][y - 1] == null || !omaNappula(lauta[x - 2][y - 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x - 2, y - 1));
+        } else if (x - 2 > 0 && lauta[x - 2][y - 1] != null) {
+            this.blokit.add(new Koordinaatit(x - 2, y - 1 ));
         }
         
-        if (x - 1 > 0 && (lauta[x - 2][y + 1] == null || !omaNappula(lauta[x - 2][y + 1].getID()))) {
+        if (x - 2 > 0 && (lauta[x - 2][y + 1] == null || !omaNappula(lauta[x - 2][y + 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x - 2, y + 1));
+        } else if (x - 2 > 0 && lauta[x - 2][y + 1] != null) {
+            this.blokit.add(new Koordinaatit(x - 2, y + 1 ));
         }
         
         if (lauta[x - 1][y + 2] == null || !omaNappula(lauta[x - 1][y + 2].getID())) {
             this.siirrot.add(new Koordinaatit(x - 1, y + 2));
+        } else if (lauta[x - 1][y + 2] != null) {
+            this.blokit.add(new Koordinaatit(x - 1, y + 2 ));
         }
     }   
     
