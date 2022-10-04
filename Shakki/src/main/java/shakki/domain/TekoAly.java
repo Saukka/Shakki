@@ -60,9 +60,10 @@ public class TekoAly {
                 for (int j = 0; j < siirrot.size(); j++) {
                     Lauta tama = pl.kopioi();
                     tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
-                    v = Math.min(v, maxArvo(tama, alpha, beta, syvyys));
+                    int max = maxArvo(tama, alpha, beta, syvyys);
+                    v = Math.min(v, max);
                     beta = Math.min(beta, v);
-                    if (syvyys == 1) {
+                    if (syvyys == 1 && v == max) {
                         ArrayList<Koordinaatit> koordit = new ArrayList<>();
                         koordit.add(new Koordinaatit(x, y));
                         koordit.add(new Koordinaatit(siirrot.get(j).getX(), siirrot.get(j).getY()));
@@ -86,12 +87,9 @@ public class TekoAly {
             int v = -10000;
             
             for (int i = 0; i < pl.valkoisenNappulat.size(); i++) {
-                System.out.println("listan koko: " + pl.valkoisenNappulat.size());
-                System.out.println("yritetään uutta nappulaa, i: " + i);
                 int x = pl.valkoisenNappulat.get(i).getX();
                 int y = pl.valkoisenNappulat.get(i).getY();
                 ArrayList<Koordinaatit> siirrot = pl.lauta[x][y].getSiirrot();
-                System.out.println("Siirtoja: " + siirrot.size());
                 for (int j = 0; j < siirrot.size(); j++) {
                     Lauta tama = pl.kopioi();
                     tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
@@ -120,16 +118,16 @@ public class TekoAly {
             if (x > 3 && x < 6) arvio += 4;
             if (y > 3) arvio += 3;
             
-            arvio += peliLauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].getArvo();
+            arvio += peliLauta[x][y].getArvo();
         }
         
         for (int i = 0; i < mustanNappulat.size(); i++) {
             int x = mustanNappulat.get(i).getX();
             int y = mustanNappulat.get(i).getY();
             if (x > 2 && x < 7) arvio--;
-            if (x > 3) arvio -= 4;
+            if (x > 3 && x < 6) arvio -= 4;
             if (y < 8) arvio -= 3;
-            
+            if (x > 2 && x < 7 && y < 8) arvio -= 15;
             arvio += peliLauta[x][y].getArvo();
         }
         

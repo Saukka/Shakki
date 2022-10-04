@@ -146,13 +146,11 @@ public class Lauta {
                     break;
                 }
             }
-            if (vari == 0) {
-                ArrayList<Koordinaatit> blokit = lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].getBlokit();
-                for (int j = 0; j < blokit.size(); j++) {
-                    if (x == blokit.get(j).getX() && y == blokit.get(j).getY()) {
-                        lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].paivitaSiirrot(lauta, 0);
-                        break;
-                    }
+            ArrayList<Koordinaatit> blokit = lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].getBlokit();
+            for (int j = 0; j < blokit.size(); j++) {
+                if ((x == blokit.get(j).getX() && y == blokit.get(j).getY()) || (uusX == blokit.get(j).getX() && uusY == blokit.get(j).getY())) {
+                    lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].paivitaSiirrot(lauta, 0);
+                    break;
                 }
             }
         }
@@ -165,13 +163,11 @@ public class Lauta {
                     break;
                 }
             }
-            if (vari == 1) {
-                ArrayList<Koordinaatit> blokit = lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].getBlokit();
-                for (int j = 0; j < blokit.size(); j++) {
-                    if (x == blokit.get(j).getX() && y == blokit.get(j).getY()) {
-                        lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].paivitaSiirrot(lauta, 0);
-                        break;
-                    }
+            ArrayList<Koordinaatit> blokit = lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].getBlokit();
+            for (int j = 0; j < blokit.size(); j++) {
+                if ((x == blokit.get(j).getX() && y == blokit.get(j).getY()) || (uusX == blokit.get(j).getX() && uusY == blokit.get(j).getY())) {
+                    lauta[mustanNappulat.get(i).getX()][mustanNappulat.get(i).getY()].paivitaSiirrot(lauta, 0);
+                    break;
                 }
             }
         }
