@@ -16,7 +16,6 @@ public class LautaTest {
     public void valkoisetNappulat() {
         
         lauta = new Lauta();
-        lauta.asetaLauta();
         
         int summa = 0;
         
@@ -34,7 +33,6 @@ public class LautaTest {
     public void mustatNappulat() {
         
         lauta = new Lauta();
-        lauta.asetaLauta();
         
         int summa = 0;
         
@@ -44,21 +42,15 @@ public class LautaTest {
             }
         }
         
-        for (int y = 6; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                summa += lauta.lauta[x][y].getID();
-            }
-        }
         assertEquals(392, summa);
     }
     
     @Test
     public void siirtoTesti() {
         lauta = new Lauta();
-        lauta.asetaLauta();
         lauta.teeSiirto(lauta.ulkoL, lauta.ulkoP + 1, lauta.ulkoL, lauta.ulkoP + 2);
         
-        assertEquals(0, lauta.lauta[lauta.ulkoL][lauta.ulkoP + 1].getID());
+        assertEquals(null, lauta.lauta[lauta.ulkoL][lauta.ulkoP + 1]);
         assertEquals(9, lauta.lauta[lauta.ulkoL][lauta.ulkoP + 2].getID());
         
     }
@@ -68,7 +60,6 @@ public class LautaTest {
         lauta = new Lauta();
         int xU = lauta.ulkoL;
         int yU = lauta.ulkoP;
-        lauta.asetaLauta();
         
         //Siirretään valkoisen nappulat pois edestä
         lauta.teeSiirto(xU + 6, yU, xU + 5, yU + 2);
@@ -87,8 +78,6 @@ public class LautaTest {
     @Test
     public void poistaNappula() {
         lauta = new Lauta();
-        lauta.asetaLauta();
-        
         assertEquals(16, lauta.valkoisenNappulat.size());
         lauta.poistaNappula(lauta.ulkoL, lauta.ulkoP);
         assertEquals(15, lauta.valkoisenNappulat.size());

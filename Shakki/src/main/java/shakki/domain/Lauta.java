@@ -84,7 +84,6 @@ public class Lauta {
         }
         
         
-         
     }
     
     public int teeSiirto(int x, int y, int uusX, int uusY) {
