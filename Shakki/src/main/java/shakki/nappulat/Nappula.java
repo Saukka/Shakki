@@ -63,27 +63,36 @@ public abstract class Nappula {
         return (this.vari == 0 && nid < 17 && nid > 0) || ((this.vari == 1 && nid > 16)) || nid == -1;
     }
     
-    public int katso(Nappula[][] lauta, int i, int j, boolean voiSiirtaa) {
+    /**
+     * Tornin, lähetin, ja kuningattaren käyttämä metodi.
+     * metodille annetaan koordinaatit ja se katsoo esim. voiko ruutuun siirtää, shakittaako tai kiinnittääkö nappula
+     * @param lauta
+     * @param x 
+     * @param y
+     * @param voiSiirtaa voiko nappulaa oikeasti siirtää. Muuttuja = false jos nappula on esim. kiinnitetty.
+     * @return 
+     */
+    public int katso(Nappula[][] lauta, int x, int y, boolean voiSiirtaa) {
         
-        if (lauta[i][j] == null) {
+        if (lauta[x][y] == null) {
             if (!tormannyt && voiSiirtaa) {
-                this.siirrot.add(new Koordinaatit(i, j));
+                this.siirrot.add(new Koordinaatit(x, y));
             }
             return 1;
             
-        } else if (omaNappula(lauta[i][j].getID())) {
+        } else if (omaNappula(lauta[x][y].getID())) {
             tormannyt = false;
-            blokit.add(new Koordinaatit(i, j));
+            blokit.add(new Koordinaatit(x, y));
             return 0;
         } else {
             // on vihollisen nappula
-            if (lauta[i][j].getID() == 5 || lauta[i][j].getID() == 21) {
+            if (lauta[x][y].getID() == 5 || lauta[x][y].getID() == 21) {
                 if (tormannyt) {
                     kiinnitetyt.add(kiinnitetynID);
                     tormannyt = false;
                     return 0; // kiinnitys kuninkaaseen
                 }
-                this.siirrot.add(new Koordinaatit(i, j));
+                this.siirrot.add(new Koordinaatit(x, y));
                 return 2; // shakki
             }
             if (tormannyt) {
@@ -91,9 +100,9 @@ public abstract class Nappula {
                 return 0; // ei kiinnitystä
             }
             tormannyt = true;
-            kiinnitetynID = lauta[i][j].getID();
+            kiinnitetynID = lauta[x][y].getID();
             if (voiSiirtaa) {
-                this.siirrot.add(new Koordinaatit(i, j));
+                this.siirrot.add(new Koordinaatit(x, y));
             }
             return 1;
         }
@@ -139,7 +148,6 @@ public abstract class Nappula {
     }
         
     public Nappula kopioi() {
-        System.out.println("Ei pitäisi näkyä");
     return this;
     }
     

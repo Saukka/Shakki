@@ -24,7 +24,11 @@ public class TekoAly {
     public TekoAly() {
     }
     
-    
+    /**
+     * Tekoäly laskee minimax-algoritmia käyttäen siirron.
+     * @param l Lauta jolle tekoäly laskee siirron
+     * @return Koordinaatit-lista, ensimmäinen arvo kertoo nappulan koordinaatit. Toinen, mihin nappula siirretään
+     */
     public ArrayList<Koordinaatit> LaskeSiirto(Lauta l) {
         
         syvyys = 2;
@@ -98,7 +102,14 @@ public class TekoAly {
         }
         
         
-        
+    /**
+     * Lautalle annetaan peliLauta, sekä nappuloiden sijainnit ja antaa arvion laudan tilanteesta.
+     * Tällä hetkellä arvio on todella epätarkka.
+     * @param peliLauta
+     * @param valkoisenNappulat
+     * @param mustanNappulat
+     * @return 
+     */
     public int lautaArvio(Nappula[][] peliLauta, ArrayList<Koordinaatit> valkoisenNappulat, ArrayList<Koordinaatit> mustanNappulat) {
         
         int arvio = 0;

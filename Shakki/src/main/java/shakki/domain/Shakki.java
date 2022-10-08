@@ -12,7 +12,6 @@ import shakki.ui.PeliUI;
 /**
  * Luokka katsoo pelaajan siirrot ja ilmoittaa ne lauta-luokalle, 
  * sekä päivittää laudan näkymän PeliUI-luokan avulla.
- * 
  */
 public class Shakki {
     
@@ -41,6 +40,10 @@ public class Shakki {
         tekoAly = new TekoAly();
     }
     
+    /**
+     * Metodi käsittelee pelaajan hiiren klikkailut ja välittää koordinaatit sovelluslogiikalle.
+     * Jos siirto sallitaan, siirrettään nappulaa myös graafisesti.
+     */
     public void aloita() {
         ikkuna.setScene(näkymä);
         
@@ -94,6 +97,9 @@ public class Shakki {
             
     }
     
+    /**
+     * Tekoälylle annetaan lauta ja palauttaa siirtonsa.
+     */
     public void tekoAlySiirra() {
         
         ArrayList<Koordinaatit> taSiirto = tekoAly.LaskeSiirto(lauta);

@@ -36,7 +36,7 @@ public class Lauta {
     }
     
     /**
-     * Metodi asettaa nappulat laudalle.
+     * Metodi asettaa nappulat laudalle ja lisää nappuloiden koordinaatit listoille.
      */
     
     public void asetaLauta() {
@@ -85,7 +85,15 @@ public class Lauta {
         
         
     }
-    
+    /**
+     * Metodi suorittaa nappuloiden siirrot. 
+     * Metodille annetaan nappulan koordinaatit ja koordinaatit mihin nappula siirretään.
+     * @param x 
+     * @param y
+     * @param uusX
+     * @param uusY
+     * @return 
+     */
     public int teeSiirto(int x, int y, int uusX, int uusY) {
         
         for (int i = 0; i < lauta[x][y].getSiirrot().size(); i++) {
@@ -93,6 +101,7 @@ public class Lauta {
                 
                 Nappula n = lauta[x][y];
                 
+                // Tarkistetaan onko kyseessä linnoitus (tornitus), jolloin käytetään eri metodia
                 if (Math.abs(n.getNumero()) == 6 && Math.abs(x - uusX) == 2) {
                     int s = teeLinnoitus(n, x, y, uusX);
                     return s;
@@ -122,6 +131,14 @@ public class Lauta {
         return -1;
     }
     
+    /**
+     * Metodi suorittaa kuninkaan ja tornin linnoituksen
+     * @param n
+     * @param x
+     * @param y
+     * @param uusX
+     * @return 
+     */
     public int teeLinnoitus(Nappula n, int x, int y, int uusX) {
         
         int torniX = 0;
@@ -152,6 +169,14 @@ public class Lauta {
         return torni.getID() + 50;
     }
     
+    /**
+     * Metodi päivittää koordinaatti-listassa nappulan koordinaatit.
+     * @param x
+     * @param y
+     * @param uusX
+     * @param uusY
+     * @param vari 
+     */
     public void paivitaKoordinaatit(int x, int y, int uusX, int uusY, int vari) {
         
         if (vari == 0) {
@@ -171,6 +196,14 @@ public class Lauta {
         }
     }
     
+    /**
+     * Metodi katsoo, minkä nappuloiden siirtoihin tehty siirto mahdollisesti vaikuttaa ja päivittää näiden siirrot.
+     * @param x
+     * @param y
+     * @param uusX
+     * @param uusY
+     * @param vari 
+     */
     public void paivitaTarvittavat(int x, int y, int uusX, int uusY, int vari) {
         
         // Aluksi käydään valkoiset nappulat läpi ja katsotaan mitä siirtoja pitää päivittää
@@ -225,6 +258,11 @@ public class Lauta {
         
     }
     
+    /**
+     * Poistaa nappulan nappuloiden koordinaattien listalta.
+     * @param x
+     * @param y 
+     */
     public void poistaNappula(int x, int y) {
         if (lauta[x][y].getID() < 17) {
             for (int i = 0; i < valkoisenNappulat.size(); i++) {
@@ -246,6 +284,12 @@ public class Lauta {
         
     }
     
+    /**
+     * Metodi palauttaa kopion laudasta TekoAly-luokalle minimax-algoritmia varten.
+     * Tulen todennäköisesti poistamaan metodin tulevaisuudessa, sillä laudan kopiointi kokoajan on melko hidasta
+     * minimax-algoritmin aikana.
+     * @return 
+     */
     public Lauta kopioi() {
         Lauta l = new Lauta();
         
@@ -281,6 +325,9 @@ public class Lauta {
         return lauta[x][y].getID();
     }
     
+    /**
+     * Tuleva peruSiirto, joka korvaa laudan kopioinnin tarpeen.
+     */
     public void peruSiirto() {
         
     }
