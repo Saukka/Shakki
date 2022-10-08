@@ -8,5 +8,6 @@ En edistynyt yhtä paljon kuin olisin toivonut joten ensi viikolle jää paljon 
 - Minimax-algoritmin parantaminen. Nappuloiden siirtojen läpikäyminen mahdollisessa paremmuusjärjestyksessä, jolloin alpha-beta pruning on tehokkaampaa.
 - Parempi heuristinen arvio.
 - Siirtojen peruminen. Nyt minimax-algoritmin aikana lauta kopioidaan joka vaiheessa, joka on todella hidasta.
+- Checkstylen virheiden korjaaminen
 
 Käytetyt tunnit: 12h, yhteensä 64h.
