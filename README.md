@@ -18,3 +18,4 @@ Siirtojen tekeminen toimii klikkaamalla nappulaa ja sitten klikkaamalla ruutua m
 
 [Viikkoraportti 4](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%204.md)
 
+[Viikkoraportti 5](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%205.md)
