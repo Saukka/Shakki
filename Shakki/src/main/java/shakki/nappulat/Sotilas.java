@@ -29,14 +29,14 @@ public class Sotilas extends Nappula {
                 if (lauta[x][y + 2] == null && lauta[x][y + 1] == null &&(kiinnitys == 0 || kiinnitys == 2)) {
                     this.siirrot.add(new Koordinaatit(x, y + 2));
                 } 
-                else if (lauta[x][y + 1] == null && omaNappula(lauta[x][y + 2].getID()) && (kiinnitys == 0)) {
+                else if ((lauta[x][y + 1] == null && lauta[x][y + 2] != null) && (kiinnitys == 0)) {
                     blokit.add(new Koordinaatit(x, y + 2));
                 }
             }
                 
             if (lauta[x][y + 1] == null && (kiinnitys == 0 || kiinnitys == 2)) {
                 this.siirrot.add(new Koordinaatit(x, y + 1));
-            } else if (omaNappula(lauta[x][y + 1].getID()) && (kiinnitys == 0)){
+            } else if (lauta[x][y + 1] != null && (kiinnitys == 0) || kiinnitys == 2){
                 blokit.add(new Koordinaatit(x, y + 1));
             }
             
@@ -58,14 +58,14 @@ public class Sotilas extends Nappula {
             if (!onLiikkunut) {
                 if (lauta[x][y - 2] == null && lauta[x][y - 1] == null && (kiinnitys == 0 || kiinnitys == 2)) {
                     this.siirrot.add(new Koordinaatit(x, y - 2));
-                } else if (lauta[x][y - 1] == null && omaNappula(lauta[x][y - 2].getID()) && (kiinnitys == 0)) {
+                } else if (lauta[x][y - 1] == null && lauta[x][y - 2] != null && (kiinnitys == 0 || kiinnitys == 2)) {
                     blokit.add(new Koordinaatit(x, y - 2));
                 }
             }
                 
             if (lauta[x][y - 1] == null && (kiinnitys == 0 || kiinnitys == 2)) {
                 this.siirrot.add(new Koordinaatit(x, y - 1));
-            } else if (omaNappula(lauta[x][y - 1].getID()) && (kiinnitys == 0)){
+            } else if (lauta[x][y - 1] != null && (kiinnitys == 0 || kiinnitys == 2)){
                 blokit.add(new Koordinaatit(x, y - 1));
             }
             

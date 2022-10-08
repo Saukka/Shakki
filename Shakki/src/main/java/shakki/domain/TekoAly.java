@@ -60,7 +60,7 @@ public class TekoAly {
                     int max = maxArvo(tama, alpha, beta, syvyys - 1);
                     v = Math.min(v, max);
                     beta = Math.min(beta, v);
-                    if (syvyys <= this.syvyys && v == max) {
+                    if (syvyys == this.syvyys && v == max) {
                         ArrayList<Koordinaatit> koordit = new ArrayList<>();
                         koordit.add(new Koordinaatit(x, y));
                         koordit.add(new Koordinaatit(siirrot.get(j).getX(), siirrot.get(j).getY()));

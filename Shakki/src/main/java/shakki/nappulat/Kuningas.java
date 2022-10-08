@@ -10,10 +10,10 @@ public class Kuningas extends Nappula {
         super(id, x, y, vari);
         
         if (vari == 0) {
-            this.numero = 60;
+            this.numero = 6;
             this.arvo = 1000;
         } else {
-            this.numero = -60;
+            this.numero = -6;
             this.arvo = -1000;
         }
     }
@@ -41,6 +41,22 @@ public class Kuningas extends Nappula {
             } else if (omaNappula(lauta[i][y - 1].getID())) {
                 blokit.add(new Koordinaatit(i, y - 1));
             }
+        }
+        if (!this.onLiikkunut) {
+            blokit.add(new Koordinaatit(x + 2, y));
+            blokit.add(new Koordinaatit(x + 3, y));
+            blokit.add(new Koordinaatit(x - 2, y));
+            blokit.add(new Koordinaatit(x - 3, y));
+            blokit.add(new Koordinaatit(x - 4, y));
+        }
+        
+        //linnoitus oikealle
+        if (!this.onLiikkunut && lauta[x + 1][y] == null && lauta[x + 2][y] == null && lauta[x + 3][y] != null && !lauta[x + 3][y].onLiikkunut) {
+            this.siirrot.add(new Koordinaatit(x + 2, y));
+        }
+        //linnoitus oikealle
+        if (!this.onLiikkunut && lauta[x - 1][y] == null && lauta[x - 2][y] == null && lauta[x - 3][y] == null && lauta[x - 4][y] != null && !lauta[x - 4][y].onLiikkunut) {
+            this.siirrot.add(new Koordinaatit(x - 2, y));
         }
     }
     

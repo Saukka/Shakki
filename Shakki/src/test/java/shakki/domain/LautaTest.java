@@ -20,8 +20,8 @@ public class LautaTest {
         
         int summa = 0;
         
-        for (int y = 0; y < 2; y++) {
-            for (int x = 0; x < 8; x++) {
+        for (int y = lauta.ulkoP; y < lauta.ulkoP + 2; y++) {
+            for (int x = lauta.ulkoL; x < 8 + lauta.ulkoL; x++) {
                 summa += lauta.lauta[x][y].getID();
             }
         }
@@ -38,6 +38,12 @@ public class LautaTest {
         
         int summa = 0;
         
+        for (int y = lauta.ulkoP + 6; y < lauta.ulkoP + 8; y++) {
+            for (int x = lauta.ulkoL; x < 8 + lauta.ulkoL; x++) {
+                summa += lauta.lauta[x][y].getID();
+            }
+        }
+        
         for (int y = 6; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 summa += lauta.lauta[x][y].getID();
@@ -50,19 +56,42 @@ public class LautaTest {
     public void siirtoTesti() {
         lauta = new Lauta();
         lauta.asetaLauta();
-        lauta.teeSiirto(0, 1, 0, 2);
+        lauta.teeSiirto(lauta.ulkoL, lauta.ulkoP + 1, lauta.ulkoL, lauta.ulkoP + 2);
         
-        assertEquals(0, lauta.lauta[0][1].getID());
-        assertEquals(9, lauta.lauta[0][2].getID());
+        assertEquals(0, lauta.lauta[lauta.ulkoL][lauta.ulkoP + 1].getID());
+        assertEquals(9, lauta.lauta[lauta.ulkoL][lauta.ulkoP + 2].getID());
         
     }
         
     @Test
-    public void nappulanOminaisuudet() {
+    public void linnoitus() {
+        lauta = new Lauta();
+        int xU = lauta.ulkoL;
+        int yU = lauta.ulkoP;
+        lauta.asetaLauta();
+        
+        //Siirretään valkoisen nappulat pois edestä
+        lauta.teeSiirto(xU + 6, yU, xU + 5, yU + 2);
+        lauta.teeSiirto(xU + 4, yU + 1, xU + 4, yU + 3);
+        lauta.teeSiirto(xU + 5, yU, xU + 3, yU + 2);
+        
+        //Sitten linnoitus
+        lauta.teeSiirto(xU + 4, yU, xU + 6, yU);
+        
+        assertEquals(5, lauta.lauta[xU + 6][yU].getID());
+        assertEquals(8, lauta.lauta[xU + 5][yU].getID());
+        assertEquals(null, lauta.lauta[xU + 4][yU]);
+        assertEquals(null, lauta.lauta[xU + 7][yU]);
+    }
+    
+    @Test
+    public void poistaNappula() {
         lauta = new Lauta();
         lauta.asetaLauta();
         
-        
+        assertEquals(16, lauta.valkoisenNappulat.size());
+        lauta.poistaNappula(lauta.ulkoL, lauta.ulkoP);
+        assertEquals(15, lauta.valkoisenNappulat.size());
     }
     
     

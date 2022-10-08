@@ -66,13 +66,21 @@ public class Shakki {
                 
                 int id = lauta.getID(x.get(), y.get());
                 int s = lauta.teeSiirto(x.get(), y.get(), uusX, uusY);
-                
-                if (s == 0 || s > 0) {
+                if (s >= 0) {
                     
-                    if (s > 0) {
+                    if (s > 0 && s < 33) {
                         ui.poistaNappula(s);
-                    }
+                    } 
+                    
                     ui.siirräNappula(id, uusX - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
+                    if (s > 50) {
+                        if (x.get() < uusX) {
+                            ui.siirräNappula(s - 50, uusX - 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
+                        } else {
+                            ui.siirräNappula(s - 50, uusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
+                        }
+                    }
+                    
                     tekoAlySiirra();
                     
                 } else {
@@ -96,12 +104,21 @@ public class Shakki {
         
         int id = lauta.getID(taVanhaX, taVanhaY);
         
-        int p = lauta.teeSiirto(taVanhaX, taVanhaY, taUusX, taUusY);
+        int s = lauta.teeSiirto(taVanhaX, taVanhaY, taUusX, taUusY);
         
-        if (p > 0) {
-            ui.poistaNappula(p);
+        if (s > 0 && s < 33) {
+            ui.poistaNappula(s);
         }
         ui.siirräNappula(id, taUusX - lauta.ulkoL, 7 + lauta.ulkoP - taUusY);
+        
+        if (s > 50) {
+            if (taVanhaX < taVanhaY) {
+                ui.siirräNappula(s - 50, taUusX - 1 - lauta.ulkoL, 7 + lauta.ulkoP - taUusY);
+            } else {
+                ui.siirräNappula(s - 50, taUusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - taUusY);
+            }
+        }
+        
     }
     
  

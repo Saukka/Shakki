@@ -88,7 +88,7 @@ public class PeliUI {
         
         // Valkoiset takarivin nappulat
         for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:kuvat/" + nappulat[i] + ".png");
+            Image kuva = new Image("file:Kuvat/" + nappulat[i] + ".png");
             ImageView ikoni = new ImageView(kuva);
             ikoni.relocate(60 + i * ruudunLeveys, 710);
             ikoni.setFitHeight(ruudunLeveys - 20);
@@ -97,7 +97,7 @@ public class PeliUI {
         }
         // valkoiset sotilaat
         for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:kuvat/sotilas.png");
+            Image kuva = new Image("file:Kuvat/sotilas.png");
             ImageView ikoni = new ImageView(kuva);
             ikoni.relocate(60 + i * ruudunLeveys, 610);
             ikoni.setFitHeight(ruudunLeveys - 20);
@@ -106,7 +106,7 @@ public class PeliUI {
         }
         //mustat takarivin nappulat
         for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:kuvat/M" + nappulat[i] + ".png");
+            Image kuva = new Image("file:Kuvat/M" + nappulat[i] + ".png");
             ImageView ikoni = new ImageView(kuva);
             ikoni.relocate(60 + i * ruudunLeveys, 10);
             ikoni.setFitHeight(ruudunLeveys - 20);
@@ -115,7 +115,7 @@ public class PeliUI {
         }
         //mustat sotilaat
         for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:kuvat/Msotilas.png");
+            Image kuva = new Image("file:Kuvat/Msotilas.png");
             ImageView ikoni = new ImageView(kuva);
             ikoni.relocate(60 + i * ruudunLeveys, 110);
             ikoni.setFitHeight(ruudunLeveys - 20);

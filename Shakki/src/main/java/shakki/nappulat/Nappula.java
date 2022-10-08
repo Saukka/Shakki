@@ -104,7 +104,7 @@ public abstract class Nappula {
         
     }
         public int getNumero() {
-        return this.id;
+        return this.numero;
     }
     
     public int getArvo() {
