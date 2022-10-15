@@ -58,6 +58,7 @@ public class Kuningas extends Nappula {
         if (!this.onLiikkunut && lauta[x - 1][y] == null && lauta[x - 2][y] == null && lauta[x - 3][y] == null && lauta[x - 4][y] != null && !lauta[x - 4][y].onLiikkunut) {
             this.siirrot.add(new Koordinaatit(x - 2, y));
         }
+        paivitaArvio(lauta);
     }
     
     
@@ -75,9 +76,38 @@ public class Kuningas extends Nappula {
         }
         
         n.onLiikkunut = this.onLiikkunut;
+        n.paikanArvo = this.paikanArvo;
         
         return n;
         
+    }
+    
+    @Override
+    public void paivitaArvio(Nappula[][] lauta) {
+        this.paikanArvo = 0;
+        if (this.syoty) {
+            return;
+        }
+        
+        if (vari == 0) {
+            if (this.y < 3) {
+                this.paikanArvo += 10;
+            }
+            for (int i = x - 1; i < x + 2; i++) {
+                if (lauta[i][y + 1] != null && lauta[i][y + 1].getNumero() == 1) this.paikanArvo += 8;
+            }
+        } else {
+            if (this.y > 8) {
+                this.paikanArvo -= 10;
+            }
+            for (int i = x - 1; i < x + 2; i++) {
+                if (lauta[i][y - 1] != null && lauta[i][y - 1].getNumero() == -1) this.paikanArvo -= 8;
+            }
+        }
+        
+        
+        
+        this.paikanArvo += this.arvo;
     }
     
 }

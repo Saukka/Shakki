@@ -12,9 +12,11 @@ public class Kuningatar extends Nappula {
         if (vari == 0) {
             this.numero = 5;
             this.arvo = 90;
+            this.paikanArvo = 7;
         } else {
             this.numero = -5;
             this.arvo = -90;
+            this.paikanArvo = -7;
         }
     }
 
@@ -134,6 +136,7 @@ public class Kuningatar extends Nappula {
         }
         tormannyt = false;
         
+        paivitaArvio(lauta);
     }
     
     @Override
@@ -150,9 +153,29 @@ public class Kuningatar extends Nappula {
         }
         
         n.onLiikkunut = this.onLiikkunut;
-        
+        n.paikanArvo = this.paikanArvo;
         return n;
         
+    }
+    
+    @Override
+    public void paivitaArvio(Nappula[][] lauta) {
+        this.paikanArvo = 0;
+        if (this.syoty) {
+            return;
+        }
+        
+        if (this.y > 3 && this.y < 8) {
+            this.paikanArvo += 10;
+        }
+        
+        this.paikanArvo += this.siirrot.size();
+        
+        if (this.vari > 0) {
+            this.paikanArvo *= -1;
+        }
+        
+        this.paikanArvo += this.arvo;
     }
     
     

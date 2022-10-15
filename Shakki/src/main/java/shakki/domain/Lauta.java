@@ -118,6 +118,7 @@ public class Lauta {
                 
                 if (lauta[uusX][uusY] != null) {
                     s = lauta[uusX][uusY].getID();
+                    lauta[uusX][uusY].syo();
                     poistaNappula(uusX, uusY);
                     syotyNappula = lauta[uusX][uusY];
                 }

@@ -7,6 +7,7 @@ public class Sotilas extends Nappula {
     
     public Sotilas(int id, int x, int y, int vari) {
         super(id, x, y, vari);
+        this.paikanArvo = 0;
         
         if (vari == 0) {
             this.numero = 1;
@@ -86,6 +87,7 @@ public class Sotilas extends Nappula {
             
         }
         
+        paivitaArvio(lauta);
     }
     
     @Override
@@ -102,9 +104,58 @@ public class Sotilas extends Nappula {
         }
         
         n.onLiikkunut = this.onLiikkunut;
-        
+        n.paikanArvo = this.paikanArvo;
         return n;
         
+    }
+    
+    @Override
+    public void paivitaArvio(Nappula[][] lauta) {
+        this.paikanArvo = 0;
+        if (this.syoty) {
+            return;
+        }
+        arvo = 0;
+        
+        if (this.vari == 0) {
+            if (this.y > 3) {
+                arvo += 1;
+                if (this.y > 4) {
+                    arvo += 1;
+                }
+            }
+            if (this.y > 3 && this.x > 3 && this.x < 6) {
+                arvo += 2;
+                if (this.y > 4) {
+                    arvo += 3;
+                }
+            }
+            for (int i = x - 1; i <  x + 2; i += 2) {
+                if (lauta[i][y - 1] != null && lauta[i][y - 1].numero == 1) arvo += 2;
+                if (lauta[i][y + 1] != null && lauta[i][y + 1].numero == 1) arvo += 2;
+            }
+        
+        } else {
+            if (this.y < 8) {
+                arvo -= 1;
+                if (this.y < 7) {
+                    arvo -= 1;
+                }
+            }
+            if (this.y < 8 && this.x > 3 && this.x < 6) {
+                arvo -= 2;
+                if (this.y < 7) {
+                    arvo -= 3;
+                }
+            }
+            
+            for (int i = x - 1; i <  x + 2; i += 2) {
+                if (lauta[i][y - 1] != null && lauta[i][y - 1].numero == -1) arvo -= 2;
+                if (lauta[i][y + 1] != null && lauta[i][y + 1].numero == -1) arvo -= 2;
+            }
+        }
+        
+        this.paikanArvo = arvo + this.arvo;
     }
     
 }

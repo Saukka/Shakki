@@ -12,7 +12,7 @@ public abstract class Nappula {
     int id = 0;
     int numero; // numero kertoo nappulan tyypin
     int arvo; // Arvo kertoo nappulan arvon
-    Double paikanArvo; // paikanArvo kertoo kuinka hyvässä paikassa nappula on laudalla
+    int paikanArvo; // paikanArvo kertoo kuinka hyvässä paikassa nappula on laudalla
     
     int vari;
     
@@ -21,9 +21,11 @@ public abstract class Nappula {
     int y;
     
     boolean onLiikkunut;
+    boolean syoty;
     
     ArrayList<Koordinaatit> siirrot;
     ArrayList<Koordinaatit> blokit;
+    
     
     
     ArrayList<Integer> kiinnitetyt; 
@@ -162,9 +164,21 @@ public abstract class Nappula {
     public int getY() {
         return y;
     }
+    
+    public void syo() {
+        this.syoty = true;
+    }
         
     public Nappula kopioi() {
     return this;
+    }
+    
+    public int getPaikanArvo() {
+        return this.paikanArvo;
+    }
+    
+    public void paivitaArvio(Nappula[][] lauta) {
+        
     }
     
     

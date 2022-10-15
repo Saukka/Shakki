@@ -81,6 +81,7 @@ public class Lähetti extends Nappula {
         }
         tormannyt = false;
         
+        paivitaArvio(lauta);
     }
     
     @Override
@@ -97,9 +98,26 @@ public class Lähetti extends Nappula {
         }
         
         n.onLiikkunut = this.onLiikkunut;
-        
+        n.paikanArvo = this.paikanArvo;
         return n;
         
+    }
+    
+    @Override
+    public void paivitaArvio(Nappula[][] lauta) {
+        this.paikanArvo = 0;
+        if (this.syoty) {
+            return;
+        }
+        
+        if (this.siirrot.size() > 3) {
+            this.paikanArvo += 2;
+        }
+        
+        if (vari > 0) {
+            this.paikanArvo *= -1;
+        }
+        this.paikanArvo += this.arvo;
     }
     
 }

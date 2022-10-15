@@ -11,9 +11,11 @@ public class Torni extends Nappula {
         if (vari == 0) {
             this.numero = 4;
             this.arvo = 50;
+            this.paikanArvo = 2;
         } else {
             this.numero = -4;
             this.arvo = -50;
+            this.paikanArvo = -2;
         }
         
     }
@@ -81,7 +83,7 @@ public class Torni extends Nappula {
         }
         tormannyt = false;
         
-        
+        paivitaArvio(lauta);
     }
     
     @Override
@@ -98,9 +100,29 @@ public class Torni extends Nappula {
         }
         
         n.onLiikkunut = this.onLiikkunut;
-        
+        n.paikanArvo = this.paikanArvo;
         return n;
         
+    }
+    
+    @Override
+    public void paivitaArvio(Nappula[][] lauta) {
+        this.paikanArvo = 0;
+        if (this.syoty) {
+            return;
+        }
+        this.paikanArvo = 0;
+        if (this.x > 3 && this.x < 6) {
+            this.paikanArvo += 7;
+        }
+        if (this.siirrot.size() > 4) {
+            this.paikanArvo += 4;
+        }
+        
+        if (this.vari > 0) {
+            this.paikanArvo *= -1;
+        }
+        this.paikanArvo += this.arvo;
     }
     
 }

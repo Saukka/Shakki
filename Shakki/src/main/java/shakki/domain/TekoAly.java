@@ -118,22 +118,13 @@ public class TekoAly {
         for (int i = 0; i < valkoisenNappulat.size(); i++) {
             int x = valkoisenNappulat.get(i).getX();
             int y = valkoisenNappulat.get(i).getY();
-            if (x > 2 && x < 7) arvio++;
-            if (x > 3 && x < 6) arvio += 4;
-            if (y > 3) arvio += 3;
-            if (x > 2 && x < 7 && y > 3) arvio += 5;
-            
-            arvio += peliLauta[x][y].getArvo();
+            arvio += peliLauta[x][y].getPaikanArvo();
         }
         
         for (int i = 0; i < mustanNappulat.size(); i++) {
             int x = mustanNappulat.get(i).getX();
             int y = mustanNappulat.get(i).getY();
-            if (x > 2 && x < 7) arvio--;
-            if (x > 3 && x < 6) arvio -= 4;
-            if (y < 8) arvio -= 3;
-            if (x > 2 && x < 7 && y < 8) arvio -= 5;
-            arvio += peliLauta[x][y].getArvo();
+            arvio += peliLauta[x][y].getPaikanArvo();
         }
         
         return arvio;
