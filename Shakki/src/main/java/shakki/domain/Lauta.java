@@ -19,6 +19,8 @@ public class Lauta {
     ArrayList<Koordinaatit> valkoisenNappulat;
     ArrayList<Koordinaatit> mustanNappulat;
     
+    ArrayList<Siirto> tehdytSiirrot;
+    
     public Lauta() {
 
         leveys = 10;
@@ -31,6 +33,7 @@ public class Lauta {
         
         valkoisenNappulat = new ArrayList<>();
         mustanNappulat = new ArrayList<>();
+        tehdytSiirrot = new ArrayList<>();
         
         asetaLauta();
     }
@@ -96,6 +99,8 @@ public class Lauta {
      */
     public int teeSiirto(int x, int y, int uusX, int uusY) {
         
+        //System.out.println("SIIRTO: x: " + x + ", y: " + y + ", uus X: " + uusX + ", uus Y: " + uusY);
+
         for (int i = 0; i < lauta[x][y].getSiirrot().size(); i++) {
             if (uusX == lauta[x][y].getSiirrot().get(i).getX() && uusY == lauta[x][y].getSiirrot().get(i).getY()) {
                 
@@ -109,9 +114,12 @@ public class Lauta {
                 
                 int s = 0;
                 
+                Nappula syotyNappula = null;
+                
                 if (lauta[uusX][uusY] != null) {
                     s = lauta[uusX][uusY].getID();
                     poistaNappula(uusX, uusY);
+                    syotyNappula = lauta[uusX][uusY];
                 }
                 
                 lauta[uusX][uusY] = n;
@@ -121,6 +129,9 @@ public class Lauta {
                 
                 paivitaKoordinaatit(x, y, uusX, uusY, n.getVari());
                 paivitaTarvittavat(x, y, uusX, uusY, n.getVari());
+                
+                tehdytSiirrot.add(new Siirto(x, y, n, null, syotyNappula, n.onkoLiikkunut()));
+                n.liikutettu(true);
                 
                 return s;
                 
@@ -133,13 +144,13 @@ public class Lauta {
     
     /**
      * Metodi suorittaa kuninkaan ja tornin linnoituksen
-     * @param n
+     * @param kuningas
      * @param x
      * @param y
      * @param uusX
      * @return 
      */
-    public int teeLinnoitus(Nappula n, int x, int y, int uusX) {
+    public int teeLinnoitus(Nappula kuningas, int x, int y, int uusX) {
         
         int torniX = 0;
         int torniUusX = 0;
@@ -151,8 +162,8 @@ public class Lauta {
             torniX = ulkoL;
         }
         
-        lauta[uusX][y] = n;
-        n.SetKoordinaatit(uusX, y);
+        lauta[uusX][y] = kuningas;
+        kuningas.SetKoordinaatit(uusX, y);
         lauta[x][y] = null;
         
         Nappula torni = lauta[torniX][y];
@@ -160,11 +171,19 @@ public class Lauta {
         torni.SetKoordinaatit(torniUusX, y);
         lauta[torniX][y] = null;
         
+        torni.liikutettu(true);
+        kuningas.liikutettu(true);
+        
         lauta[torniUusX][y].paivitaSiirrot(lauta, 0);
         lauta[uusX][y].paivitaSiirrot(lauta, 0);
         
-        paivitaKoordinaatit(x, y, uusX, y, n.getVari());
-        paivitaKoordinaatit(torniX, y, torniUusX, y, n.getVari());
+        paivitaKoordinaatit(x, y, uusX, y, kuningas.getVari());
+        paivitaKoordinaatit(torniX, y, torniUusX, y, kuningas.getVari());
+        
+        paivitaTarvittavat(x, y, uusX, y, kuningas.getVari());
+        paivitaTarvittavat(torniX, y, torniUusX, y, kuningas.getVari());
+        
+        tehdytSiirrot.add(new Siirto(x, y, kuningas, torni, null, kuningas.onkoLiikkunut()));
         
         return torni.getID() + 50;
     }
@@ -205,7 +224,7 @@ public class Lauta {
      * @param vari 
      */
     public void paivitaTarvittavat(int x, int y, int uusX, int uusY, int vari) {
-        
+          
         // Aluksi käydään valkoiset nappulat läpi ja katsotaan mitä siirtoja pitää päivittää
         for (int i = 0; i < valkoisenNappulat.size(); i++) {
             ArrayList<Koordinaatit> siirrot = lauta[valkoisenNappulat.get(i).getX()][valkoisenNappulat.get(i).getY()].getSiirrot();
@@ -280,8 +299,6 @@ public class Lauta {
             }
         }
 
-        
-        
     }
     
     /**
@@ -329,6 +346,58 @@ public class Lauta {
      * Tuleva peruSiirto, joka korvaa laudan kopioinnin tarpeen.
      */
     public void peruSiirto() {
+        
+        Siirto siirto = this.tehdytSiirrot.get(this.tehdytSiirrot.size() - 1);
+        
+        int x = siirto.x; // koordinaatit, johon nappula palautetaan
+        int y = siirto.y;
+        
+        int vanhaX = siirto.nappula.getX(); // koordinaatit, johon nappula oli siirretty
+        int vanhaY = siirto.nappula.getY();
+        
+        int vari = siirto.nappula.getVari();
+        
+        lauta[x][y] = siirto.nappula;
+        if (siirto.oliLiikkunut == false) siirto.nappula.liikutettu(false);
+        
+        lauta[vanhaX][vanhaY] = null;
+        siirto.nappula.SetKoordinaatit(x, y);
+        paivitaKoordinaatit(vanhaX, vanhaY, x, y, vari);
+        
+        if (siirto.syotyNappula != null) {
+            lauta[siirto.syotyNappula.getX()][siirto.syotyNappula.getY()] = siirto.syotyNappula;
+            if (vari == 0) {
+                mustanNappulat.add(new Koordinaatit(vanhaX, vanhaY));
+            } else {
+                mustanNappulat.add(new Koordinaatit(vanhaX, vanhaY));
+            }
+        }
+        
+        if (siirto.torni != null) {
+            siirto.torni.liikutettu(false);
+            
+            int torniX = ulkoL;
+            int torniVanhaX = vanhaX + 1;
+            
+            if (x < vanhaX) {
+                torniX += 7;
+                torniVanhaX = vanhaX - 1;
+            }
+            lauta[torniX][y] = siirto.torni;
+            lauta[torniVanhaX][y] = null;
+            siirto.torni.SetKoordinaatit(torniX, y);
+            siirto.torni.paivitaSiirrot(lauta, 0);
+            paivitaKoordinaatit(torniVanhaX, y, torniX, y, siirto.torni.getVari());
+            paivitaTarvittavat(torniVanhaX, y, torniX, y, siirto.torni.getVari());
+            siirto.torni.SetKoordinaatit(torniX, y);
+        }
+        
+        lauta[x][y].paivitaSiirrot(lauta, 0);
+        
+        paivitaTarvittavat(vanhaX, vanhaY, x, y, vari);
+
+        this.tehdytSiirrot.remove(tehdytSiirrot.size() - 1);
+        
         
     }
     

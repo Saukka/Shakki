@@ -62,6 +62,7 @@ public class TekoAly {
                     Lauta tama = pl.kopioi();
                     tama.teeSiirto(x, y, siirrot.get(j).getX(), siirrot.get(j).getY());
                     int max = maxArvo(tama, alpha, beta, syvyys - 1);
+                    //pl.peruSiirto();
                     v = Math.min(v, max);
                     beta = Math.min(beta, v);
                     if (syvyys == this.syvyys && v == max) {

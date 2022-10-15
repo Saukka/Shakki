@@ -54,7 +54,7 @@ public class Kuningas extends Nappula {
         if (!this.onLiikkunut && lauta[x + 1][y] == null && lauta[x + 2][y] == null && lauta[x + 3][y] != null && !lauta[x + 3][y].onLiikkunut) {
             this.siirrot.add(new Koordinaatit(x + 2, y));
         }
-        //linnoitus oikealle
+        //linnoitus vasemmalle
         if (!this.onLiikkunut && lauta[x - 1][y] == null && lauta[x - 2][y] == null && lauta[x - 3][y] == null && lauta[x - 4][y] != null && !lauta[x - 4][y].onLiikkunut) {
             this.siirrot.add(new Koordinaatit(x - 2, y));
         }

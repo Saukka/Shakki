@@ -146,6 +146,22 @@ public abstract class Nappula {
     public ArrayList<Koordinaatit> getBlokit() {
         return this.blokit;
     }
+    
+    public boolean onkoLiikkunut() {
+        return this.onLiikkunut;
+    }
+    
+    public void liikutettu(boolean b) {
+        this.onLiikkunut = b;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }
         
     public Nappula kopioi() {
     return this;
