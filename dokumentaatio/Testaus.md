@@ -2,6 +2,8 @@
 
 Ohjelman testit keskittyvät sovelluslogiikkaan eli laudan ja tekoälyn luokkiin. 
 
+Testit testaavat ohjelman tärkeimpiä asioita, kuten että lauta asetetaan oikein, nappuloiden siirtäminen sekä poistaminen toimivat halutulla tavalla. Testauksessa testataan myös, että tekoäly saa siirron aikaseksi.
+
 
 ## pakettien testaus
 <img width="954" alt="Pakettien testaus" src="https://user-images.githubusercontent.com/80990021/194730109-36133e7b-271a-4bef-82a2-2390539c99e4.png">
