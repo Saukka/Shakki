@@ -24,3 +24,5 @@ Pelaamisen kuuluisi näyttää tältä. Jostain syystä nappuloiden kuvat eivät
 [Viikkoraportti 4](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%204.md)
 
 [Viikkoraportti 5](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%205.md)
+
+[Viikkoraportti 6](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%206.md)
