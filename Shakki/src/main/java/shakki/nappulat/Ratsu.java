@@ -2,6 +2,7 @@
 package shakki.nappulat;
 
 import shakki.domain.Koordinaatit;
+import shakki.domain.Lauta;
 
 
 public class Ratsu extends Nappula {
@@ -21,7 +22,7 @@ public class Ratsu extends Nappula {
     }
     
     @Override
-    public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+    public void paivitaSiirrot(Lauta l, int kiinnitys) {
         this.blokit.clear();
         this.siirrot.clear();
         
@@ -29,55 +30,55 @@ public class Ratsu extends Nappula {
             return;
         }
         
-        if (lauta[x + 1][y + 2] == null || (!omaNappula(lauta[x + 1][y + 2].getID()))) {
+        if (l.lauta[x + 1][y + 2] == null || (!omaNappula(l.lauta[x + 1][y + 2].getID()))) {
             this.siirrot.add(new Koordinaatit(x + 1, y + 2));
-        } else if (lauta[x + 1][y + 2] != null) {
+        } else if (l.lauta[x + 1][y + 2] != null) {
             this.blokit.add(new Koordinaatit(x + 1, y + 2));
         }
         
-        if (x + 2 < 10 && (lauta[x + 2][y + 1] == null || !omaNappula(lauta[x + 2][y + 1].getID()))) {
+        if (x + 2 < 10 && (l.lauta[x + 2][y + 1] == null || !omaNappula(l.lauta[x + 2][y + 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x + 2, y + 1));
-        } else if (x + 2 < 10 && lauta[x + 2][y + 1] != null) {
+        } else if (x + 2 < 10 && l.lauta[x + 2][y + 1] != null) {
             this.blokit.add(new Koordinaatit(x + 2, y + 1));
         }
         
-        if (x + 2 < 10 && (lauta[x + 2][y - 1] == null || !omaNappula(lauta[x + 2][y - 1].getID()))) {
+        if (x + 2 < 10 && (l.lauta[x + 2][y - 1] == null || !omaNappula(l.lauta[x + 2][y - 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x + 2, y - 1));
-        } else if (x + 2 < 10 && lauta[x + 2][y - 1] != null) {
+        } else if (x + 2 < 10 && l.lauta[x + 2][y - 1] != null) {
             this.blokit.add(new Koordinaatit(x + 2, y - 1));
         }
         
-        if (lauta[x + 1][y - 2] == null || !omaNappula(lauta[x + 1][y - 2].getID())) {
+        if (l.lauta[x + 1][y - 2] == null || !omaNappula(l.lauta[x + 1][y - 2].getID())) {
             this.siirrot.add(new Koordinaatit(x + 1, y - 2));
-        } else if (lauta[x + 1][y - 2] != null) {
+        } else if (l.lauta[x + 1][y - 2] != null) {
             this.blokit.add(new Koordinaatit(x + 1, y - 2));
         }
         
-        if (lauta[x - 1][y - 2] == null || !omaNappula(lauta[x - 1][y - 2].getID())) {
+        if (l.lauta[x - 1][y - 2] == null || !omaNappula(l.lauta[x - 1][y - 2].getID())) {
             this.siirrot.add(new Koordinaatit(x - 1, y - 2));
-        } else if (lauta[x - 1][y - 2] != null) {
+        } else if (l.lauta[x - 1][y - 2] != null) {
             this.blokit.add(new Koordinaatit(x - 1, y - 2));
         }
         
-        if (x - 2 > 0 && (lauta[x - 2][y - 1] == null || !omaNappula(lauta[x - 2][y - 1].getID()))) {
+        if (x - 2 > 0 && (l.lauta[x - 2][y - 1] == null || !omaNappula(l.lauta[x - 2][y - 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x - 2, y - 1));
-        } else if (x - 2 > 0 && lauta[x - 2][y - 1] != null) {
+        } else if (x - 2 > 0 && l.lauta[x - 2][y - 1] != null) {
             this.blokit.add(new Koordinaatit(x - 2, y - 1 ));
         }
         
-        if (x - 2 > 0 && (lauta[x - 2][y + 1] == null || !omaNappula(lauta[x - 2][y + 1].getID()))) {
+        if (x - 2 > 0 && (l.lauta[x - 2][y + 1] == null || !omaNappula(l.lauta[x - 2][y + 1].getID()))) {
             this.siirrot.add(new Koordinaatit(x - 2, y + 1));
-        } else if (x - 2 > 0 && lauta[x - 2][y + 1] != null) {
+        } else if (x - 2 > 0 && l.lauta[x - 2][y + 1] != null) {
             this.blokit.add(new Koordinaatit(x - 2, y + 1 ));
         }
         
-        if (lauta[x - 1][y + 2] == null || !omaNappula(lauta[x - 1][y + 2].getID())) {
+        if (l.lauta[x - 1][y + 2] == null || !omaNappula(l.lauta[x - 1][y + 2].getID())) {
             this.siirrot.add(new Koordinaatit(x - 1, y + 2));
-        } else if (lauta[x - 1][y + 2] != null) {
+        } else if (l.lauta[x - 1][y + 2] != null) {
             this.blokit.add(new Koordinaatit(x - 1, y + 2 ));
         }
         
-        paivitaArvio(lauta);
+        paivitaArvio(l.lauta);
     }   
     
     
@@ -88,6 +89,10 @@ public class Ratsu extends Nappula {
         
         for (int i = 0; i < this.siirrot.size(); i++) {
             n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
+        }
+        
+        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
+            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
         }
         
         for (int i = 0; i < this.blokit.size(); i++) {

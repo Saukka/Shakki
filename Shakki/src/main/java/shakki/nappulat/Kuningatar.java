@@ -2,6 +2,7 @@
 package shakki.nappulat;
 
 import shakki.domain.Koordinaatit;
+import shakki.domain.Lauta;
 
 
 public class Kuningatar extends Nappula {
@@ -21,7 +22,7 @@ public class Kuningatar extends Nappula {
     }
 
     @Override
-    public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+    public void paivitaSiirrot(Lauta lauta, int kiinnitys) {
         this.blokit.clear();
         this.siirrot.clear();
         
@@ -37,6 +38,7 @@ public class Kuningatar extends Nappula {
             if (p == 0) break;
             if (p == 1) continue;
             if (p == 2) {
+                shakita(lauta, 8);
                 //shakki
             }
         }
@@ -48,6 +50,7 @@ public class Kuningatar extends Nappula {
             if (p == 0) break;
             if (p == 1) continue;
             if (p == 2) {
+                shakita(lauta, 7);
                 //shakki
             }
         }
@@ -65,6 +68,7 @@ public class Kuningatar extends Nappula {
             if (p == 0) break;
             if (p == 1) continue;
             if (p == 2) {
+                shakita(lauta, 5);
                 //shakki
             }
         }
@@ -77,6 +81,7 @@ public class Kuningatar extends Nappula {
             if (p == 1) continue;
             if (p == 2) {
                 //shakki
+                shakita(lauta, 6);
             }
         }
         tormannyt = false;
@@ -94,6 +99,7 @@ public class Kuningatar extends Nappula {
             if (p == 1) continue;
             if (p == 2) {
                 //shakki
+                shakita(lauta, 1);
             }
         }
         tormannyt = false;
@@ -104,6 +110,7 @@ public class Kuningatar extends Nappula {
             if (p == 0) break;
             if (p == 1) continue;
             if (p == 2) {
+                shakita(lauta, 2);
                 //shakki
             }
         }
@@ -121,6 +128,7 @@ public class Kuningatar extends Nappula {
             if (p == 0) break;
             if (p == 1) continue;
             if (p == 2) {
+                shakita(lauta, 4);
                 //shakki
             }
         }
@@ -132,11 +140,12 @@ public class Kuningatar extends Nappula {
             if (p == 1) continue;
             if (p == 2) {
                 //shakki
+                shakita(lauta, 3);
             }
         }
         tormannyt = false;
         
-        paivitaArvio(lauta);
+        paivitaArvio(lauta.lauta);
     }
     
     @Override
@@ -146,6 +155,10 @@ public class Kuningatar extends Nappula {
         
         for (int i = 0; i < this.siirrot.size(); i++) {
             n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
+        }
+        
+        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
+            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
         }
         
         for (int i = 0; i < this.blokit.size(); i++) {

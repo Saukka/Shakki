@@ -2,6 +2,7 @@
 package shakki.nappulat;
 
 import shakki.domain.Koordinaatit;
+import shakki.domain.Lauta;
 
 public class Torni extends Nappula {
     
@@ -22,7 +23,7 @@ public class Torni extends Nappula {
     
 
     @Override
-    public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+    public void paivitaSiirrot(Lauta lauta, int kiinnitys) {
         this.blokit.clear();
         this.siirrot.clear();
         
@@ -83,7 +84,7 @@ public class Torni extends Nappula {
         }
         tormannyt = false;
         
-        paivitaArvio(lauta);
+        paivitaArvio(lauta.lauta);
     }
     
     @Override
@@ -95,6 +96,11 @@ public class Torni extends Nappula {
             n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
         }
         
+        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
+            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
+        }
+        
+
         for (int i = 0; i < this.blokit.size(); i++) {
             n.blokit.add(new Koordinaatit(this.blokit.get(i).getX(), this.blokit.get(i).getX()));
         }

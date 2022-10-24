@@ -1,35 +1,22 @@
 
 package shakki.domain;
 
-import shakki.nappulat.*;
 
 public class Siirto {
     
-    Nappula nappula;
-    Nappula torni; // jos linnoitus
-    
-    Nappula syotyNappula;
     
     int x;
     int y;
     
-    boolean oliLiikkunut;
+    int uusX;
+    int uusY;
     
-    // int uusX;
-    // int uusY;
+    int vahvuus;
     
-    public Siirto(int x, int y, Nappula nappula, Nappula torni, Nappula syotyNappula, boolean oliLiikkunut) {
-        
+    public Siirto(int x, int y, int uusX, int uusY) {
         this.x = x;
         this.y = y;
-        
-        this.nappula = nappula;
-        this.torni = torni;
-        this.syotyNappula = syotyNappula;
-        
-        this.oliLiikkunut = oliLiikkunut;
+        this.uusX = uusX;
+        this.uusY = uusY;
     }
-    
-    
-    
 }

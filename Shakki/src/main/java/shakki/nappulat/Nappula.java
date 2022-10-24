@@ -25,6 +25,7 @@ public abstract class Nappula {
     
     ArrayList<Koordinaatit> siirrot;
     ArrayList<Koordinaatit> blokit;
+    ArrayList<Koordinaatit> siirrotShakissa;
     
     
     
@@ -66,29 +67,30 @@ public abstract class Nappula {
     }
     
     /**
-     * Tornin, lähetin, ja kuningattaren käyttämä metodi.
-     * metodille annetaan koordinaatit ja se katsoo esim. voiko ruutuun siirtää, shakittaako tai kiinnittääkö nappula
-     * @param lauta
+     * Tornin, lähetin, ja kuningattaren käyttämä metodi.metodille annetaan koordinaatit ja se katsoo esim.
+     * voiko ruutuun siirtää, shakittaako tai kiinnittääkö nappula
+     * @param l
      * @param x 
      * @param y
      * @param voiSiirtaa voiko nappulaa oikeasti siirtää. Muuttuja = false jos nappula on esim. kiinnitetty.
      * @return 
      */
-    public int katso(Nappula[][] lauta, int x, int y, boolean voiSiirtaa) {
+    public int katso(Lauta l, int x, int y, boolean voiSiirtaa) {
         
-        if (lauta[x][y] == null) {
+        
+        if (l.lauta[x][y] == null) {
             if (!tormannyt && voiSiirtaa) {
                 this.siirrot.add(new Koordinaatit(x, y));
             }
             return 1;
             
-        } else if (omaNappula(lauta[x][y].getID())) {
+        } else if (omaNappula(l.lauta[x][y].getID())) {
             tormannyt = false;
             blokit.add(new Koordinaatit(x, y));
             return 0;
         } else {
             // on vihollisen nappula
-            if (lauta[x][y].getID() == 5 || lauta[x][y].getID() == 21) {
+            if (l.lauta[x][y].getID() == 5 || l.lauta[x][y].getID() == 21) {
                 if (tormannyt) {
                     kiinnitetyt.add(kiinnitetynID);
                     tormannyt = false;
@@ -102,7 +104,7 @@ public abstract class Nappula {
                 return 0; // ei kiinnitystä
             }
             tormannyt = true;
-            kiinnitetynID = lauta[x][y].getID();
+            kiinnitetynID = l.lauta[x][y].getID();
             if (voiSiirtaa) {
                 this.siirrot.add(new Koordinaatit(x, y));
             }
@@ -111,7 +113,7 @@ public abstract class Nappula {
         
     }
     
-    public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+    public void paivitaSiirrot(Lauta lauta, int kiinnitys) {
         
     }
         public int getNumero() {
@@ -177,10 +179,39 @@ public abstract class Nappula {
         return this.paikanArvo;
     }
     
+    /*
+    Päivittää siirrot kun oma kuningas on shakissa
+    
+    */
+    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut) {
+        this.siirrotShakissa.clear();
+        
+        for (Koordinaatit siirto: this.siirrot) {
+            boolean mahdollinen = false;
+            for (Koordinaatit k: ruudut) {
+                if (k.getX() == siirto.getX() && k.getY() == siirto.getY()) {
+                    mahdollinen = true;
+                    break;
+                }
+            }
+            if (mahdollinen) {
+                this.siirrotShakissa.add(new Koordinaatit(siirto.getX(), siirto.getY()));
+            }
+        }
+    }
+    
     public void paivitaArvio(Nappula[][] lauta) {
         
     }
     
+    public void shakita(Lauta l, int suunta) {
+        if (l.shakki == 0) {
+            l.shakki = suunta;
+        } else {
+            l.shakki = 5;
+        }
+        
+    }
     
     
 }

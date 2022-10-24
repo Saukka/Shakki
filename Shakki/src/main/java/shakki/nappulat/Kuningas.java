@@ -2,6 +2,7 @@
 package shakki.nappulat;
 
 import shakki.domain.Koordinaatit;
+import shakki.domain.Lauta;
 
 
 public class Kuningas extends Nappula {
@@ -19,26 +20,26 @@ public class Kuningas extends Nappula {
     }
     
     @Override
-    public void paivitaSiirrot(Nappula[][] lauta, int kiinnitys) {
+    public void paivitaSiirrot(Lauta l, int kiinnitys) {
         this.blokit.clear();
         this.siirrot.clear();
         
         for (int i = x - 1; i < x + 2; i++) {
-            if (lauta[i][y] == null || !omaNappula(lauta[i][y].getID())) {
+            if (l.lauta[i][y] == null || !omaNappula(l.lauta[i][y].getID())) {
                 this.siirrot.add(new Koordinaatit(i, y));
-            } else if (omaNappula(lauta[i][y].getID())) {
+            } else if (omaNappula(l.lauta[i][y].getID())) {
                 blokit.add(new Koordinaatit(i, y));
             }
             
-            if (lauta[i][y + 1] == null || !omaNappula(lauta[i][y + 1].getID())) {
+            if (l.lauta[i][y + 1] == null || !omaNappula(l.lauta[i][y + 1].getID())) {
                 this.siirrot.add(new Koordinaatit(i, y + 1));
-            } else if (omaNappula(lauta[i][y + 1].getID())) {
+            } else if (omaNappula(l.lauta[i][y + 1].getID())) {
                 blokit.add(new Koordinaatit(i, y + 1));
             }
             
-            if (lauta[i][y - 1] == null || !omaNappula(lauta[i][y - 1].getID())) {
+            if (l.lauta[i][y - 1] == null || !omaNappula(l.lauta[i][y - 1].getID())) {
                 this.siirrot.add(new Koordinaatit(i, y - 1));
-            } else if (omaNappula(lauta[i][y - 1].getID())) {
+            } else if (omaNappula(l.lauta[i][y - 1].getID())) {
                 blokit.add(new Koordinaatit(i, y - 1));
             }
         }
@@ -51,14 +52,14 @@ public class Kuningas extends Nappula {
         }
         
         //linnoitus oikealle
-        if (!this.onLiikkunut && lauta[x + 1][y] == null && lauta[x + 2][y] == null && lauta[x + 3][y] != null && !lauta[x + 3][y].onLiikkunut) {
+        if (!this.onLiikkunut && l.lauta[x + 1][y] == null && l.lauta[x + 2][y] == null && l.lauta[x + 3][y] != null && !l.lauta[x + 3][y].onLiikkunut) {
             this.siirrot.add(new Koordinaatit(x + 2, y));
         }
         //linnoitus vasemmalle
-        if (!this.onLiikkunut && lauta[x - 1][y] == null && lauta[x - 2][y] == null && lauta[x - 3][y] == null && lauta[x - 4][y] != null && !lauta[x - 4][y].onLiikkunut) {
+        if (!this.onLiikkunut && l.lauta[x - 1][y] == null && l.lauta[x - 2][y] == null && l.lauta[x - 3][y] == null && l.lauta[x - 4][y] != null && !l.lauta[x - 4][y].onLiikkunut) {
             this.siirrot.add(new Koordinaatit(x - 2, y));
         }
-        paivitaArvio(lauta);
+        paivitaArvio(l.lauta);
     }
     
     
@@ -69,6 +70,10 @@ public class Kuningas extends Nappula {
         
         for (int i = 0; i < this.siirrot.size(); i++) {
             n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
+        }
+        
+        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
+            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
         }
         
         for (int i = 0; i < this.blokit.size(); i++) {
