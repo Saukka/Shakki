@@ -40,7 +40,6 @@ public abstract class Nappula {
     
     public int kiinnitys = 0;
     
-    
     public Nappula kiinnitetty = null;
     public int kiinnitysSuunta = 0;
     

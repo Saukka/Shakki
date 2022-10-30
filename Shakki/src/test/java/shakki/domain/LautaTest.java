@@ -79,7 +79,7 @@ public class LautaTest {
     public void poistaNappula() {
         lauta = new Lauta();
         assertEquals(16, lauta.valkoisenNappulat.size());
-        lauta.poistaNappula();
+        lauta.poistaNappula(lauta.lauta[lauta.ulkoL][lauta.ulkoP]);
         assertEquals(15, lauta.valkoisenNappulat.size());
     }
     

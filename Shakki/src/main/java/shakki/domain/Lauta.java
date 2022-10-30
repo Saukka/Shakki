@@ -518,7 +518,6 @@ public class Lauta {
      * @param suunta
      */
     public void paivitaShakissa(int x, int y, int suunta) {
-        System.out.println("paivita shakissa: suunta " + suunta);
         
         ArrayList<Koordinaatit> ruudut = new ArrayList<>();
         ruudut.add(new Koordinaatit(x, y));

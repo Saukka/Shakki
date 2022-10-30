@@ -171,6 +171,10 @@ public class PeliUI {
             }
         }
         
+        if (!vKuningas || !mKuningas) {
+            return false;
+        }
+        
         ikonit = new ImageView[id - 1];
 
         for (int i = 0; i < id - 1; i++) {
