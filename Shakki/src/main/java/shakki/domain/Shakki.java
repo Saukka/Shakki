@@ -27,7 +27,7 @@ public class Shakki {
     TekoAly tekoAly;
     
     
-    public Shakki(Stage ikkuna) {
+    public Shakki(Stage ikkuna, String fen) {
         
         ui = new PeliUI();
         this.näkymä = ui.getPeliNäkymä();
@@ -36,8 +36,13 @@ public class Shakki {
         this.ikkuna = ikkuna;
         
         lauta = new Lauta();
+        lauta.asetaLauta(fen);
         
-        tekoAly = new TekoAly();
+        tekoAly = new TekoAly(lauta);
+    }
+    
+    public boolean asetaUI(String fen) {
+        return ui.lisääNappulat(fen);
     }
     
     /**
@@ -67,11 +72,11 @@ public class Shakki {
                 int uusX = (int) (e.getX() - 50 ) / 100 + lauta.ulkoL;
                 int uusY = 7 + lauta.ulkoP - (int) e.getY() / 100;
                 
-                int id = lauta.getID(x.get(), y.get());
+                int id = lauta.lauta[x.get()][y.get()].getID();
                 int s = lauta.teeSiirto(x.get(), y.get(), uusX, uusY);
                 if (s >= 0) {
                     
-                    if (s > 0 && s < 33) {
+                    if (s > 0 && s < 50) {
                         ui.poistaNappula(s);
                     } 
                     
@@ -87,7 +92,6 @@ public class Shakki {
                     tekoAlySiirra();
                     
                 } else {
-                    System.out.println("Siirto ei onnistunut!");
                 }
                 
                 siirto.set(Boolean.FALSE);
@@ -102,27 +106,34 @@ public class Shakki {
      */
     public void tekoAlySiirra() {
         
-        ArrayList<Koordinaatit> taSiirto = tekoAly.LaskeSiirto(lauta);
-        int taVanhaX = taSiirto.get(0).getX();
-        int taVanhaY = taSiirto.get(0).getY();
-        int taUusX = taSiirto.get(1).getX();
-        int taUusY = taSiirto.get(1).getY();
+        Siirto siirto = tekoAly.LaskeSiirto();
+        if (siirto == null) {
+            System.out.println("Valkoisen voitto");
+            return;
+        }
+        int x = siirto.getX();
+        int y = siirto.getY();
+        int uusX = siirto.getUusX();
+        int uusY = siirto.getUusY();
         
-        int id = lauta.getID(taVanhaX, taVanhaY);
+        int id = lauta.lauta[x][y].getID();
         
-        int s = lauta.teeSiirto(taVanhaX, taVanhaY, taUusX, taUusY);
+        int s = lauta.teeSiirto(x, y, uusX, uusY);
         
         if (s > 0 && s < 33) {
             ui.poistaNappula(s);
         }
-        ui.siirräNappula(id, taUusX - lauta.ulkoL, 7 + lauta.ulkoP - taUusY);
+        ui.siirräNappula(id, uusX - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
         
         if (s > 50) {
-            if (taVanhaX < taVanhaY) {
-                ui.siirräNappula(s - 50, taUusX - 1 - lauta.ulkoL, 7 + lauta.ulkoP - taUusY);
+            if (x < y) {
+                ui.siirräNappula(s - 50, uusX - 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
             } else {
-                ui.siirräNappula(s - 50, taUusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - taUusY);
+                ui.siirräNappula(s - 50, uusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
             }
+        }
+        if (lauta.getSiirrot(0, lauta.shakitus).isEmpty()) {
+            System.out.println("Mustan voitto");
         }
         
     }

@@ -1,14 +1,17 @@
 
 package shakki.nappulat;
 
+import java.util.ArrayList;
 import shakki.domain.Koordinaatit;
 import shakki.domain.Lauta;
+import shakki.domain.Siirto;
 
 
 public class Kuningas extends Nappula {
     
-    public Kuningas (int id, int x, int y, int vari) {
-        super(id, x, y, vari);
+    public Kuningas (int id, int x, int y, int vari, Lauta lauta) {
+        super(id, x, y, vari, lauta);
+        this.tyyppi = TYYPPI.KUNINGAS;
         
         if (vari == 0) {
             this.numero = 6;
@@ -20,99 +23,53 @@ public class Kuningas extends Nappula {
     }
     
     @Override
-    public void paivitaSiirrot(Lauta l, int kiinnitys) {
-        this.blokit.clear();
-        this.siirrot.clear();
+    public void paivitaSiirrot() {
+        
+        int[][] hyokatyt;
+        if (vari == 0) {
+            hyokatyt = lauta.mustanHyökätyt;
+        } else {
+            hyokatyt = lauta.valkoisenHyökätyt;
+        }
+        
         
         for (int i = x - 1; i < x + 2; i++) {
-            if (l.lauta[i][y] == null || !omaNappula(l.lauta[i][y].getID())) {
-                this.siirrot.add(new Koordinaatit(i, y));
-            } else if (omaNappula(l.lauta[i][y].getID())) {
-                blokit.add(new Koordinaatit(i, y));
-            }
-            
-            if (l.lauta[i][y + 1] == null || !omaNappula(l.lauta[i][y + 1].getID())) {
-                this.siirrot.add(new Koordinaatit(i, y + 1));
-            } else if (omaNappula(l.lauta[i][y + 1].getID())) {
-                blokit.add(new Koordinaatit(i, y + 1));
-            }
-            
-            if (l.lauta[i][y - 1] == null || !omaNappula(l.lauta[i][y - 1].getID())) {
-                this.siirrot.add(new Koordinaatit(i, y - 1));
-            } else if (omaNappula(l.lauta[i][y - 1].getID())) {
-                blokit.add(new Koordinaatit(i, y - 1));
-            }
-        }
-        if (!this.onLiikkunut) {
-            blokit.add(new Koordinaatit(x + 2, y));
-            blokit.add(new Koordinaatit(x + 3, y));
-            blokit.add(new Koordinaatit(x - 2, y));
-            blokit.add(new Koordinaatit(x - 3, y));
-            blokit.add(new Koordinaatit(x - 4, y));
+            lisaa(hyokatyt, i, y);
+            lisaa(hyokatyt, i, y + 1);
+            lisaa(hyokatyt, i, y - 1);
         }
         
         //linnoitus oikealle
-        if (!this.onLiikkunut && l.lauta[x + 1][y] == null && l.lauta[x + 2][y] == null && l.lauta[x + 3][y] != null && !l.lauta[x + 3][y].onLiikkunut) {
-            this.siirrot.add(new Koordinaatit(x + 2, y));
+        if (!this.onLiikkunut && lauta.lauta[x + 1][y] == null && hyokatyt[x + 1][y] < 1 && lauta.lauta[x + 2][y] == null && hyokatyt[x + 2][y] < 1 && lauta.lauta[x + 3][y] != null && lauta.lauta[x + 3][y].tyyppi == TYYPPI.TORNI &&!lauta.lauta[x + 3][y].onLiikkunut) {
+            this.siirrot.add(new Siirto(x, y, x + 2, y, 0, 2));
         }
         //linnoitus vasemmalle
-        if (!this.onLiikkunut && l.lauta[x - 1][y] == null && l.lauta[x - 2][y] == null && l.lauta[x - 3][y] == null && l.lauta[x - 4][y] != null && !l.lauta[x - 4][y].onLiikkunut) {
-            this.siirrot.add(new Koordinaatit(x - 2, y));
+        if (!this.onLiikkunut && lauta.lauta[x - 1][y] == null && hyokatyt[x - 1][y] < 1 && lauta.lauta[x - 2][y] == null && hyokatyt[x - 2][y] < 1 && lauta.lauta[x - 3][y] == null && lauta.lauta[x - 4][y] != null && lauta.lauta[x - 4][y].tyyppi == TYYPPI.TORNI &&!lauta.lauta[x - 4][y].onLiikkunut) {
+            this.siirrot.add(new Siirto(x, y, x - 2, y, 0,2));
         }
-        paivitaArvio(l.lauta);
+        
     }
     
+    public void lisaa(int[][] hyokatyt, int x, int y) {
+        if (hyokatyt[x][y] < 1) {
+            if (lauta.lauta[x][y] == null) {
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0));
+            } else if (!omaNappula(lauta.lauta[x][y])) {
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 2));
+            }
+        } else if (omaNappula(lauta.lauta[x][y]) || hyokatyt[x][y] > 0) {
+            blokit.add(new Koordinaatit(x, y));
+        } 
+    }
     
     @Override
-    public Kuningas kopioi() {
+    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut, int[][] hyokatyt) {
         
-        Kuningas n = new Kuningas(id, x, y, vari);
-        
+        this.siirrotShakissa.clear();
         for (int i = 0; i < this.siirrot.size(); i++) {
-            n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
+            this.siirrotShakissa.add(this.siirrot.get(i));
         }
-        
-        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
-            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
-        }
-        
-        for (int i = 0; i < this.blokit.size(); i++) {
-            n.blokit.add(new Koordinaatit(this.blokit.get(i).getX(), this.blokit.get(i).getX()));
-        }
-        
-        n.onLiikkunut = this.onLiikkunut;
-        n.paikanArvo = this.paikanArvo;
-        
-        return n;
-        
     }
     
-    @Override
-    public void paivitaArvio(Nappula[][] lauta) {
-        this.paikanArvo = 0;
-        if (this.syoty) {
-            return;
-        }
-        
-        if (vari == 0) {
-            if (this.y < 3) {
-                this.paikanArvo += 10;
-            }
-            for (int i = x - 1; i < x + 2; i++) {
-                if (lauta[i][y + 1] != null && lauta[i][y + 1].getNumero() == 1) this.paikanArvo += 8;
-            }
-        } else {
-            if (this.y > 8) {
-                this.paikanArvo -= 10;
-            }
-            for (int i = x - 1; i < x + 2; i++) {
-                if (lauta[i][y - 1] != null && lauta[i][y - 1].getNumero() == -1) this.paikanArvo -= 8;
-            }
-        }
-        
-        
-        
-        this.paikanArvo += this.arvo;
-    }
     
 }

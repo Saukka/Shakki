@@ -3,11 +3,14 @@ package shakki.nappulat;
 
 import shakki.domain.Koordinaatit;
 import shakki.domain.Lauta;
+import shakki.domain.Siirto;
 
 public class Torni extends Nappula {
     
-    public Torni (int id, int x, int y, int vari) {
-        super(id, x, y, vari);
+    public Torni (int id, int x, int y, int vari, Lauta lauta) {
+        super(id, x, y, vari, lauta);
+        
+        this.tyyppi = TYYPPI.TORNI;
         
         if (vari == 0) {
             this.numero = 4;
@@ -23,92 +26,14 @@ public class Torni extends Nappula {
     
 
     @Override
-    public void paivitaSiirrot(Lauta lauta, int kiinnitys) {
-        this.blokit.clear();
-        this.siirrot.clear();
+    public void paivitaSiirrot() {
         
+        int kuninkaanSuunta = kuninkaanSuunta(this.vari - 1);
         
-        boolean voiSiirtaa = true;
-        
-        if (kiinnitys > 1) {
-            voiSiirtaa = false;
-        }
-        
-        for (int i = x + 1; i < 9; i++) {
-            
-            int p = katso(lauta, i, y, voiSiirtaa);
-            if (p == 0) break;
-            if (p == 1) continue;
-            if (p == 2) {
-                //shakki
-            }
-        }
-        tormannyt = false;
-        
-        for (int i = x - 1; i > 0; i--) {
-            
-            int p = katso(lauta, i, y, voiSiirtaa);
-            if (p == 0) break;
-            if (p == 1) continue;
-            if (p == 2) {
-                //shakki
-            }
-        }
-        tormannyt = false;
-        
-        if (kiinnitys == 2) {
-            voiSiirtaa = true;
-        } else if (kiinnitys == 1) {
-            voiSiirtaa = false;
-        }
-        
-        for (int j = y + 1; j < 10; j++) {
-            
-            int p = katso(lauta, x, j, voiSiirtaa);
-            if (p == 0) break;
-            if (p == 1) continue;
-            if (p == 2) {
-                //shakki
-            }
-        }
-        tormannyt = false;
-        
-        for (int j = y - 1; j > 1; j--) {
-            
-            int p = katso(lauta, x, j, voiSiirtaa);
-            if (p == 0) break;
-            if (p == 1) continue;
-            if (p == 2) {
-                //shakki
-            }
-        }
-        tormannyt = false;
-        
-        paivitaArvio(lauta.lauta);
-    }
-    
-    @Override
-    public Torni kopioi() {
-        
-        Torni n = new Torni(id, x, y, vari);
-        
-        for (int i = 0; i < this.siirrot.size(); i++) {
-            n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
-        }
-        
-        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
-            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
-        }
-        
-
-        for (int i = 0; i < this.blokit.size(); i++) {
-            n.blokit.add(new Koordinaatit(this.blokit.get(i).getX(), this.blokit.get(i).getX()));
-        }
-        
-        n.onLiikkunut = this.onLiikkunut;
-        n.paikanArvo = this.paikanArvo;
-        return n;
-        
+        katsoRuudut(1, 0, 1, kuninkaanSuunta);
+        katsoRuudut(-1, 0, 2, kuninkaanSuunta);
+        katsoRuudut(0, 1, 4, kuninkaanSuunta);
+        katsoRuudut(0, -1, 3, kuninkaanSuunta);
     }
     
     @Override

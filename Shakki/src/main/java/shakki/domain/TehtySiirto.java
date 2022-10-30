@@ -1,6 +1,8 @@
 
 package shakki.domain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import shakki.nappulat.*;
 
 public class TehtySiirto {
@@ -15,10 +17,27 @@ public class TehtySiirto {
     
     boolean oliLiikkunut;
     
+    int shakitus;
+    
+    ArrayList<Nappula> nappulat;
+    
+    HashMap<Nappula, ArrayList<Siirto>> nappuloidenSiirrot;
+    HashMap<Nappula, ArrayList<Koordinaatit>> nappuloidenBlokit;
+    HashMap<Nappula, ArrayList<Siirto>> siirrotShakissa;
+    
+    HashMap<Nappula, Nappula> kiinnitetyt;
+    HashMap<Nappula, Integer> kiinnitykset;
+    
+    HashMap<Nappula, Integer> viimeksiPaivitetty;
+    
+    int[][] valkoisenHyokatyt;
+    int[][] mustanHyokatyt;
+    
+    
     // int uusX;
     // int uusY;
     
-    public TehtySiirto(int x, int y, Nappula nappula, Nappula torni, Nappula syotyNappula, boolean oliLiikkunut) {
+    public TehtySiirto(int x, int y, Nappula nappula, Nappula torni, Nappula syotyNappula, boolean oliLiikkunut, int shakitus) {
         
         this.x = x;
         this.y = y;
@@ -28,7 +47,56 @@ public class TehtySiirto {
         this.syotyNappula = syotyNappula;
         
         this.oliLiikkunut = oliLiikkunut;
+        
+        this.shakitus = shakitus;
+        
+        nappulat = new ArrayList<>();
+    
+        nappuloidenSiirrot = new HashMap<>();
+        nappuloidenBlokit = new HashMap<>();
+        siirrotShakissa = new HashMap<>();
+        
+        kiinnitetyt = new HashMap<>();
+        kiinnitykset = new HashMap<>();
+        
+        viimeksiPaivitetty = new HashMap<>();
+
+        valkoisenHyokatyt = new int[10][12];
+        mustanHyokatyt = new int[10][12];
     }
+    
+    public void lisaaNappula(Nappula n) {
+        nappulat.add(n);
+    }
+    
+    public void lisaaSiirrot(Nappula n, ArrayList<Siirto> siirrot) {
+        
+        ArrayList <Siirto> siirrotKopio = new ArrayList<>();
+        
+        for (Siirto s : siirrot) {
+            siirrotKopio.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
+        }
+        nappuloidenSiirrot.put(n, siirrotKopio);
+    }
+    
+    public void lisaaBlokit(Nappula n, ArrayList<Koordinaatit> blokit) {
+        ArrayList <Koordinaatit> blokitKopio = new ArrayList<>();
+        
+        for (Koordinaatit k : blokit) {
+            blokitKopio.add(new Koordinaatit(k.getX(), k.getY()));
+        }
+        nappuloidenBlokit.put(n, blokitKopio);
+    }
+    
+    public void lisaaViimeksiPaivitetty(Nappula n, int i) {
+        viimeksiPaivitetty.put(n, i);
+    }
+    
+    public void lisaaKiinnitys(Nappula n, Nappula kiinnitetty, int kiinnitys) {
+        kiinnitetyt.put(n, kiinnitetty);
+        kiinnitykset.put(n, kiinnitys);
+    }
+    
     
     
     

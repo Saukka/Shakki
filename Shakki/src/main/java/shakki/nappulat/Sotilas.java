@@ -2,12 +2,16 @@ package shakki.nappulat;
 
 import shakki.domain.Koordinaatit;
 import shakki.domain.Lauta;
+import shakki.domain.Siirto;
 
 
 public class Sotilas extends Nappula {
     
-    public Sotilas(int id, int x, int y, int vari) {
-        super(id, x, y, vari);
+    public Sotilas(int id, int x, int y, int vari, Lauta lauta) {
+        
+        super(id, x, y, vari, lauta);
+        
+        this.tyyppi = TYYPPI.SOTILAS;
         this.paikanArvo = 0;
         
         if (vari == 0) {
@@ -20,37 +24,37 @@ public class Sotilas extends Nappula {
     }
     
     @Override
-    public void paivitaSiirrot (Lauta l, int kiinnitys) {
-        this.blokit.clear();
-        this.siirrot.clear();
+    public void paivitaSiirrot () {
         
         if (vari == 0) {
             
             // jos valkoinen
             if (!onLiikkunut) {
-                if (l.lauta[x][y + 2] == null && l.lauta[x][y + 1] == null &&(kiinnitys == 0 || kiinnitys == 2)) {
-                    this.siirrot.add(new Koordinaatit(x, y + 2));
+                if (lauta.lauta[x][y + 2] == null && lauta.lauta[x][y + 1] == null) {
+                    this.siirrot.add(new Siirto(x, y, x, y + 2, 4,0));
                 } 
-                else if ((l.lauta[x][y + 1] == null && l.lauta[x][y + 2] != null) && (kiinnitys == 0)) {
+                else if ((lauta.lauta[x][y + 1] == null && lauta.lauta[x][y + 2] != null) && (kiinnitys == 0)) {
                     blokit.add(new Koordinaatit(x, y + 2));
                 }
             }
                 
-            if (l.lauta[x][y + 1] == null && (kiinnitys == 0 || kiinnitys == 2)) {
-                this.siirrot.add(new Koordinaatit(x, y + 1));
-            } else if (l.lauta[x][y + 1] != null && (kiinnitys == 0) || kiinnitys == 2){
+            if (lauta.lauta[x][y + 1] == null) {
+                this.siirrot.add(new Siirto(x, y, x, y + 1, 4, 0));
+            } else {
                 blokit.add(new Koordinaatit(x, y + 1));
             }
             
-            if (l.lauta[x - 1][y + 1] != null) {
-                if (!omaNappula(l.lauta[x - 1][y + 1].getID()) && (kiinnitys == 0 || kiinnitys == 3)) {
-                    this.siirrot.add(new Koordinaatit(x - 1, y + 1));
+            if (lauta.lauta[x - 1][y + 1] != null && !omaNappula(lauta.lauta[x - 1][y + 1])) {
+                this.siirrot.add(new Siirto(x, y, x - 1, y + 1, 6, 0));
+                if (lauta.lauta[x - 1][y + 1].getTyyppi() == TYYPPI.KUNINGAS) {
+                    shakita(10); 
                 }
             }
             
-            if (l.lauta[x + 1][y + 1] != null) {
-                if (!omaNappula(l.lauta[x + 1][y + 1].getID()) && (kiinnitys == 0 || kiinnitys == 4)) {
-                    this.siirrot.add(new Koordinaatit(x + 1, y + 1));
+            if (lauta.lauta[x + 1][y + 1] != null && !omaNappula(lauta.lauta[x + 1][y + 1])) {
+                this.siirrot.add(new Siirto(x, y, x + 1, y + 1, 8, 0));
+                if (lauta.lauta[x + 1][y + 1].getTyyppi() == TYYPPI.KUNINGAS) {
+                    shakita(10); 
                 }
             }
             
@@ -58,60 +62,36 @@ public class Sotilas extends Nappula {
             
             // jos musta
             if (!onLiikkunut) {
-                if (l.lauta[x][y - 2] == null && l.lauta[x][y - 1] == null && (kiinnitys == 0 || kiinnitys == 2)) {
-                    this.siirrot.add(new Koordinaatit(x, y - 2));
-                } else if (l.lauta[x][y - 1] == null && l.lauta[x][y - 2] != null && (kiinnitys == 0 || kiinnitys == 2)) {
+                if (lauta.lauta[x][y - 2] == null && lauta.lauta[x][y - 1] == null) {
+                    this.siirrot.add(new Siirto(x, y, x, y - 2, 3, 0));
+                } else if (lauta.lauta[x][y - 1] == null && lauta.lauta[x][y - 2] != null && (kiinnitys == 0 || kiinnitys == 2)) {
                     blokit.add(new Koordinaatit(x, y - 2));
                 }
             }
                 
-            if (l.lauta[x][y - 1] == null && (kiinnitys == 0 || kiinnitys == 2)) {
-                this.siirrot.add(new Koordinaatit(x, y - 1));
-            } else if (l.lauta[x][y - 1] != null && (kiinnitys == 0 || kiinnitys == 2)){
+            if (lauta.lauta[x][y - 1] == null) {
+                this.siirrot.add(new Siirto(x, y, x, y - 1, 3, 0));
+            } else {
                 blokit.add(new Koordinaatit(x, y - 1));
             }
             
-            if (l.lauta[x - 1][y - 1] != null) {
-                if (!omaNappula(l.lauta[x - 1][y - 1].getID()) && (kiinnitys == 0 || kiinnitys == 4)) {
-                    this.siirrot.add(new Koordinaatit(x - 1, y - 1));
+            if (lauta.lauta[x - 1][y - 1] != null && !omaNappula(lauta.lauta[x - 1][y - 1])) {
+                this.siirrot.add(new Siirto(x, y, x - 1, y - 1, 7, 0));
+                if (lauta.lauta[x - 1][y - 1].getTyyppi() == TYYPPI.KUNINGAS) {
+                    shakita(10); 
                 }
             }
             
-            if (l.lauta[x + 1][y - 1] != null) {
-                if (!omaNappula(l.lauta[x + 1][y - 1].getID()) && (kiinnitys == 0 || kiinnitys == 3)) {
-                    this.siirrot.add(new Koordinaatit(x + 1, y - 1));
+            if (lauta.lauta[x + 1][y - 1] != null && !omaNappula(lauta.lauta[x + 1][y - 1])) {
+                this.siirrot.add(new Siirto(x, y, x + 1, y - 1, 5, 0));
+                if (lauta.lauta[x + 1][y - 1].getTyyppi() == TYYPPI.KUNINGAS) {
+                    shakita(10); 
                 }
             }
             
-            
-            
-            
         }
         
-        paivitaArvio(l.lauta);
-    }
-    
-    @Override
-    public Sotilas kopioi() {
-        
-        Sotilas n = new Sotilas(id, x, y, vari);
-        
-        for (int i = 0; i < this.siirrot.size(); i++) {
-            n.siirrot.add(new Koordinaatit(this.siirrot.get(i).getX(), this.siirrot.get(i).getY()));
-        }
-        
-        for (int i = 0; i < this.siirrotShakissa.size(); i++) {
-            n.siirrotShakissa.add(new Koordinaatit(this.siirrotShakissa.get(i).getX(), this.siirrotShakissa.get(i).getY()));
-        }
-        
-        for (int i = 0; i < this.blokit.size(); i++) {
-            n.blokit.add(new Koordinaatit(this.blokit.get(i).getX(), this.blokit.get(i).getX()));
-        }
-        
-        n.onLiikkunut = this.onLiikkunut;
-        n.paikanArvo = this.paikanArvo;
-        return n;
-        
+        paivitaArvio(lauta.lauta);
     }
     
     @Override
@@ -130,9 +110,9 @@ public class Sotilas extends Nappula {
                 }
             }
             if (this.y > 3 && this.x > 3 && this.x < 6) {
-                arvo += 2;
+                arvo += 3;
                 if (this.y > 4) {
-                    arvo += 3;
+                    arvo += 4;
                 }
             }
             for (int i = x - 1; i <  x + 2; i += 2) {
@@ -148,9 +128,9 @@ public class Sotilas extends Nappula {
                 }
             }
             if (this.y < 8 && this.x > 3 && this.x < 6) {
-                arvo -= 2;
+                arvo -= 3;
                 if (this.y < 7) {
-                    arvo -= 3;
+                    arvo -= 4;
                 }
             }
             
@@ -161,6 +141,49 @@ public class Sotilas extends Nappula {
         }
         
         this.paikanArvo = arvo + this.arvo;
+    }
+    
+    @Override
+    public void asetaKoordinaatit(int x, int y) {
+        
+        if (vari == 0) {
+            lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]--;
+            lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]--;
+        } else {
+            lauta.mustanHyökätyt[this.x - 1][this.y - 1]--;
+            lauta.mustanHyökätyt[this.x + 1][this.y - 1]--;
+        }
+        this.x = x;
+        this.y = y;
+        
+        if (vari == 0) {
+            lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]++;
+            lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]++;
+        } else {
+            lauta.mustanHyökätyt[this.x - 1][this.y - 1]++;
+            lauta.mustanHyökätyt[this.x + 1][this.y - 1]++;
+        }
+    }
+    
+    public void syö() {
+        if (vari == 0) {
+            lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]--;
+            lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]--;
+        } else {
+            lauta.mustanHyökätyt[this.x - 1][this.y - 1]--;
+            lauta.mustanHyökätyt[this.x + 1][this.y - 1]--;
+        }
+        this.syoty = true;
+    }
+    public void tuoTakaisin() {
+        if (vari == 0) {
+            lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]++;
+            lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]++;
+        } else {
+            lauta.mustanHyökätyt[this.x - 1][this.y - 1]++;
+            lauta.mustanHyökätyt[this.x + 1][this.y - 1]++;
+        }
+        this.syoty = false;
     }
     
 }

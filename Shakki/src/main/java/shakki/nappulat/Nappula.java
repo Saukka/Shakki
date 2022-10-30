@@ -9,12 +9,21 @@ import shakki.domain.*;
  */
 public abstract class Nappula {
     
+    Lauta lauta;
+    
+    enum TYYPPI{
+        SOTILAS, LAHETTI, RATSU, TORNI, KUNINGATAR, KUNINGAS, EPANAPPULA
+    }
+    
+    TYYPPI tyyppi;
+    
     int id = 0;
     int numero; // numero kertoo nappulan tyypin
     int arvo; // Arvo kertoo nappulan arvon
-    int paikanArvo; // paikanArvo kertoo kuinka hyvässä paikassa nappula on laudalla
     
     int vari;
+    
+    public int viimeksiPaivitetty;
     
     // Nappulan koordinaatit
     int x;
@@ -23,18 +32,17 @@ public abstract class Nappula {
     boolean onLiikkunut;
     boolean syoty;
     
-    ArrayList<Koordinaatit> siirrot;
-    ArrayList<Koordinaatit> blokit;
-    ArrayList<Koordinaatit> siirrotShakissa;
+    public ArrayList<Siirto> siirrot;
+    public ArrayList<Koordinaatit> blokit;
+    public ArrayList<Siirto> siirrotShakissa;
+    
+    int paikanArvo = 0;
+    
+    public int kiinnitys = 0;
     
     
-    
-    ArrayList<Integer> kiinnitetyt; 
-    // Lista nappuloista jotka nappula on kiinnittänyt kuninkaaseen. (Eli jos nappula 
-    // siirtyisi pois tieltä, kuninkaan voisi syödä. Joten siirto olisi laiton)
-    
-    int kiinnitetynID = 100;
-    boolean tormannyt = false;
+    public Nappula kiinnitetty = null;
+    public int kiinnitysSuunta = 0;
     
     /**
      * 
@@ -42,8 +50,9 @@ public abstract class Nappula {
      * @param x nappulan x-koordinaatti.
      * @param y nappulan y-koordinaatti.
      * @param vari nappulan väri. 0 = valkoinen, 1 = musta, -1 = ei ole nappula
+     * @param lauta
      */
-    public Nappula(int id, int x, int y, int vari) {
+    public Nappula(int id, int x, int y, int vari, Lauta lauta) {
         
         this.id = id;
         this.vari = vari;
@@ -55,68 +64,226 @@ public abstract class Nappula {
         
         siirrot = new ArrayList<>();
         blokit = new ArrayList<>();
-        kiinnitetyt = new ArrayList<>();
+        siirrotShakissa = new ArrayList<>();
         
+        viimeksiPaivitetty = 0;
 
+        this.lauta = lauta;
     }
     
     // Metodit joita käytetään siirtojen päivittämisessä
     
-    public boolean omaNappula(int nid) {
-        return (this.vari == 0 && nid < 17 && nid > 0) || ((this.vari == 1 && nid > 16)) || nid == -1;
+    public boolean omaNappula(Nappula n) {
+        if (n == null) return false;
+        
+        if (n.getID() == -1) return true;
+        
+        return this.vari == n.getVari();
     }
     
     /**
-     * Tornin, lähetin, ja kuningattaren käyttämä metodi.metodille annetaan koordinaatit ja se katsoo esim.
-     * voiko ruutuun siirtää, shakittaako tai kiinnittääkö nappula
-     * @param l
-     * @param x 
-     * @param y
-     * @param voiSiirtaa voiko nappulaa oikeasti siirtää. Muuttuja = false jos nappula on esim. kiinnitetty.
-     * @return 
+     * 
+     * @param xSuunta
+     * @param ySuunta
+     * @param suunta
+     * @param kuninkaanSuunta 
      */
-    public int katso(Lauta l, int x, int y, boolean voiSiirtaa) {
+    public void katsoRuudut (int xSuunta, int ySuunta, int suunta, int kuninkaanSuunta) {
         
+        int x = this.x + xSuunta;
+        int y = this.y + ySuunta;
         
-        if (l.lauta[x][y] == null) {
-            if (!tormannyt && voiSiirtaa) {
-                this.siirrot.add(new Koordinaatit(x, y));
-            }
-            return 1;
+        boolean sisalla = x >= lauta.ulkoL && x < 9 && y >= lauta.ulkoP && y < 10;
+        
+        while (sisalla) {
             
-        } else if (omaNappula(l.lauta[x][y].getID())) {
-            tormannyt = false;
-            blokit.add(new Koordinaatit(x, y));
-            return 0;
-        } else {
-            // on vihollisen nappula
-            if (l.lauta[x][y].getID() == 5 || l.lauta[x][y].getID() == 21) {
-                if (tormannyt) {
-                    kiinnitetyt.add(kiinnitetynID);
-                    tormannyt = false;
-                    return 0; // kiinnitys kuninkaaseen
+            if (lauta.lauta[x][y] == null) {
+                // jos tyhjä ruutu
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0));
+                x += xSuunta;
+                y += ySuunta;
+                sisalla = x >= lauta.ulkoL && x < 9 && y >= lauta.ulkoP && y < 10;
+            } else if (omaNappula(lauta.lauta[x][y])) {
+                // jos oma nappula
+                blokit.add(new Koordinaatit(x,y));
+                return;
+            } else {
+                // jos vastustajan nappula
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0));
+                int kiinnitettavanX = x;
+                int kiinnitettavanY = y;
+                
+                if (suunta != kuninkaanSuunta) {
+                    return;
                 }
-                this.siirrot.add(new Koordinaatit(x, y));
-                return 2; // shakki
+                if (lauta.lauta[x][y].getTyyppi() == TYYPPI.KUNINGAS) {
+                    // shakki
+                    shakita(suunta);
+                    this.siirrot.add(new Siirto(this.x, this.y, x + xSuunta, y + ySuunta, suunta, 0));
+                    return;
+                }
+                
+                x += xSuunta;
+                y += ySuunta;
+                while (true) {
+                    if (lauta.lauta[x][y] == null) {
+                        x += xSuunta;
+                        y += ySuunta;
+                        continue;
+                    }
+                    if (lauta.lauta[x][y].vari != this.vari && lauta.lauta[x][y].tyyppi == tyyppi.KUNINGAS) {
+                        lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys = suunta;
+                        kiinnitetty = lauta.lauta[kiinnitettavanX][kiinnitettavanY];
+                        kiinnitysSuunta = suunta;
+                        return;
+                    }
+                    return;
+                }
+                    
             }
-            if (tormannyt) {
-                tormannyt = false;
-                return 0; // ei kiinnitystä
-            }
-            tormannyt = true;
-            kiinnitetynID = l.lauta[x][y].getID();
-            if (voiSiirtaa) {
-                this.siirrot.add(new Koordinaatit(x, y));
-            }
-            return 1;
+            
         }
         
     }
     
-    public void paivitaSiirrot(Lauta lauta, int kiinnitys) {
+    public int kuninkaanSuunta(int vari) {
+        
+        int kuninkaanX;
+        int kuninkaanY;
+        
+        if (vari == 0) {
+            kuninkaanX = lauta.valkoisenNappulat.get(0).getX();
+            kuninkaanY = lauta.valkoisenNappulat.get(0).getY();
+        } else {
+            kuninkaanX = lauta.mustanNappulat.get(0).getX();
+            kuninkaanY = lauta.mustanNappulat.get(0).getY();
+        }
+        
+        if (kuninkaanX == this.x) {
+            if (kuninkaanY > this.y) return 4;
+            return 3;
+        }
+        if (kuninkaanY == this.y) {
+            if (kuninkaanX > this.x) return 1;
+            return 2;
+        }
+        if (Math.abs(kuninkaanX - this.x) == Math.abs(kuninkaanY - this.y)) {
+            if (kuninkaanX < this.x) {
+                if (kuninkaanY > this.y) return 6;
+                return 7;
+            }
+            if (kuninkaanY > this.y) return 8;
+            return 5;
+        }
+        return -1;
+    }
+    
+    // Paivittaa siirrot jos kuningas on nappulan linjalla tai jos nappulalla on kiinnitys
+    public void paivitaJos() {
+        
+        if (kiinnitysSuunta != 0) {
+            paivita();
+        }
+        
+        int suunta = kuninkaanSuunta(this.vari - 1);
+        
+        if (this.tyyppi == tyyppi.TORNI && suunta > 0 && suunta < 5) {
+            paivita();
+            return;
+        }
+        if (this.tyyppi == tyyppi.LAHETTI && suunta > 4) {
+            paivita();
+            return;
+        }
+        if (this.tyyppi == tyyppi.KUNINGATAR && suunta > 0) {
+            paivita();
+        }
+    }
+    
+    public void paivitaSiirrot() {}
+    
+    public void paivita() {
+        
+        if (viimeksiPaivitetty == this.lauta.tehdytSiirrot.size()) return;
+        
+        //System.out.println("Päivitetään nappulaa " + this.numero);
+        
+        if (tyyppi != TYYPPI.SOTILAS) {
+            if (this.vari == 0) {
+                päivitäHyökätyt(-1, lauta.valkoisenHyökätyt);
+            } else {
+                päivitäHyökätyt(-1, lauta.mustanHyökätyt);
+            }
+        }
+        
+        TehtySiirto tehtySiirto = this.lauta.tehdytSiirrot.get(this.lauta.tehdytSiirrot.size() - 1);
+        
+        tehtySiirto.lisaaNappula(this);
+        tehtySiirto.lisaaSiirrot(this, siirrot);
+        tehtySiirto.lisaaBlokit(this, blokit);
+        tehtySiirto.lisaaViimeksiPaivitetty(this, viimeksiPaivitetty);
+        
+        if (kiinnitetty != null) {
+            tehtySiirto.lisaaKiinnitys(this, kiinnitetty, kiinnitysSuunta);
+            kiinnitetty.kiinnitys = 0;
+            kiinnitysSuunta = 0;
+            kiinnitetty = null;
+        }
+        
+        this.blokit.clear();
+        this.siirrot.clear();
+        paivitaSiirrot();
+        viimeksiPaivitetty = this.lauta.tehdytSiirrot.size();
+        
+        if (tyyppi != TYYPPI.SOTILAS) {
+            if (this.vari == 0) {
+                päivitäHyökätyt(1, lauta.valkoisenHyökätyt);
+            } else {
+                päivitäHyökätyt(1, lauta.mustanHyökätyt);
+            }
+        }
+
+    }
+    
+    /*
+    Päivittää siirrot kun oma kuningas on shakissa
+    */
+    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut, int[][] hyokatyt) {
+        this.siirrotShakissa.clear();
+        
+        if (lauta.shakitus == -1) {
+            return;
+        }
+        
+        for (Siirto siirto: this.siirrot) {
+            boolean mahdollinen = false;
+            for (int i = 0; i < ruudut.size(); i++) {
+                if (ruudut.get(i).getX() == siirto.getUusX() && ruudut.get(i).getY() == siirto.getUusY()) {
+                    mahdollinen = true;
+                    break;
+                }
+            }
+            if (mahdollinen) {
+                this.siirrotShakissa.add(new Siirto(x, y, siirto.getUusX(), siirto.getUusY(), 0, 0));
+            }
+        }
+    }
+    
+    public void päivitäHyökätyt(int p, int[][] hyokatyt) {
+        for (int i = 0; i < this.siirrot.size(); i++) {
+            hyokatyt[this.siirrot.get(i).getUusX()][this.siirrot.get(i).getUusY()] += p;
+        }
+        for (int i = 0; i < this.blokit.size(); i++) {
+            hyokatyt[this.blokit.get(i).getX()][this.blokit.get(i).getY()] += p;
+        }
+    }
+        
+    public void lisaaTehdytSiirrot(Lauta lauta) {
         
     }
-        public int getNumero() {
+    
+    public int getNumero() {
+        if (this == null) return 0;
         return this.numero;
     }
     
@@ -133,18 +300,24 @@ public abstract class Nappula {
         return this.vari;
     }
     
-    public void SetKoordinaatit(int x, int y) {
+    public TYYPPI getTyyppi() {
+        return this.tyyppi;
+    }
+    
+    public void asetaKoordinaatit(int x, int y) {
         this.x = x;
         this.y = y;
         onLiikkunut = true;
     }
     
-    public void lisaaRajoittava(int i) {
-        kiinnitetyt.add(i);
+    
+    
+    public ArrayList<Siirto> getSiirrot() {
+        return this.siirrot;
     }
     
-    public ArrayList<Koordinaatit> getSiirrot() {
-        return this.siirrot;
+    public ArrayList<Siirto> getSiirrotShakissa() {
+        return this.siirrotShakissa;
     }
     
     public ArrayList<Koordinaatit> getBlokit() {
@@ -167,49 +340,51 @@ public abstract class Nappula {
         return y;
     }
     
-    public void syo() {
+    public void tuoTakaisin() {
+        if (this.vari == 0) {
+            päivitäHyökätyt(1, lauta.valkoisenHyökätyt);
+        } else {
+            päivitäHyökätyt(1, lauta.mustanHyökätyt);
+        }
+        this.syoty = false;
+    }
+    
+    public void syö() {
+        if (this.vari == 0) {
+            päivitäHyökätyt(-1, lauta.valkoisenHyökätyt);
+        } else {
+            päivitäHyökätyt(-1, lauta.mustanHyökätyt);
+        }
         this.syoty = true;
     }
-        
-    public Nappula kopioi() {
-    return this;
+    
+    public boolean vahvempiNappula(Nappula n) {
+        if (this.vari == 0) {
+            return n.arvo < this.arvo * (-1);
+        }
+        return n.arvo > this.arvo * (-1);
+    }
+    
+    public int getKiinnitys() {
+        return this.kiinnitys;
     }
     
     public int getPaikanArvo() {
         return this.paikanArvo;
     }
     
-    /*
-    Päivittää siirrot kun oma kuningas on shakissa
-    
-    */
-    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut) {
-        this.siirrotShakissa.clear();
-        
-        for (Koordinaatit siirto: this.siirrot) {
-            boolean mahdollinen = false;
-            for (Koordinaatit k: ruudut) {
-                if (k.getX() == siirto.getX() && k.getY() == siirto.getY()) {
-                    mahdollinen = true;
-                    break;
-                }
-            }
-            if (mahdollinen) {
-                this.siirrotShakissa.add(new Koordinaatit(siirto.getX(), siirto.getY()));
-            }
-        }
-    }
-    
     public void paivitaArvio(Nappula[][] lauta) {
         
     }
     
-    public void shakita(Lauta l, int suunta) {
-        if (l.shakki == 0) {
-            l.shakki = suunta;
-        } else {
-            l.shakki = 5;
+    public void shakita(int suunta) {
+        if (lauta.shakitus > 0) {
+            lauta.shakitus = -1;
+            return;
         }
+        lauta.shakitus = suunta;
+        lauta.shakittajanX = x;
+        lauta.shakittajanY = y;
         
     }
     

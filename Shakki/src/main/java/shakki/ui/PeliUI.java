@@ -20,19 +20,26 @@ public class PeliUI {
     Pane pane;
     Scene peliNäkymä;
     
+    int id;
+    
+    String[] nappulat = new String[]{"torni", "ratsu", "lähetti", "kuningatar", "kuningas", "sotilas"};
+    
+    ImageView[] lisättävät;
     ImageView[] ikonit;
+    
+    boolean vKuningas = false;
+    boolean mKuningas = false;
     
     public PeliUI() {
         pane = new Pane();
         pane.setBackground(new Background(new BackgroundFill(Color.web("#c7e4f8"), CornerRadii.EMPTY, Insets.EMPTY)));
         peliNäkymä = new Scene(pane, 1050, 850);
         
-        ikonit = new ImageView[32];
+        lisättävät = new ImageView[50];
+        id = 1;
         
         lisääKoordinaatit();
         maalaaRuudut();
-        lisääNappulat();
-        
     }
     
     public void lisääKoordinaatit() {
@@ -82,49 +89,102 @@ public class PeliUI {
         pane.getChildren().addAll(ruudut);
     }
     
-    public void lisääNappulat() {
+    public boolean lisaaKirjaimella(char c, int x, int y) {
         
-        String[] nappulat = new String[]{"torni", "ratsu", "lähetti", "kuningatar", "kuningas", "lähetti", "ratsu", "torni"};
+        String musta = "";
         
-        // Valkoiset takarivin nappulat
-        for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:Kuvat/" + nappulat[i] + ".png");
-            ImageView ikoni = new ImageView(kuva);
-            ikoni.relocate(60 + i * ruudunLeveys, 710);
-            ikoni.setFitHeight(ruudunLeveys - 20);
-            ikoni.setFitWidth(ruudunLeveys - 20);
-            ikonit[i] = ikoni;
+        if (Character.isLowerCase(c)) {
+            musta += "M";
         }
-        // valkoiset sotilaat
-        for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:Kuvat/sotilas.png");
-            ImageView ikoni = new ImageView(kuva);
-            ikoni.relocate(60 + i * ruudunLeveys, 610);
-            ikoni.setFitHeight(ruudunLeveys - 20);
-            ikoni.setFitWidth(ruudunLeveys - 20);
-            ikonit[i+8] = ikoni;
+        char n = Character.toLowerCase(c);
+        
+        if (id > 48) return false;
+        
+        switch (n) {
+            case 'p':
+                lisaaNappula(5, x, y, musta);
+                return true;
+            case 'r':
+                lisaaNappula(0, x, y, musta);
+                return true;
+            case 'n':
+                lisaaNappula(1, x, y, musta);
+                return true;
+            case 'b':
+                lisaaNappula(2, x, y, musta);
+                return true;
+            case 'q':
+                lisaaNappula(3, x, y, musta);
+                return true;
+            case 'k':
+                if (musta.isBlank()) {
+                    if (vKuningas) return false;
+                    vKuningas = true;
+                } else {
+                    if (mKuningas) return false;
+                    mKuningas = true;
+                }
+                lisaaNappula(4, x, y, musta);
+                return true;
+            default:
+                break;
         }
-        //mustat takarivin nappulat
-        for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:Kuvat/M" + nappulat[i] + ".png");
-            ImageView ikoni = new ImageView(kuva);
-            ikoni.relocate(60 + i * ruudunLeveys, 10);
-            ikoni.setFitHeight(ruudunLeveys - 20);
-            ikoni.setFitWidth(ruudunLeveys - 20);
-            ikonit[i+16] = ikoni;
-        }
-        //mustat sotilaat
-        for (int i = 0; i < 8; i++) {
-            Image kuva = new Image("file:Kuvat/Msotilas.png");
-            ImageView ikoni = new ImageView(kuva);
-            ikoni.relocate(60 + i * ruudunLeveys, 110);
-            ikoni.setFitHeight(ruudunLeveys - 20);
-            ikoni.setFitWidth(ruudunLeveys - 20);
-            ikonit[i+24] = ikoni;
+        return false;
+        
+    }
+    
+    public void lisaaNappula(int i, int x, int y, String musta) {
+        Image kuva = new Image("file:Kuvat/" + musta + nappulat[i] + ".png");
+        ImageView ikoni = new ImageView(kuva);
+        ikoni.relocate(60 + x * ruudunLeveys, y * ruudunLeveys + 10);
+        ikoni.setFitHeight(ruudunLeveys - 20);
+        ikoni.setFitWidth(ruudunLeveys - 20);
+        lisättävät[id - 1] = ikoni;
+        id++;
+    }
+    
+    public boolean lisääNappulat(String fen) {
+        
+        int x = 0;
+        int y = 0;
+        
+        for (int i = 0; i < fen.length(); i++) {
+            if (x > 8 && y > 8) {
+                System.out.println("yli 8");
+                return false;
+            }
+            
+            char c = fen.charAt(i);
+            
+            if (Character.isLetter(c)) {
+                if (!lisaaKirjaimella(c, x, y)) {
+                    return false;
+                }
+                x++;
+            } else if (c == '/') {
+                y ++;
+                x = 0;
+            } else if (Character.isDigit(c)) {
+                x += Character.getNumericValue(c);
+            } else {
+                return false;
+            }
         }
         
+        ikonit = new ImageView[id - 1];
+
+        for (int i = 0; i < id - 1; i++) {
+            ikonit[i] = lisättävät[i];
+        }
         pane.getChildren().addAll(ikonit);
         
+        return true;
+    }
+    
+    public void tyhjennaIkonit() {
+        for (int i = 0; i < ikonit.length; i++) {
+            ikonit[i] = null;
+        }
     }
     
     public void siirräNappula(int id, int x, int y) {

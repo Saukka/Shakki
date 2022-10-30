@@ -19,25 +19,25 @@ public class TekoAlyTest {
     public void lautaArvio() {
         lauta = new Lauta();
         
-        tekoAly = new TekoAly();
+        tekoAly = new TekoAly(lauta);
         
-        assertEquals(0, tekoAly.lautaArvio(lauta.lauta, lauta.valkoisenNappulat, lauta.mustanNappulat));
+        assertEquals(0, tekoAly.lautaArvio());
         
         lauta.teeSiirto(lauta.ulkoL + 4, lauta.ulkoP + 1, lauta.ulkoL + 4, lauta.ulkoP + 3);
         
-        assertTrue(tekoAly.lautaArvio(lauta.lauta, lauta.valkoisenNappulat, lauta.mustanNappulat) > 0);
+        assertTrue(tekoAly.lautaArvio() > 0);
     }
     
     @Test
     public void tekoAlySiirto() {
         lauta = new Lauta();
         
-        tekoAly = new TekoAly();
+        tekoAly = new TekoAly(lauta);
         
         
-        ArrayList<Koordinaatit> siirto = tekoAly.LaskeSiirto(lauta);
+        Siirto siirto = tekoAly.LaskeSiirto();
         
-        assertEquals(2, siirto.size());
+        
     }
     
     
