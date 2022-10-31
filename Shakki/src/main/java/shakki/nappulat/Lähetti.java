@@ -48,4 +48,35 @@ public class Lähetti extends Nappula {
         this.paikanArvo += this.arvo;
     }
     
+    public int nappulanArvio() {
+        int arvio = 30;
+        
+        int[][] puolustetut;
+        int[][] hyökätyt;
+        if (vari == 0) {
+            puolustetut = lauta.valkoisenHyökätyt;
+            hyökätyt = lauta.mustanHyökätyt;
+            
+        } else {
+            puolustetut = lauta.mustanHyökätyt;
+            hyökätyt = lauta.valkoisenHyökätyt;
+        }
+        if (hyökätyt[x][y] > 0) {
+            arvio -= hyökätyt[x][y] * 4;
+        }
+        if (puolustetut[x][y] > 0) {
+            arvio += 3;
+        }
+        
+        if (vari == 0 && y > 2) {
+            arvio += 3;
+        } else if (vari == 1 && y < 8) {
+            arvio += 3;
+        }
+        
+        arvio += this.siirrot.size() / 2;
+        
+        return arvio;
+    }
+    
 }

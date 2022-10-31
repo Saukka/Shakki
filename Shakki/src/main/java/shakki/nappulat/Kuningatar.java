@@ -59,5 +59,38 @@ public class Kuningatar extends Nappula {
         this.paikanArvo += this.arvo;
     }
     
+    public int nappulanArvio() {
+        int arvio = 90;
+        
+        int[][] hyökätyt;
+        if (vari == 0) {
+            hyökätyt = lauta.mustanHyökätyt;
+        } else {
+            hyökätyt = lauta.valkoisenHyökätyt;
+        }
+        
+        if (hyökätyt[x][y] > 0) {
+            if (vari == 0) {
+                if (lauta.valkoisenVuoro) {
+                    arvio -= 5;
+                } else {
+                    arvio -= 30;
+                }
+            } else if (!lauta.valkoisenVuoro) {
+                arvio -= 5;
+            } else {
+                arvio -= 30;
+            }
+        }
+        
+        if (vari == 0 && y > 3) {
+            arvio += 3;
+        } else if (vari == 1 && y < 8) {
+            arvio += 3;
+        }
+        
+        return arvio;
+    }
+    
     
 }

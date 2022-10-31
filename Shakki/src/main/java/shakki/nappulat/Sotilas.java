@@ -21,6 +21,13 @@ public class Sotilas extends Nappula {
             this.numero = -1;
             this.arvo = -10;
         }
+        if (vari == 0) {
+                lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]++;
+                lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]++;
+            } else {
+                lauta.mustanHyökätyt[this.x - 1][this.y - 1]++;
+                lauta.mustanHyökätyt[this.x + 1][this.y - 1]++;
+            }
     }
     
     @Override
@@ -144,24 +151,30 @@ public class Sotilas extends Nappula {
     }
     
     @Override
-    public void asetaKoordinaatit(int x, int y) {
+    public void asetaKoordinaatit(int x, int y, boolean päivitä) {
         
-        if (vari == 0) {
-            lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]--;
-            lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]--;
-        } else {
-            lauta.mustanHyökätyt[this.x - 1][this.y - 1]--;
-            lauta.mustanHyökätyt[this.x + 1][this.y - 1]--;
+        onLiikkunut = true;
+        
+        if (päivitä) {
+            if (vari == 0) {
+                lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]--;
+                lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]--;
+            } else {
+                lauta.mustanHyökätyt[this.x - 1][this.y - 1]--;
+                lauta.mustanHyökätyt[this.x + 1][this.y - 1]--;
+            }
         }
         this.x = x;
         this.y = y;
         
-        if (vari == 0) {
-            lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]++;
-            lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]++;
-        } else {
-            lauta.mustanHyökätyt[this.x - 1][this.y - 1]++;
-            lauta.mustanHyökätyt[this.x + 1][this.y - 1]++;
+        if (päivitä) {
+            if (vari == 0) {
+                lauta.valkoisenHyökätyt[this.x - 1][this.y + 1]++;
+                lauta.valkoisenHyökätyt[this.x + 1][this.y + 1]++;
+            } else {
+                lauta.mustanHyökätyt[this.x - 1][this.y - 1]++;
+                lauta.mustanHyökätyt[this.x + 1][this.y - 1]++;
+            }
         }
     }
     
@@ -184,6 +197,49 @@ public class Sotilas extends Nappula {
             lauta.mustanHyökätyt[this.x + 1][this.y - 1]++;
         }
         this.syoty = false;
+    }
+    
+    @Override
+    public int nappulanArvio() {
+        int arvio = 10;
+        
+        int[][] puolustetut;
+        int[][] hyökätyt;
+        if (vari == 0) {
+            puolustetut = lauta.valkoisenHyökätyt;
+            hyökätyt = lauta.mustanHyökätyt;
+            
+        } else {
+            puolustetut = lauta.mustanHyökätyt;
+            hyökätyt = lauta.valkoisenHyökätyt;
+        }
+        if (hyökätyt[x][y] - 1 > puolustetut[x][y]) {
+            arvio -= 3;
+        } else if (hyökätyt[x][y] < puolustetut[x][y]) {
+            arvio += 3;
+        }
+        
+        if (vari == 0) {
+            if (lauta.lauta[x - 1][y - 1] != null && lauta.lauta[x - 1][y - 1].getNumero() == 1) {
+                arvio += 2;
+            }
+            if (lauta.lauta[x + 1][y - 1] != null && lauta.lauta[x + 1][y - 1].getNumero() == 1) {
+                arvio += 2;
+            }
+            if (y > 3) arvio += 2;
+        } else {
+            if (lauta.lauta[x - 1][y + 1] != null && lauta.lauta[x - 1][y + 1].getNumero() == -1) {
+                arvio += 2;
+            }
+            if (lauta.lauta[x + 1][y + 1] != null && lauta.lauta[x + 1][y + 1].getNumero() == -1) {
+                arvio += 2;
+            }
+            if (y < 8) arvio += 2;
+        }
+        
+        arvio += puolustetut[x][y];
+        
+        return arvio;
     }
     
 }

@@ -41,12 +41,13 @@ public class Kuningas extends Nappula {
         
         //linnoitus oikealle
         if (!this.onLiikkunut && lauta.lauta[x + 1][y] == null && hyokatyt[x + 1][y] < 1 && lauta.lauta[x + 2][y] == null && hyokatyt[x + 2][y] < 1 && lauta.lauta[x + 3][y] != null && lauta.lauta[x + 3][y].tyyppi == TYYPPI.TORNI &&!lauta.lauta[x + 3][y].onLiikkunut) {
-            this.siirrot.add(new Siirto(x, y, x + 2, y, 0, 2));
+            this.siirrot.add(new Siirto(x, y, x + 2, y, 0, 3));
         }
         //linnoitus vasemmalle
         if (!this.onLiikkunut && lauta.lauta[x - 1][y] == null && hyokatyt[x - 1][y] < 1 && lauta.lauta[x - 2][y] == null && hyokatyt[x - 2][y] < 1 && lauta.lauta[x - 3][y] == null && lauta.lauta[x - 4][y] != null && lauta.lauta[x - 4][y].tyyppi == TYYPPI.TORNI &&!lauta.lauta[x - 4][y].onLiikkunut) {
-            this.siirrot.add(new Siirto(x, y, x - 2, y, 0,2));
+            this.siirrot.add(new Siirto(x, y, x - 2, y, 0, 2));
         }
+        
         
     }
     
@@ -56,8 +57,10 @@ public class Kuningas extends Nappula {
                 this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0));
             } else if (!omaNappula(lauta.lauta[x][y])) {
                 this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 2));
+            } else if (omaNappula(lauta.lauta[x][y])) {
+                blokit.add(new Koordinaatit(x, y));
             }
-        } else if (omaNappula(lauta.lauta[x][y]) || hyokatyt[x][y] > 0) {
+        } else {
             blokit.add(new Koordinaatit(x, y));
         } 
     }
@@ -66,9 +69,33 @@ public class Kuningas extends Nappula {
     public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut, int[][] hyokatyt) {
         
         this.siirrotShakissa.clear();
-        for (int i = 0; i < this.siirrot.size(); i++) {
-            this.siirrotShakissa.add(this.siirrot.get(i));
+        for (Siirto s: this.siirrot) {
+            if (Math.abs(s.getUusX() - s.getX()) < 2) {
+               this.siirrotShakissa.add(s); 
+            }
         }
+    }
+    
+    @Override
+    public int nappulanArvio() {
+        int arvio = 1000;
+        
+        int[][] puolustetut;
+        int[][] hyökätyt;
+        if (vari == 0) {
+            puolustetut = lauta.valkoisenHyökätyt;
+            hyökätyt = lauta.mustanHyökätyt;
+        } else {
+            puolustetut = lauta.mustanHyökätyt;
+            hyökätyt = lauta.valkoisenHyökätyt;
+        }
+        if (hyökätyt[x][y] > 0) {
+            arvio -= 5;
+        }
+        
+        arvio += this.blokit.size();
+        
+        return arvio;
     }
     
     

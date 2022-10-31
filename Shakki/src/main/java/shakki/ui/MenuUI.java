@@ -43,10 +43,8 @@ public class MenuUI extends Application {
         ikkuna.setScene(näkymä);
         ikkuna.show();
         
-        String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-        
         aloitusNappi.setOnAction( e -> {
-            Shakki shakki = new Shakki(ikkuna, fen);
+            Shakki shakki = new Shakki(ikkuna, teksti.getText());
             if (!shakki.asetaUI(teksti.getText())) {
                 System.out.println("Virheellinen fen-merkkijono");
                 return;

@@ -43,6 +43,8 @@ public abstract class Nappula {
     public Nappula kiinnitetty = null;
     public int kiinnitysSuunta = 0;
     
+    int kiinnitysEnnen = 0;
+    
     /**
      * 
      * @param id jokaisella nappulalla on uniikki id
@@ -131,9 +133,17 @@ public abstract class Nappula {
                         continue;
                     }
                     if (lauta.lauta[x][y].vari != this.vari && lauta.lauta[x][y].tyyppi == tyyppi.KUNINGAS) {
+                        kiinnitysEnnen = lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys;
                         lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys = suunta;
                         kiinnitetty = lauta.lauta[kiinnitettavanX][kiinnitettavanY];
                         kiinnitysSuunta = suunta;
+                        
+//                        System.out.println("");
+//                        
+//                        System.out.println("Uusi kiinnitys, siirtojen määrä: " + lauta.tehdytSiirrot.size());
+//                        System.out.println("Kiinnittävä: " + this.tyyppi + ", x: " + this.x + ", y: " + this.y);
+//                        System.out.println("Kiinnitetty: " + kiinnitetty.getTyyppi() + " ,id: " + kiinnitetty.getID() + ", x: " + kiinnitetty.getX() + ", y: " + kiinnitetty.getY());
+//                        System.out.println("Suunta: " + suunta);
                         return;
                     }
                     return;
@@ -205,8 +215,6 @@ public abstract class Nappula {
         
         if (viimeksiPaivitetty == this.lauta.tehdytSiirrot.size()) return;
         
-        //System.out.println("Päivitetään nappulaa " + this.numero);
-        
         if (tyyppi != TYYPPI.SOTILAS) {
             if (this.vari == 0) {
                 päivitäHyökätyt(-1, lauta.valkoisenHyökätyt);
@@ -223,7 +231,7 @@ public abstract class Nappula {
         tehtySiirto.lisaaViimeksiPaivitetty(this, viimeksiPaivitetty);
         
         if (kiinnitetty != null) {
-            tehtySiirto.lisaaKiinnitys(this, kiinnitetty, kiinnitysSuunta);
+            tehtySiirto.lisaaVanhaKiinnitys(this, kiinnitetty, kiinnitysSuunta);
             kiinnitetty.kiinnitys = 0;
             kiinnitysSuunta = 0;
             kiinnitetty = null;
@@ -233,6 +241,10 @@ public abstract class Nappula {
         this.siirrot.clear();
         paivitaSiirrot();
         viimeksiPaivitetty = this.lauta.tehdytSiirrot.size();
+        
+        if (kiinnitetty != null) {
+            tehtySiirto.lisaaUusiKiinnitys(this, kiinnitetty, kiinnitysEnnen);
+        }
         
         if (tyyppi != TYYPPI.SOTILAS) {
             if (this.vari == 0) {
@@ -276,10 +288,6 @@ public abstract class Nappula {
             hyokatyt[this.blokit.get(i).getX()][this.blokit.get(i).getY()] += p;
         }
     }
-        
-    public void lisaaTehdytSiirrot(Lauta lauta) {
-        
-    }
     
     public int getNumero() {
         if (this == null) return 0;
@@ -303,7 +311,7 @@ public abstract class Nappula {
         return this.tyyppi;
     }
     
-    public void asetaKoordinaatit(int x, int y) {
+    public void asetaKoordinaatit(int x, int y, boolean päivitä) {
         this.x = x;
         this.y = y;
         onLiikkunut = true;
@@ -355,6 +363,19 @@ public abstract class Nappula {
             päivitäHyökätyt(-1, lauta.mustanHyökätyt);
         }
         this.syoty = true;
+        
+        TehtySiirto tehtySiirto = lauta.tehdytSiirrot.get(lauta.tehdytSiirrot.size() - 1);
+        tehtySiirto.lisaaNappula(this);
+        tehtySiirto.lisaaSiirrot(this, siirrot);
+        tehtySiirto.lisaaBlokit(this, blokit);
+        tehtySiirto.lisaaViimeksiPaivitetty(this, viimeksiPaivitetty);
+        
+        if (kiinnitetty != null) {
+            tehtySiirto.lisaaVanhaKiinnitys(this, kiinnitetty, kiinnitysSuunta);
+            kiinnitetty.kiinnitys = 0;
+            kiinnitetty = null;
+            kiinnitysSuunta = 0;
+        }
     }
     
     public boolean vahvempiNappula(Nappula n) {
@@ -385,6 +406,11 @@ public abstract class Nappula {
         lauta.shakittajanX = x;
         lauta.shakittajanY = y;
         
+    }
+    
+    
+    public int nappulanArvio() {
+        return 0;
     }
     
     

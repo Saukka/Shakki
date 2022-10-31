@@ -97,5 +97,35 @@ public class Ratsu extends Nappula {
         }
         this.paikanArvo += this.arvo;
     }
+    
+    @Override
+    public int nappulanArvio() {
+        int arvio = 30;
+        
+        int[][] puolustetut;
+        int[][] hyökätyt;
+        if (vari == 0) {
+            puolustetut = lauta.valkoisenHyökätyt;
+            hyökätyt = lauta.mustanHyökätyt;
+            
+        } else {
+            puolustetut = lauta.mustanHyökätyt;
+            hyökätyt = lauta.valkoisenHyökätyt;
+        }
+        
+        if (x > 2 && x < 7 && y > 3 && y < 8) {
+            arvio += 1;
+            if (hyökätyt[x][y] < 1) {
+                arvio += 2;
+            }
+            if (puolustetut[x][y] < 1 && hyökätyt[x][y] > 1) {
+                arvio -= 10;
+            }
+        }
+        
+        arvio += this.siirrot.size() / 2;
+        
+        return arvio;
+    }
 
 }

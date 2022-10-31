@@ -56,4 +56,30 @@ public class Torni extends Nappula {
         this.paikanArvo += this.arvo;
     }
     
+    @Override
+    public int nappulanArvio() {
+        int arvio = 50;
+        
+        int[][] puolustetut;
+        int[][] hyökätyt;
+        if (vari == 0) {
+            puolustetut = lauta.valkoisenHyökätyt;
+            hyökätyt = lauta.mustanHyökätyt;
+            
+        } else {
+            puolustetut = lauta.mustanHyökätyt;
+            hyökätyt = lauta.valkoisenHyökätyt;
+        }
+        if (hyökätyt[x][y] > 0) {
+            arvio -= hyökätyt[x][y] * 8;
+        }
+        if (puolustetut[x][y] > 0) {
+            arvio += 6;
+        }
+        
+        arvio += this.siirrot.size() / 2;
+        
+        return arvio;
+    }
+    
 }

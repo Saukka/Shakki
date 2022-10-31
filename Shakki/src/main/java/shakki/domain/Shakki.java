@@ -1,13 +1,14 @@
 
 package shakki.domain;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.scene.layout.Pane;
 
 import shakki.ui.PeliUI;
-
 
 /**
  * Luokka katsoo pelaajan siirrot ja ilmoittaa ne lauta-luokalle, 
@@ -81,6 +82,7 @@ public class Shakki {
                     } 
                     
                     ui.siirräNappula(id, uusX - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
+                    //System.out.println("Minun siirto: x: " + x.get() + ", y: " + y.get() + ", uus x: " + uusX + ", uus y: " + uusY + " " + lauta.lauta[x.get()][y.get()].getTyyppi());
                     if (s > 50) {
                         if (x.get() < uusX) {
                             ui.siirräNappula(s - 50, uusX - 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
@@ -88,8 +90,18 @@ public class Shakki {
                             ui.siirräNappula(s - 50, uusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
                         }
                     }
+                    CompletableFuture.delayedExecutor(0, TimeUnit.SECONDS).execute(() -> {
+                        tekoAlySiirra();
+                    });
                     
-                    tekoAlySiirra();
+//                    for (int i = 9; i > 1; i--) {
+//                        System.out.print(i - 1 + ": ");
+//                        for (int j = 1; j < 9; j++) {
+//                            System.out.print(lauta.valkoisenHyökätyt[j][i]);
+//                        }
+//                        System.out.println("");
+//                    }
+//                    System.out.println("   ABCDEFGH");
                     
                 } else {
                 }
@@ -106,6 +118,15 @@ public class Shakki {
      */
     public void tekoAlySiirra() {
         
+//        for (int i = 9; i > 1; i--) {
+//            System.out.print(i - 1 + ": ");
+//            for (int j = 1; j < 9; j++) {
+//                System.out.print(lauta.valkoisenHyökätyt[j][i]);
+//            }
+//            System.out.println("");
+//        }
+//        System.out.println("   ABCDEFGH");
+        
         Siirto siirto = tekoAly.LaskeSiirto();
         if (siirto == null) {
             System.out.println("Valkoisen voitto");
@@ -118,11 +139,14 @@ public class Shakki {
         
         int id = lauta.lauta[x][y].getID();
         
+        System.out.println("Tekoälyn siirto: x: " + x + ", y: " + y + ", uus x: " + uusX + ", uus y: " + uusY + " " + lauta.lauta[x][y].getTyyppi());
+        
         int s = lauta.teeSiirto(x, y, uusX, uusY);
         
         if (s > 0 && s < 33) {
             ui.poistaNappula(s);
         }
+        
         ui.siirräNappula(id, uusX - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
         
         if (s > 50) {
@@ -132,9 +156,20 @@ public class Shakki {
                 ui.siirräNappula(s - 50, uusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
             }
         }
-        if (lauta.getSiirrot(0, lauta.shakitus).isEmpty()) {
+        if (lauta.getSiirrot(0, false).isEmpty()) {
             System.out.println("Mustan voitto");
         }
+//        System.out.println("");
+//        Scanner lukija = new Scanner(System.in);
+//        System.out.println("Minkä id siirrot haluat nähdä?");
+//        String viesti = lukija.nextLine();
+//        for (int i = 0; i < lauta.valkoisenNappulat.size(); i++) {
+//            if (lauta.valkoisenNappulat.get(i).getID() == Integer.valueOf(viesti)) {
+//                for (Siirto b : lauta.valkoisenNappulat.get(i).siirrot) {
+//                    System.out.println("x: " + b.getX() + ", y: " + b.getY() + ", uus x: " + b.getUusX() + ", uus y: " + b.getUusY());
+//                }
+//            }
+//        }
         
     }
     

@@ -2,6 +2,8 @@ package shakki.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import shakki.nappulat.Nappula;
 
 
@@ -17,7 +19,7 @@ public class TekoAly {
     
     int syvyys;
     
-    Double tilanneArvio = 0.0;
+    int mini;
     
     HashMap<Integer, Siirto> minArvot;
     
@@ -27,21 +29,21 @@ public class TekoAly {
     
     /**
      * Tekoäly laskee minimax-algoritmia käyttäen siirron.
-     * @param l Lauta jolle tekoäly laskee siirron
      * @return Koordinaatit-lista, ensimmäinen arvo kertoo nappulan koordinaatit. Toinen, mihin nappula siirretään
      */
     public Siirto LaskeSiirto() {
+
+        syvyys = 4;
         
-        syvyys = 2;
-        
-        int min = 10000;
+        mini = 100000;
         
         minArvot = new HashMap();
         minArvot.clear();
         
-        minArvo(-10000, 10000, syvyys);
+        minArvo(-1000000, 1000000, syvyys);
         
-        return minArvot.get(min);
+        System.out.println("Tekoälyn siirron arvio: " + mini);
+        return minArvot.get(mini);
     }
     
     
@@ -50,9 +52,13 @@ public class TekoAly {
             return lautaArvio();
         }
         
-        int v = 10000;
+        int v = 100000;
         
-        ArrayList<Siirto> siirrot = lauta.getSiirrot(1, lauta.shakitus);
+        ArrayList<Siirto> siirrot = lauta.getSiirrot(1, false);
+        if (syvyys == this.syvyys) {
+            //System.out.println("Mustien siirtojen koko: " + siirrot.size());
+            //System.out.println("Shakitus: " + lauta.shakitus);
+        }
         if (siirrot.isEmpty()) {
             return 100000;
         }
@@ -63,17 +69,17 @@ public class TekoAly {
             int uusX = siirrot.get(i).getUusX();
             int uusY = siirrot.get(i).getUusY();
             
-            System.out.println("MUSTAN SIIRTO");
-            System.out.println("");
-            System.out.println("");
+            //System.out.println("Musta tekee siirron " + lauta.lauta[x][y].getTyyppi() +  " x: " + x + ", y: " + y + ", uusX:  " + uusX + ", uus Y: " + uusY);
             lauta.teeSiirto(x, y, uusX, uusY);
             int max = maxArvo(alpha, beta, syvyys - 1);
+            //System.out.println("Siirron arvio: " + max);
             lauta.peruSiirto();
             
             v = Math.min(v, max);
             beta = Math.min(beta, v);
             
             if (syvyys == this.syvyys && v == max) {
+                mini = v;
                 minArvot.put(v, siirrot.get(i));
             }
 
@@ -87,21 +93,19 @@ public class TekoAly {
             return lautaArvio();
         }
         
-        int v = -10000;
+        int v = -100000;
         
-        ArrayList<Siirto> siirrot = lauta.getSiirrot(0, lauta.shakitus);
-        
+        ArrayList<Siirto> siirrot = lauta.getSiirrot(0, false);
         if (siirrot.isEmpty()) {
             return -100000;
         }
-         
         for (int i = 0; i < siirrot.size(); i++) {
             int x = siirrot.get(i).getX();
             int y = siirrot.get(i).getY();
             int uusX = siirrot.get(i).getUusX();
             int uusY = siirrot.get(i).getUusY();
             
-            System.out.println("Valkoisen siirto");
+            //System.out.println("Valkoinen tekee siirron " + lauta.lauta[x][y].getTyyppi() +  " x: " + x + ", y: " + y + ", uusX:  " + uusX + ", uus Y: " + uusY);
             lauta.teeSiirto(x, y, uusX, uusY);
             int min = minArvo(alpha, beta, syvyys - 1);
             lauta.peruSiirto();
@@ -124,13 +128,16 @@ public class TekoAly {
     public int lautaArvio() {
         
         int arvio = 0;
-        
+        //System.out.println("Valkoisen nappuloiden arvot");
         for (int i = 0; i < lauta.valkoisenNappulat.size(); i++) {
-            arvio += lauta.valkoisenNappulat.get(i).getArvo();
+            arvio += lauta.valkoisenNappulat.get(i).nappulanArvio();
+            
+            //System.out.println(lauta.valkoisenNappulat.get(i).getTyyppi() + " arvo: " + lauta.valkoisenNappulat.get(i).getPaikanArvo());
         }
-        
+        //System.out.println("Mustan nappuloiden arvot");
         for (int i = 0; i < lauta.mustanNappulat.size(); i++) {
-            arvio += lauta.mustanNappulat.get(i).getArvo();
+            arvio -= lauta.mustanNappulat.get(i).nappulanArvio();
+            //System.out.println(lauta.mustanNappulat.get(i).getTyyppi() + " arvo: " + lauta.mustanNappulat.get(i).getPaikanArvo());
         }
         
         return arvio;

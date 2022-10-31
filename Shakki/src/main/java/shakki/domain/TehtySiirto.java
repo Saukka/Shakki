@@ -30,6 +30,9 @@ public class TehtySiirto {
     
     HashMap<Nappula, Integer> viimeksiPaivitetty;
     
+    HashMap<Nappula, Nappula> uudetKiinnitetyt;
+    HashMap<Nappula, Integer> kiinnitysEnnen;
+    
     int[][] valkoisenHyokatyt;
     int[][] mustanHyokatyt;
     
@@ -58,6 +61,9 @@ public class TehtySiirto {
         
         kiinnitetyt = new HashMap<>();
         kiinnitykset = new HashMap<>();
+        
+        uudetKiinnitetyt = new HashMap<>();
+        kiinnitysEnnen = new HashMap<>();
         
         viimeksiPaivitetty = new HashMap<>();
 
@@ -88,16 +94,28 @@ public class TehtySiirto {
         nappuloidenBlokit.put(n, blokitKopio);
     }
     
+    public void lisaaSiirrotShakissa(Nappula n, ArrayList<Siirto> siirrot) {
+        ArrayList <Siirto> siirrotKopio = new ArrayList<>();
+        
+        for (Siirto s : siirrot) {
+            siirrotKopio.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
+        }
+        siirrotShakissa.put(n, siirrotKopio);
+    }
+    
     public void lisaaViimeksiPaivitetty(Nappula n, int i) {
         viimeksiPaivitetty.put(n, i);
     }
     
-    public void lisaaKiinnitys(Nappula n, Nappula kiinnitetty, int kiinnitys) {
+    public void lisaaVanhaKiinnitys(Nappula n, Nappula kiinnitetty, int kiinnitys) {
         kiinnitetyt.put(n, kiinnitetty);
         kiinnitykset.put(n, kiinnitys);
     }
     
-    
+    public void lisaaUusiKiinnitys (Nappula n, Nappula kiinnitetty, int kiinnitys) {
+        uudetKiinnitetyt.put(n, kiinnitetty);
+        kiinnitysEnnen.put(n, kiinnitys);
+    }
     
     
 }
