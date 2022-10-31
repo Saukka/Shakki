@@ -1,7 +1,7 @@
 # Shakki
 Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille
 
-Siirtojen tekeminen toimii nyt jollain tavalla ja tekoäly vastaa (melko huonoilla) siirroilla. Muita sääntöjä pelissä ei vielä ole kuin nappuloiden siirrot, mutta niissäkin saattaa joissakin tilanteissa syntyä virhe.
+Projekti on vielä valitettavan paljon kesken. Yritän saada ohjelman viimeisteltyä muutaman päivän sisällä. Pelaaminen yleensä toimii, mutta shakin logiikan toiminnassa on jonkinlainen virhe, jonka takia saattaa saattaa ilmestyä erroria, tai lailliset siirrot eivät toimi.
 
 Siirtojen tekeminen toimii klikkaamalla nappulaa ja sitten klikkaamalla ruutua mihin nappulan haluaa siirtää.
 
