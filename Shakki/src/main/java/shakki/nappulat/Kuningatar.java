@@ -12,13 +12,13 @@ public class Kuningatar extends Nappula {
         super(id, x, y, vari, lauta);
         
         this.tyyppi = TYYPPI.KUNINGATAR;
+        this.arvo = 90;
+        
         if (vari == 0) {
             this.numero = 5;
-            this.arvo = 90;
             this.paikanArvo = 7;
         } else {
             this.numero = -5;
-            this.arvo = -90;
             this.paikanArvo = -7;
         }
     }

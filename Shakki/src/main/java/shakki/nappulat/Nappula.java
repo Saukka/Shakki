@@ -100,7 +100,7 @@ public abstract class Nappula {
             
             if (lauta.lauta[x][y] == null) {
                 // jos tyhjä ruutu
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0, false));
                 x += xSuunta;
                 y += ySuunta;
                 sisalla = x >= lauta.ulkoL && x < 9 && y >= lauta.ulkoP && y < 10;
@@ -110,7 +110,7 @@ public abstract class Nappula {
                 return;
             } else {
                 // jos vastustajan nappula
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0, false));
                 int kiinnitettavanX = x;
                 int kiinnitettavanY = y;
                 
@@ -120,7 +120,7 @@ public abstract class Nappula {
                 if (lauta.lauta[x][y].getTyyppi() == TYYPPI.KUNINGAS) {
                     // shakki
                     shakita(suunta);
-                    this.siirrot.add(new Siirto(this.x, this.y, x + xSuunta, y + ySuunta, suunta, 0));
+                    this.siirrot.add(new Siirto(this.x, this.y, x + xSuunta, y + ySuunta, suunta, 0, false));
                     return;
                 }
                 
@@ -275,7 +275,7 @@ public abstract class Nappula {
                 }
             }
             if (mahdollinen) {
-                this.siirrotShakissa.add(new Siirto(x, y, siirto.getUusX(), siirto.getUusY(), 0, 0));
+                this.siirrotShakissa.add(new Siirto(x, y, siirto.getUusX(), siirto.getUusY(), 0, 0, false));
             }
         }
     }

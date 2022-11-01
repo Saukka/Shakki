@@ -53,14 +53,14 @@ public class Ratsu extends Nappula {
             
             if (vahvempiNappula(lauta.lauta[x][y])) {
                 if (hyokatyt[x][y] < 1) {
-                    this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 5));
+                    this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 5, false));
                 } else {
-                    this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 4));
+                    this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 4, false));
                 }
             } else if (hyokatyt[x][y] < 1) {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 2));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 2, false));
             } else {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0, false));
             }
             
             if (lauta.lauta[x][y].getTyyppi() == TYYPPI.KUNINGAS) {
@@ -70,9 +70,9 @@ public class Ratsu extends Nappula {
         } 
         if (lauta.lauta[x][y] == null) {
             if (hyokatyt[x][y] < 1) {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 1));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 1, false));
             } else {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0, false));
             }
             return;
         }

@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.scene.layout.Pane;
+import shakki.nappulat.Nappula;
 
 import shakki.ui.PeliUI;
 
@@ -58,8 +59,17 @@ public class Shakki {
         AtomicReference<Boolean> siirto = new AtomicReference<>();
         siirto.set(Boolean.FALSE);
         
-        näkymä.setOnMouseClicked(e -> {
+        näkymä.setOnKeyPressed(e -> {
+            if (lauta.tehdytSiirrot.size() > 2) {
+                // Perutaan kaksi viimeistä siirtoa
+                peruSiirto();
+                peruSiirto();
+            }
             
+                    
+        });
+        
+        näkymä.setOnMouseClicked(e -> {
             
             if(!siirto.get()) {
                 x.set((int) (e.getX() - 50) / 100 + lauta.ulkoL);
@@ -76,7 +86,6 @@ public class Shakki {
                 int id = lauta.lauta[x.get()][y.get()].getID();
                 int s = lauta.teeSiirto(x.get(), y.get(), uusX, uusY);
                 if (s >= 0) {
-                    
                     if (s > 0 && s < 50) {
                         ui.poistaNappula(s);
                     } 
@@ -111,6 +120,17 @@ public class Shakki {
                        
         });
             
+    }
+    
+    public void peruSiirto() {
+        TehtySiirto t = lauta.tehdytSiirrot.get(lauta.tehdytSiirrot.size() - 1);
+        int x = t.x;
+        int y = t.y;
+        ui.siirräNappula(t.nappula.getID(), x - lauta.ulkoL, 7 + lauta.ulkoP - y);
+        if (t.syotyNappula != null) {
+            ui.siirräNappula(t.syotyNappula.getID(), t.syotyNappula.getX() - lauta.ulkoL, 7 + lauta.ulkoP - t.syotyNappula.getY());
+        }
+        lauta.peruSiirto();
     }
     
     /**

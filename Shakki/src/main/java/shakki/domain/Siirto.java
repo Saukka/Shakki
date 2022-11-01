@@ -14,17 +14,19 @@ public class Siirto {
     
     int suunta;
     
+    boolean ohestalyönti = false;
     
-    public Siirto(int x, int y, int uusX, int uusY, int suunta, int vahvuus) {
+    public Siirto(int x, int y, int uusX, int uusY, int suunta, int vahvuus, boolean ohestaLyönti) {
         this.x = x;
         this.y = y;
         this.uusX = uusX;
         this.uusY = uusY;
         
-        
         this.suunta = suunta;
         
         this.vahvuus = vahvuus;
+        
+        ohestalyönti = ohestaLyönti;
     }
     
     public int getX() {
@@ -49,5 +51,13 @@ public class Siirto {
     
     public int getSuunta() {
         return suunta;
+    }
+    
+    public void asetaOhestaLyönti() {
+        ohestalyönti = true;
+    }
+    
+    public boolean getOhestalyönti() {
+        return ohestalyönti;
     }
 }

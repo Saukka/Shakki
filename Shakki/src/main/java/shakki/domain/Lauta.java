@@ -195,28 +195,22 @@ public class Lauta {
      */
     public int teeSiirto(int x, int y, int uusX, int uusY) {
         boolean mahdollinenSiirto = false;
-        
-        for (Siirto s : getSiirrot(0, false)) {
-            if (x == s.getX() && y == s.getY() && uusX == s.getUusX() && uusY == s.getUusY()) {
-                mahdollinenSiirto = true;
-            } 
-        }
-        for (Siirto s : getSiirrot(1, false)) {
-            if (x == s.getX() && y ==s.getY() && uusX == s.getUusX() && uusY == s.getUusY()) {
-                mahdollinenSiirto = true;
-            } 
-        }
+        boolean ohestalyönti = false;
         
         if (valkoisenVuoro) {
             for (Siirto s : valkoisenSiirrot) {
                 if (x == s.getX() && y ==s.getY() && uusX == s.getUusX() && uusY == s.getUusY()) {
                     mahdollinenSiirto = true;
+                    ohestalyönti = s.getOhestalyönti();
+                    break;
                 }
             }
         } else {
             for (Siirto s : mustanSiirrot) {
                 if (x == s.getX() && y ==s.getY() && uusX == s.getUusX() && uusY == s.getUusY()) {
                     mahdollinenSiirto = true;
+                    ohestalyönti = s.getOhestalyönti();
+                    break;
                 }
             }
         }
@@ -240,6 +234,16 @@ public class Lauta {
                 s = syötyNappula.getID();
                 poistaNappula(syötyNappula);
             }
+            int syötävänY = uusY - 1;
+            if (ohestalyönti) {
+                if (n.getVari() == 1) {
+                    syötävänY = uusY + 1;
+                }
+                syötyNappula = lauta[uusX][syötävänY];
+                s = syötyNappula.getID();
+                poistaNappula(syötyNappula);
+                lauta[uusX][syötävänY] = null;
+            }
 
             lisaaTehtySiirto(x, y, n, null, syötyNappula);
             if (shakitus != 0) {
@@ -259,6 +263,10 @@ public class Lauta {
             if (Math.abs(n.getNumero()) != 6) lauta[uusX][uusY].paivita();
             
             paivitaTarvittavat(x, y, uusX, uusY, n.getVari());
+            if (ohestalyönti) {
+                paivitaTarvittavat(uusX, syötävänY, uusX, syötävänY, n.getVari());
+            }
+            paivitaKuninkaat(n.getVari());
 
             n.liikutettu(true);
 
@@ -282,10 +290,17 @@ public class Lauta {
             return s; 
         }
         System.out.println("Siirto epäonnistui");
-//        System.out.println("x: " + x + ", y: " + y + ", uus x: " + uusX + ", uus y: " + uusY + " " + lauta[x][y].getTyyppi() + ", id: " + lauta[x][y].getID());
-//        System.out.println("Kiinnitys: " + lauta[x][y].kiinnitys);
-//        System.out.println("shakkaus: " + shakitus);
-//        System.out.println("siirrot");
+        if (valkoisenVuoro) {
+            System.out.println("Valkoisen vuoro");
+        } else {
+            System.out.println("Mustan vuoro");
+        }
+        
+        //System.out.println("Siirron yrittäjän väri: " +  lauta[x][y].getVari());
+        System.out.println("x: " + x + ", y: " + y + ", uus x: " + uusX + ", uus y: " + uusY + " " );
+        //System.out.println("Kiinnitys: " + lauta[x][y].kiinnitys);
+        System.out.println("shakkaus: " + shakitus);
+        System.out.println("siirrot");
 //        if (shakitus != 0) {
 //            for (Siirto s : lauta[x][y].getSiirrotShakissa()) {
 //                System.out.println(("x: " + s.getX()) + ", y: " + s.getY() + ", uus x: " + s.getUusX() + ", uus y: " + s.getUusY() + " ");
@@ -295,6 +310,12 @@ public class Lauta {
 //                System.out.println(("x: " + s.getX()) + ", y: " + s.getY() + ", uus x: " + s.getUusX() + ", uus y: " + s.getUusY() + " ");
 //            }
 //        }
+        for (Nappula n: valkoisenNappulat) {
+            System.out.println("valkoisenNappula x: " + n.getX() + ", y: " + n.getY());
+        }
+        for (Nappula n: mustanNappulat) {
+            System.out.println("mustan Nappula x: " + n.getX() + ", y: " + n.getY());
+        }
         // siirtoa ei voinut tehdä
         return -1;
     }
@@ -351,9 +372,9 @@ public class Lauta {
         shakittajanX = 0;
         shakittajanY = 0;
         
-        paivitaTarvittavat(x, y, uusX, y, kuningas.getVari());
         paivitaTarvittavat(torniX, y, torniUusX, y, kuningas.getVari());
-        
+        paivitaTarvittavat(x, y, uusX, y, kuningas.getVari());
+        paivitaKuninkaat(kuningas.getVari());
         valkoisenVuoro = !valkoisenVuoro;
         
         if (shakitus != 0) {
@@ -361,10 +382,10 @@ public class Lauta {
         }
         
         if (valkoisenVuoro) {
-                valkoisenSiirrot = getSiirrot(0, true);
-            } else {
-                mustanSiirrot = getSiirrot(1, true);
-            }
+            getSiirrot(0, true);
+        } else {
+            getSiirrot(1, true);
+        }
         
         return torni.getID() + 50;
     }
@@ -431,14 +452,28 @@ public class Lauta {
         if (vari == 0) {
             if (lauta[uusX + 1][uusY + 1] != null && lauta[uusX + 1][uusY + 1].getNumero() == -1) {
                 lauta[uusX + 1][uusY + 1].paivita();
-            } else if (lauta[uusX - 1][uusY + 1] != null && lauta[uusX - 1][uusY + 1].getNumero() == -1) {
+            } 
+            if (lauta[uusX - 1][uusY + 1] != null && lauta[uusX - 1][uusY + 1].getNumero() == -1) {
                 lauta[uusX - 1][uusY + 1].paivita();
+            }
+            if (lauta[uusX - 1][uusY] != null && lauta[uusX - 1][uusY].getNumero() == -1) {
+                lauta[uusX - 1][uusY].paivita();
+            }
+            if (lauta[uusX + 1][uusY] != null && lauta[uusX + 1][uusY].getNumero() == -1) {
+                lauta[uusX + 1][uusY].paivita();
             }
         } else {
             if (lauta[uusX + 1][uusY - 1] != null && lauta[uusX + 1][uusY - 1].getNumero() == 1) {
                 lauta[uusX + 1][uusY - 1].paivita();
-            } else if (lauta[uusX - 1][uusY - 1] != null && lauta[uusX - 1][uusY - 1].getNumero() == 1) {
+            }
+            if (lauta[uusX - 1][uusY - 1] != null && lauta[uusX - 1][uusY - 1].getNumero() == 1) {
                 lauta[uusX - 1][uusY - 1].paivita();
+            }
+            if (lauta[uusX - 1][uusY] != null && lauta[uusX - 1][uusY].getNumero() == 1) {
+                lauta[uusX - 1][uusY].paivita();
+            }
+            if (lauta[uusX + 1][uusY] != null && lauta[uusX + 1][uusY].getNumero() == 1) {
+                lauta[uusX + 1][uusY].paivita();
             }
         }
         
@@ -457,10 +492,20 @@ public class Lauta {
                 }
             }
         }
-
-        valkoisenNappulat.get(0).paivita();
-        mustanNappulat.get(0).paivita();
         
+    }
+    /**
+     * 
+     * @param vari viimeisimmän siirron suorittajan väri
+     */
+    public void paivitaKuninkaat(int vari) {
+        if (vari == 0) {
+            valkoisenNappulat.get(0).paivita();
+            mustanNappulat.get(0).paivita();
+        } else {
+            mustanNappulat.get(0).paivita();
+            valkoisenNappulat.get(0).paivita();
+        }
     }
     
     public ArrayList<Siirto> getSiirrot(int vari, boolean päivitä) {
@@ -469,68 +514,35 @@ public class Lauta {
         if (vari == 0) {
             if (shakitus != 0) {
                 for (int i = 0; i < valkoisenNappulat.size(); i++) {
-                    //System.out.println("getsiirrot shakitus");
-                    //System.out.println("nappula tyyppi: " + valkoisenNappulat.get(i).getTyyppi() + ", id: " + valkoisenNappulat.get(i).getID());
-                    //System.out.println("kiinnitys: " + valkoisenNappulat.get(i).getKiinnitys());
-                    int kiinnitys = valkoisenNappulat.get(i).getKiinnitys();
-                    if (kiinnitys == 0) {
-                        for (Siirto s : valkoisenNappulat.get(i).getSiirrotShakissa()) {
-                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                        }
-                    } else {
-                        for (Siirto s : valkoisenNappulat.get(i).getSiirrotShakissa()) {
-                            if (voiSiirtää(s.suunta, kiinnitys)) {
-                                siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                            }
-                        }
+                    for (Siirto s : valkoisenNappulat.get(i).getSiirrotShakissa()) {
+                        if (voiSiirtää(s, valkoisenNappulat.get(i).getKiinnitys())) {
+                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus(), s.getOhestalyönti()));
+                        }  
                     }
                 }
             } else {
                 for (int i = 0; i < valkoisenNappulat.size(); i++) {
-                    //System.out.println("nappula tyyppi: " + valkoisenNappulat.get(i).getTyyppi() + ", id: " + valkoisenNappulat.get(i).getID());
-                    //System.out.println("kiinnitys: " + valkoisenNappulat.get(i).getKiinnitys());
-                    int kiinnitys = valkoisenNappulat.get(i).getKiinnitys();
-                    if (kiinnitys == 0) {
-                        for (Siirto s : valkoisenNappulat.get(i).getSiirrot()) {
-                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                        }
-                    } else {
-                        for (Siirto s : valkoisenNappulat.get(i).getSiirrot()) {
-                            if (voiSiirtää(s.suunta, kiinnitys)) {
-                                siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                            }
-                        }
+                    for (Siirto s : valkoisenNappulat.get(i).getSiirrot()) {
+                        if (voiSiirtää(s, valkoisenNappulat.get(i).getKiinnitys())) {
+                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus(), s.getOhestalyönti()));
+                        }  
                     }
                 }
             }
         } else {
             if (shakitus != 0) {
                 for (int i = 0; i < mustanNappulat.size(); i++) {
-                    int kiinnitys = mustanNappulat.get(i).getKiinnitys();
-                    if (kiinnitys == 0) { 
-                        for (Siirto s : mustanNappulat.get(i).getSiirrotShakissa()) {
-                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                        }
-                    } else {
-                        for (Siirto s : mustanNappulat.get(i).getSiirrotShakissa()) {
-                            if (voiSiirtää(s.suunta, kiinnitys)) {
-                                siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                            }
-                        }
+                    for (Siirto s : mustanNappulat.get(i).getSiirrotShakissa()) {
+                        if (voiSiirtää(s, mustanNappulat.get(i).getKiinnitys())) {
+                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus(), s.getOhestalyönti()));
+                        }   
                     }
                 }
             } else {
-                for (int i = 0; i < mustanNappulat.size(); i++) {
-                    int kiinnitys = mustanNappulat.get(i).getKiinnitys();
-                    if (kiinnitys == 0) {
-                        for (Siirto s : mustanNappulat.get(i).getSiirrot()) {
-                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                        }
-                    } else {
-                        for (Siirto s : mustanNappulat.get(i).getSiirrot()) {
-                            if (voiSiirtää(s.suunta, kiinnitys)) {
-                                siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
-                            }
+            for (int i = 0; i < mustanNappulat.size(); i++) {
+                    for (Siirto s : mustanNappulat.get(i).getSiirrot()) {
+                        if (voiSiirtää(s, mustanNappulat.get(i).getKiinnitys())) {
+                            siirrot.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus(), s.getOhestalyönti()));
                         }
                     }
                 }
@@ -544,11 +556,58 @@ public class Lauta {
         } else if (päivitä){
             mustanSiirrot = siirrot;
         }
-        
         return siirrot;
     }
     
-    public boolean voiSiirtää(int suunta, int kiinnitys) {
+    public boolean voiSiirtää(Siirto s, int kiinnitys) {
+        if (s.getOhestalyönti()) {
+            //System.out.println("Ohestalyöntitestaus!");
+            int x = s.getX();
+            int y = s.getY();
+            int uusX = s.getUusX();
+            int vari = lauta[x][y].getVari();
+            TehtySiirto ts = tehdytSiirrot.get(tehdytSiirrot.size() - 1);
+//            System.out.println(uusX);
+//            System.out.println(y);
+//            System.out.println("ts.y: " + ts.y);
+//            System.out.println(ts.nappula.getArvo() + ", x: " + ts.nappula.getX() + ", y: " + ts.nappula.getY() + ", " + Math.abs(ts.y - y));
+            if (!(ts.nappula.getArvo() == 10 && ts.nappula.getX() == uusX && ts.nappula.getY() == y && Math.abs(ts.y - y) == 2)) {
+                return false;
+            }
+            int kuninkaanSuunta = kuninkaanSuunta(x, y, vari);
+            if (kuninkaanSuunta > 0 && kuninkaanSuunta < 3) {
+                int xSuunta = 1;
+                if (kuninkaanSuunta == 2) {
+                    xSuunta = -1;
+                }
+                x += xSuunta;
+                while (true) {
+                    if (x == uusX || lauta[x][y] == null) {
+                        x += xSuunta;
+                    } else if (lauta[x][y].getArvo() == 1000 && lauta[x][y].getVari() == vari) {
+                        x = s.getX();
+                        xSuunta *= -1;
+                        x += xSuunta;
+                        // Katsotaan, ettei oma kuningas jää vastustajan kuningattaren tai tornin linjalle. 
+                        while (true) {
+                            if (lauta[x][y] == null) {
+                                x += xSuunta;
+                            } else if (lauta[x][y].getVari() != vari && (lauta[x][y].getArvo() == 90 || lauta[x][y].getArvo() == 50)) {
+                                return false;
+                            } else {
+                                break;
+                            }
+                        }
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        int suunta = s.suunta;
+        if (kiinnitys == 0) return true;
+        
         if (suunta > 0 && suunta < 3 && kiinnitys < 3) return true;
         
         if (suunta > 2 && suunta < 5 && kiinnitys > 2 && kiinnitys < 5) return true;
@@ -704,7 +763,7 @@ public class Lauta {
         if (siirto.oliLiikkunut == false) siirto.nappula.liikutettu(false);
         lauta[vanhaX][vanhaY] = null;
         if (siirto.syotyNappula != null) {
-            lauta[vanhaX][vanhaY] = siirto.syotyNappula;
+            lauta[siirto.syotyNappula.getX()][siirto.syotyNappula.getY()] = siirto.syotyNappula;
             if (siirto.syotyNappula.getVari() == 0) {
                 valkoisenNappulat.add(siirto.syotyNappula);
             } else {
@@ -775,13 +834,12 @@ public class Lauta {
         
         valkoisenVuoro = !valkoisenVuoro;
         
-        if (valkoisenVuoro) {
-            valkoisenSiirrot = getSiirrot(0, true);
-        } else {
-            mustanSiirrot = getSiirrot(1, true);
-        }
-        
         this.tehdytSiirrot.remove(tehdytSiirrot.size() - 1);
+        if (valkoisenVuoro) {
+            getSiirrot(0, true);
+        } else {
+            getSiirrot(1, true);
+        }
         
     }
     

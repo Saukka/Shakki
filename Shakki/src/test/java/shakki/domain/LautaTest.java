@@ -3,6 +3,7 @@ package shakki.domain;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import shakki.nappulat.Nappula;
 
 public class LautaTest {
     
@@ -14,20 +15,37 @@ public class LautaTest {
     
     
     @Test
-    public void siirtojenMääräNeljänSyvyys() {
+    public void siirtojenMääräTesti() {
         lauta = new Lauta();
         lauta.asetaLauta("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         
-        int tilanteidenMäärä = 0;
+        int syvyysYksi = 0;
+        int syvyysKaksi = 0;
+        int syvyysKolme = 0;
+        int syvyysNeljä = 0;
+        int syvyysViisi = 0;
+        int syvyysKuusi = 0;
+        
         for (Siirto s : lauta.getSiirrot(0, true)) {
             lauta.teeSiirto(s.getX(), s.getY(), s.getUusX(), s.getUusY());
+            syvyysYksi++;
             for (Siirto k : lauta.getSiirrot(1, true)) {
                 lauta.teeSiirto(k.getX(), k.getY(), k.getUusX(), k.getUusY());
+                syvyysKaksi++;
                 for (Siirto j : lauta.getSiirrot(0, true)) {
+                    syvyysKolme++;
                     lauta.teeSiirto(j.getX(), j.getY(), j.getUusX(), j.getUusY());
                     for (Siirto l : lauta.getSiirrot(1, true)) {
                         lauta.teeSiirto(l.getX(), l.getY(), l.getUusX(), l.getUusY());
-                        tilanteidenMäärä++;
+                        syvyysNeljä++;
+                        for (Siirto p : lauta.getSiirrot(0, true)) {
+                            lauta.teeSiirto(p.getX(), p.getY(), p.getUusX(), p.getUusY());
+                            syvyysViisi++;
+                            
+                            syvyysKuusi += lauta.getSiirrot(1, false).size();
+                            
+                            lauta.peruSiirto();
+                        }
                         lauta.peruSiirto();
                     }
                     lauta.peruSiirto();
@@ -36,25 +54,12 @@ public class LautaTest {
             }
             lauta.peruSiirto();
         }
-        assertEquals(197742, tilanteidenMäärä);
-    }
-    
-    @Test
-    public void siirtojenMääräKahdenSyvyys() {
-        lauta = new Lauta();
-        lauta.asetaLauta("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-        
-        int tilanteidenMäärä = 0;
-        for (Siirto s : lauta.getSiirrot(0, true)) {
-            lauta.teeSiirto(s.getX(), s.getY(), s.getUusX(), s.getUusY());
-            for (Siirto k : lauta.getSiirrot(1, true)) {
-                lauta.teeSiirto(k.getX(), k.getY(), k.getUusX(), k.getUusY());
-                tilanteidenMäärä++;
-                lauta.peruSiirto();
-            }
-            lauta.peruSiirto();
-        }
-        assertEquals(400, tilanteidenMäärä);
+        assertEquals(20, syvyysYksi);
+        assertEquals(400, syvyysKaksi);
+        assertEquals(8902, syvyysKolme);
+        assertEquals(197281, syvyysNeljä);
+        assertEquals(4865609, syvyysViisi);
+        assertEquals(119060324, syvyysKuusi);
     }
     
     @Test
@@ -110,10 +115,13 @@ public class LautaTest {
         int xU = lauta.ulkoL;
         int yU = lauta.ulkoP;
         
-        //Siirretään valkoisen nappulat pois edestä
+        //Siirretään valkoisen nappulat pois edestä ja siirretään mustan sotilasta
         lauta.teeSiirto(xU + 6, yU, xU + 5, yU + 2);
+        lauta.teeSiirto(xU, yU + 6, xU, yU + 5);
         lauta.teeSiirto(xU + 4, yU + 1, xU + 4, yU + 3);
+        lauta.teeSiirto(xU, yU + 5, xU, yU + 4);
         lauta.teeSiirto(xU + 5, yU, xU + 3, yU + 2);
+        lauta.teeSiirto(xU, yU + 4, xU, yU + 3);
         
         //Sitten linnoitus
         lauta.teeSiirto(xU + 4, yU, xU + 6, yU);

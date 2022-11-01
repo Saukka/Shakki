@@ -66,7 +66,7 @@ public class TehtySiirto {
         kiinnitysEnnen = new HashMap<>();
         
         viimeksiPaivitetty = new HashMap<>();
-
+        
         valkoisenHyokatyt = new int[10][12];
         mustanHyokatyt = new int[10][12];
     }
@@ -80,7 +80,7 @@ public class TehtySiirto {
         ArrayList <Siirto> siirrotKopio = new ArrayList<>();
         
         for (Siirto s : siirrot) {
-            siirrotKopio.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
+            siirrotKopio.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus(), s.getOhestalyönti()));
         }
         nappuloidenSiirrot.put(n, siirrotKopio);
     }
@@ -98,7 +98,7 @@ public class TehtySiirto {
         ArrayList <Siirto> siirrotKopio = new ArrayList<>();
         
         for (Siirto s : siirrot) {
-            siirrotKopio.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus()));
+            siirrotKopio.add(new Siirto(s.getX(), s.getY(), s.getUusX(), s.getUusY(), s.getSuunta(), s.getVahvuus(), s.getOhestalyönti()));
         }
         siirrotShakissa.put(n, siirrotKopio);
     }

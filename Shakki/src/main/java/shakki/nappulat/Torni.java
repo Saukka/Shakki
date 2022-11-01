@@ -11,14 +11,13 @@ public class Torni extends Nappula {
         super(id, x, y, vari, lauta);
         
         this.tyyppi = TYYPPI.TORNI;
+        this.arvo = 50;
         
         if (vari == 0) {
             this.numero = 4;
-            this.arvo = 50;
             this.paikanArvo = 2;
         } else {
             this.numero = -4;
-            this.arvo = -50;
             this.paikanArvo = -2;
         }
         
@@ -70,8 +69,8 @@ public class Torni extends Nappula {
             puolustetut = lauta.mustanHyökätyt;
             hyökätyt = lauta.valkoisenHyökätyt;
         }
-        if (hyökätyt[x][y] > 0) {
-            arvio -= hyökätyt[x][y] * 8;
+        if (hyökätyt[x][y] > puolustetut[x][y]) {
+            arvio -= hyökätyt[x][y] - puolustetut[x][y];
         }
         if (puolustetut[x][y] > 0) {
             arvio += 6;
