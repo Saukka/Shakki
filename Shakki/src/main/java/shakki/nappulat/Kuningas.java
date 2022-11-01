@@ -13,7 +13,6 @@ public class Kuningas extends Nappula {
         super(id, x, y, vari, lauta);
         this.tyyppi = TYYPPI.KUNINGAS;
         this.arvo = 1000;
-        this.onLiikkunut = true;
         if (vari == 0) {
             this.numero = 6;
         } else {

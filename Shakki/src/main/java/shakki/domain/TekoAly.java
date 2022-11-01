@@ -103,7 +103,6 @@ public class TekoAly {
         
         ArrayList<Siirto> siirrot = lauta.getSiirrot(0, false);
         if (siirrot.isEmpty()) {
-            System.out.println("syvyys: " + syvyys);
             if (lauta.shakitus != 0) return -1000 * syvyys;
             return 0;
         }
@@ -173,10 +172,6 @@ public class TekoAly {
         return (int) arvio;
         
     }
-    
-    
-    
-    
     
     
     
