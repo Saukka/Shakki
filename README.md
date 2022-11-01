@@ -1,7 +1,9 @@
 # Shakki
 Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille
 
-Projekti on vielä vähän kesken. Yritän saada ohjelman viimeisteltyä muutaman päivän sisällä. Pelaaminen yleensä toimii, mutta shakin logiikan toiminnassa on jonkinlainen virhe, jonka takia joskus saattaa saattaa ilmestyä erroria, tai laillinen siirto ei toimi.
+Projekti on vielä vähän kesken. Yritän saada ohjelman viimeisteltyä tänään keskiviikkona. Pelaaminen yleensä toimii, mutta shakin logiikan toiminnassa on jonkinlainen virhe, jonka takia joskus saattaa saattaa ilmestyä erroria, tai laillinen siirto ei toimi.
+
+Tekoäly on nyt parempi ja osaa välillä matittaa, mutta joskus menee looppiin edestakaisten siirtojen kanssa ja ei pääse pidemmälle.
 
 Siirtojen tekeminen toimii klikkaamalla nappulaa ja sitten klikkaamalla ruutua mihin nappulan haluaa siirtää.
 
