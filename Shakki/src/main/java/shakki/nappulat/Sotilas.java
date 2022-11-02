@@ -120,55 +120,6 @@ public class Sotilas extends Nappula {
     }
     
     @Override
-    public void paivitaArvio(Nappula[][] lauta) {
-        this.paikanArvo = 0;
-        if (this.syoty) {
-            return;
-        }
-        arvo = 0;
-        
-        if (this.vari == 0) {
-            if (this.y > 3) {
-                arvo += 1;
-                if (this.y > 4) {
-                    arvo += 1;
-                }
-            }
-            if (this.y > 3 && this.x > 3 && this.x < 6) {
-                arvo += 3;
-                if (this.y > 4) {
-                    arvo += 4;
-                }
-            }
-            for (int i = x - 1; i <  x + 2; i += 2) {
-                if (lauta[i][y - 1] != null && lauta[i][y - 1].numero == 1) arvo += 2;
-                if (lauta[i][y + 1] != null && lauta[i][y + 1].numero == 1) arvo += 2;
-            }
-        
-        } else {
-            if (this.y < 8) {
-                arvo -= 1;
-                if (this.y < 7) {
-                    arvo -= 1;
-                }
-            }
-            if (this.y < 8 && this.x > 3 && this.x < 6) {
-                arvo -= 3;
-                if (this.y < 7) {
-                    arvo -= 4;
-                }
-            }
-            
-            for (int i = x - 1; i <  x + 2; i += 2) {
-                if (lauta[i][y - 1] != null && lauta[i][y - 1].numero == -1) arvo -= 2;
-                if (lauta[i][y + 1] != null && lauta[i][y + 1].numero == -1) arvo -= 2;
-            }
-        }
-        System.out.println("MITÄÄÄ");
-        this.paikanArvo = arvo + this.arvo;
-    }
-    
-    @Override
     public void asetaKoordinaatit(int x, int y, boolean päivitä) {
         
         onLiikkunut = true;

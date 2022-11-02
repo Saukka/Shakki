@@ -6,11 +6,12 @@ import shakki.nappulat.*;
 
 
 /**
- * Luokka huolehtii pelilaudan toiminnasta.
+ * Luokka huolehtii pelilaudan toiminnasta. 
+ * Shakkilautana toimii 10x12 taulukko. Luokassa on listat nappuloilla
  */
 public class Lauta {
     
-    public Nappula[][] lauta;
+    public Nappula[][] lauta; // shakkilauta
     
     public int leveys; // taulukon leveys
     public int pituus; // taulukon pituus
@@ -18,29 +19,25 @@ public class Lauta {
     public int ulkoL; // taulukon ylimääräisen leveyden määrä kummallakin puolella
     public int ulkoP; // taulukon ylimääräisen pituuden määrä kummallakin puolella
     
-    public ArrayList<Nappula> valkoisenNappulat;
-    public ArrayList<Nappula> mustanNappulat;
+    public ArrayList<Nappula> valkoisenNappulat; // lista valkoisen nappuloille
+    public ArrayList<Nappula> mustanNappulat; // lista mustan nappuloille
     
-    public ArrayList<TehtySiirto> tehdytSiirrot;
+    public ArrayList<TehtySiirto> tehdytSiirrot; // lista tehdyistä siirroista
     
-    ArrayList<Siirto> valkoisenSiirrot;
-    ArrayList<Siirto> mustanSiirrot;
+    ArrayList<Siirto> valkoisenSiirrot; // lista valkoisen mahdollisista siirroista
+    ArrayList<Siirto> mustanSiirrot; // lista mustan mahdollisista siirroista
 
-    public int shakitus = 0;
+    public int shakitus = 0; // shakitus-muuttuja kertoo shakituksen suunnan.
+    // jos kaksi nappulaa shakittaa samanaikaisesti, muuttujan arvo on -1.
     public int shakittajanX = 0;
     public int shakittajanY = 0;
     
     public boolean valkoisenVuoro = true;
     
-    // Jos esim. tornin ja vastustajan kuninkaan välillä on kaksi nappulaa ja ensimmäinen on vastustajan, 
-    // jälkimmäisen nappulan koordinaatit säilytetään tässä. Jos jälkimmäinen liikkuu pois linjalta, tornin siirrot päivitetään ja
-    // jonka jälkeen jäljellä välissä oleva nappula on vanhaKiinnitetty.
-    public HashMap<Koordinaatit, Nappula> kuninkaanLinjanBlokit;
-    
-    public int[][] valkoisenHyökätyt;
+    public int[][] valkoisenHyökätyt; //
     public int[][] mustanHyökätyt;
     
-    int id = 0;
+    int id = 0; // nappuloiden id
     
     public Lauta() {
 
@@ -187,11 +184,11 @@ public class Lauta {
     
     /**
      * Metodi suorittaa nappuloiden siirrot. Metodille annetaan nappulan koordinaatit ja koordinaatit mihin nappula siirretään.
-     * @param x 
-     * @param y
-     * @param uusX
-     * @param uusY
-     * @return 
+     * @param x siirrettävän nappulan x-koordinaatti.
+     * @param y siirrettävän nappulan y-koordinaatti.
+     * @param uusX nappulan uusi x-koordinaatti.
+     * @param uusY nappulan uusi y-koordinaatti.
+     * @return Jos siirrolla syötiin nappula, palautetaan sen id. Jos ei, palautetaan 0. Jos siirto epäonnistui, palautetaan -1.
      */
     public int teeSiirto(int x, int y, int uusX, int uusY) {
         boolean mahdollinenSiirto = false;
@@ -289,37 +286,15 @@ public class Lauta {
             
             return s; 
         }
-        System.out.println("Siirto epäonnistui");
-        if (valkoisenVuoro) {
-            System.out.println("Valkoisen vuoro");
-        } else {
-            System.out.println("Mustan vuoro");
-        }
         
-        //System.out.println("Siirron yrittäjän väri: " +  lauta[x][y].getVari());
-        System.out.println("x: " + x + ", y: " + y + ", uus x: " + uusX + ", uus y: " + uusY + " " );
-        //System.out.println("Kiinnitys: " + lauta[x][y].kiinnitys);
-        System.out.println("shakkaus: " + shakitus);
-        System.out.println("siirrot");
-//        if (shakitus != 0) {
-//            for (Siirto s : lauta[x][y].getSiirrotShakissa()) {
-//                System.out.println(("x: " + s.getX()) + ", y: " + s.getY() + ", uus x: " + s.getUusX() + ", uus y: " + s.getUusY() + " ");
-//            }
-//        } else {
-//            for (Siirto s : lauta[x][y].getSiirrot()) {
-//                System.out.println(("x: " + s.getX()) + ", y: " + s.getY() + ", uus x: " + s.getUusX() + ", uus y: " + s.getUusY() + " ");
-//            }
-//        }
-        for (Nappula n: valkoisenNappulat) {
-            System.out.println("valkoisenNappula x: " + n.getX() + ", y: " + n.getY());
-        }
-        for (Nappula n: mustanNappulat) {
-            System.out.println("mustan Nappula x: " + n.getX() + ", y: " + n.getY());
-        }
-        // siirtoa ei voinut tehdä
+        System.out.println("Siirto epäonnistui");
+        // siirtoa ei voitu suorittaa
         return -1;
     }
     
+    /**
+     * Metodi lisää nappuloiden siirrot shakissa, tehtyjen siirtojen listaan.
+     */
     public void lisaaSiirrotShakissa() {
         TehtySiirto tehtySiirto = tehdytSiirrot.get(tehdytSiirrot.size() - 1);
         tehtySiirto.shakitus = this.shakitus;
@@ -335,12 +310,12 @@ public class Lauta {
     }
     
     /**
-     * Metodi suorittaa kuninkaan ja tornin linnoituksen
-     * @param kuningas
-     * @param x
-     * @param y
-     * @param uusX
-     * @return 
+     * Metodi suorittaa kuninkaan ja tornin linnoituksen.
+     * @param kuningas Kuningas-nappula
+     * @param x kuninkaan x-koordinaatti.
+     * @param y kuninkaan y-koordinaatti.
+     * @param uusX kuninkaan uusi x-koordinaatti.
+     * @return tornin id+50.
      */
     public int teeLinnoitus(Nappula kuningas, int x, int y, int uusX) {
         
@@ -390,6 +365,14 @@ public class Lauta {
         return torni.getID() + 50;
     }
     
+    /**
+     * Lisätään siirto tehtyjen siirtojen listaan.
+     * @param x siirrettävän nappulan (vanha) x-koordinaatti.
+     * @param y siirrettävän nappulan (vanha) y-koordinaatti.
+     * @param nappula siirrettävä nappula.
+     * @param torni jos kyseessä oli linnoitus, torni-nappula. Muuten null.
+     * @param syöty siirrossa syöty nappula. Jos nappulaa ei syöty, null.
+     */
     public void lisaaTehtySiirto(int x, int y, Nappula nappula, Nappula torni, Nappula syöty) {
         TehtySiirto tehtySiirto = new TehtySiirto(x, y, nappula, torni, syöty, nappula.onkoLiikkunut(), this.shakitus);
         int[][] valkoisen = new int[10][12];
@@ -407,11 +390,11 @@ public class Lauta {
     
     /**
      * Metodi katsoo, minkä nappuloiden siirtoihin tehty siirto mahdollisesti vaikuttaa ja päivittää näiden siirrot.
-     * @param x
-     * @param y
-     * @param uusX
-     * @param uusY
-     * @param vari 
+     * @param x tehdyn siirron vanha x-koordinaatti.
+     * @param y tehdyn siirron vanha y-koordinaatti.
+     * @param uusX tehdyn siirron uusi x-koordinaatti.
+     * @param uusY tehdyn siirron uusi x-koordinaatti.
+     * @param vari siirretyn nappulan väri.
      */
     public void paivitaTarvittavat(int x, int y, int uusX, int uusY, int vari) {
           
@@ -449,6 +432,8 @@ public class Lauta {
                 }
             }
         }
+        // Tarkistetaan tarvitseeko vastustajan sotilaita päivittää.
+        
         if (vari == 0) {
             if (lauta[uusX + 1][uusY + 1] != null && lauta[uusX + 1][uusY + 1].getNumero() == -1) {
                 lauta[uusX + 1][uusY + 1].paivita();
@@ -477,6 +462,7 @@ public class Lauta {
             }
         }
         
+        // Jos siirron jompi kumpi ruutu on kuninkaan linjalla, tarkistetaan onko linjalla myös 
         if (kuninkaanSuunta(0, x, y) > 0 || kuninkaanSuunta(0, uusX, uusY) > 0) {
             for (Nappula n : mustanNappulat) {
                 if (n.getNumero() < -2 && n.getNumero() > -6) {
@@ -561,20 +547,16 @@ public class Lauta {
     
     public boolean voiSiirtää(Siirto s, int kiinnitys) {
         if (s.getOhestalyönti()) {
-            //System.out.println("Ohestalyöntitestaus!");
             int x = s.getX();
             int y = s.getY();
             int uusX = s.getUusX();
             int vari = lauta[x][y].getVari();
             TehtySiirto ts = tehdytSiirrot.get(tehdytSiirrot.size() - 1);
-//            System.out.println(uusX);
-//            System.out.println(y);
-//            System.out.println("ts.y: " + ts.y);
-//            System.out.println(ts.nappula.getArvo() + ", x: " + ts.nappula.getX() + ", y: " + ts.nappula.getY() + ", " + Math.abs(ts.y - y));
             if (!(ts.nappula.getArvo() == 10 && ts.nappula.getX() == uusX && ts.nappula.getY() == y && Math.abs(ts.y - y) == 2)) {
                 return false;
             }
-            int kuninkaanSuunta = kuninkaanSuunta(x, y, vari);
+            int kuninkaanSuunta = kuninkaanSuunta(vari, x, y);
+            System.out.println(kuninkaanSuunta);
             if (kuninkaanSuunta > 0 && kuninkaanSuunta < 3) {
                 int xSuunta = 1;
                 if (kuninkaanSuunta == 2) {
@@ -590,7 +572,7 @@ public class Lauta {
                         x += xSuunta;
                         // Katsotaan, ettei oma kuningas jää vastustajan kuningattaren tai tornin linjalle. 
                         while (true) {
-                            if (lauta[x][y] == null) {
+                            if (lauta[x][y] == null || x == uusX) {
                                 x += xSuunta;
                             } else if (lauta[x][y].getVari() != vari && (lauta[x][y].getArvo() == 90 || lauta[x][y].getArvo() == 50)) {
                                 return false;
@@ -688,11 +670,11 @@ public class Lauta {
         
         if (valkoisenVuoro) {
             for (Nappula n: valkoisenNappulat) {
-                n.paivitaKunShakissa(ruudut, mustanHyökätyt);
+                n.paivitaKunShakissa(ruudut);
             }
         } else {
             for (Nappula n: mustanNappulat) {
-                n.paivitaKunShakissa(ruudut, valkoisenHyökätyt);
+                n.paivitaKunShakissa(ruudut);
             }
         }
         
@@ -710,7 +692,6 @@ public class Lauta {
             kuninkaanX = mustanNappulat.get(0).getX();
             kuninkaanY = mustanNappulat.get(0).getY();
         }
-        
         if (kuninkaanX == x) {
             if (kuninkaanY > y) return 4;
             return 3;

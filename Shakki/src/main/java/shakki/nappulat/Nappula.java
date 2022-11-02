@@ -6,10 +6,11 @@ import shakki.domain.*;
 
 /**
  * Nappula-olion luokka.
+ * Luokka säilyttää nappulan olennaiset tiedot ja nappulan pseudosiirrot.
  */
 public abstract class Nappula {
     
-    Lauta lauta;
+    Lauta lauta; // nappulan lauta
     
     enum TYYPPI{
         SOTILAS, LAHETTI, RATSU, TORNI, KUNINGATAR, KUNINGAS, EPANAPPULA
@@ -17,41 +18,39 @@ public abstract class Nappula {
     
     TYYPPI tyyppi;
     
-    int id = 0;
+    int id = 0; // jokaisella nappulalla on uniikki id
     int numero; // numero kertoo nappulan tyypin
     int arvo; // Arvo kertoo nappulan arvon
     
-    int vari;
+    int vari; // 0 jos valkoinen, 1 jos musta
     
-    public int viimeksiPaivitetty;
+    public int viimeksiPaivitetty; // milloin viimeksi nappulan siirrot ovat päivitetty.
     
     // Nappulan koordinaatit
     int x;
     int y;
     
-    boolean onLiikkunut;
-    boolean syoty;
+    boolean onLiikkunut; // onko nappula liikkunut
+    boolean syoty; // onko nappula syöty
     
-    public ArrayList<Siirto> siirrot;
-    public ArrayList<Koordinaatit> blokit;
-    public ArrayList<Siirto> siirrotShakissa;
+    public ArrayList<Siirto> siirrot; // nappulan siirrot
+    public ArrayList<Koordinaatit> blokit; // nappulan liikkumista rajoittavat koordinaatit.
+    public ArrayList<Siirto> siirrotShakissa; // nappulan siirrot shakissa.
     
-    int paikanArvo = 0;
+    public int kiinnitys = 0; // nappulan kiinnitys
     
-    public int kiinnitys = 0;
+    public Nappula kiinnitetty = null; // nappulan kiinnittämä nappula
+    public int kiinnitysSuunta = 0; 
     
-    public Nappula kiinnitetty = null;
-    public int kiinnitysSuunta = 0;
-    
-    int kiinnitysEnnen = 0;
+    int kiinnitysEnnen = 0; // kiinnitettävän nappulan kiinnitys ennen kiinnittämistä.
     
     /**
-     * 
-     * @param id jokaisella nappulalla on uniikki id
+     * Nappulan luominen.
+     * @param id jokaisella nappulalla on uniikki id.
      * @param x nappulan x-koordinaatti.
      * @param y nappulan y-koordinaatti.
-     * @param vari nappulan väri. 0 = valkoinen, 1 = musta, -1 = ei ole nappula
-     * @param lauta
+     * @param vari nappulan väri. 0 = valkoinen, 1 = musta, -1 = ei ole nappula.
+     * @param lauta lauta jolla nappula on.
      */
     public Nappula(int id, int x, int y, int vari, Lauta lauta) {
         
@@ -72,8 +71,11 @@ public abstract class Nappula {
         this.lauta = lauta;
     }
     
-    // Metodit joita käytetään siirtojen päivittämisessä
-    
+    /**
+     * Tarkistetaan onko ruudussa samanvärinen nappula tai ollaanko laudan ulkopuolella.
+     * @param n Tarkistettava nappula
+     * @return true tai false
+     */
     public boolean omaNappula(Nappula n) {
         if (n == null) return false;
         
@@ -83,11 +85,12 @@ public abstract class Nappula {
     }
     
     /**
-     * 
-     * @param xSuunta
-     * @param ySuunta
-     * @param suunta
-     * @param kuninkaanSuunta 
+     * Kuningattaren, lähetin ja tornin käyttämä metodi jolla katsotaan siirrot tiettyyn suuntaan.
+     * @param xSuunta x-suunnan rvo. Esim. jos mennään oikealle päin, arvo on 1.
+     * @param ySuunta y-suunnan arvo. Esim. jos mennään alaspäin, arvo on -1.
+     * @param suunta menosuunta
+     * @param kuninkaanSuunta kuninkaansuunta. Jos törmätään johonkin nappulaan ja tiedetään että kuningas on samassa suunnassa,
+     * ruudujen katsomista jatketaan ja jos seuraava eteen tuleva nappula on kuningas, ensimmäiseksi vastaan tullut nappula kiinnitetään.
      */
     public void katsoRuudut (int xSuunta, int ySuunta, int suunta, int kuninkaanSuunta) {
         
@@ -138,12 +141,6 @@ public abstract class Nappula {
                         kiinnitetty = lauta.lauta[kiinnitettavanX][kiinnitettavanY];
                         kiinnitysSuunta = suunta;
                         
-//                        System.out.println("");
-//                        
-//                        System.out.println("Uusi kiinnitys, siirtojen määrä: " + lauta.tehdytSiirrot.size());
-//                        System.out.println("Kiinnittävä: " + this.tyyppi + ", x: " + this.x + ", y: " + this.y);
-//                        System.out.println("Kiinnitetty: " + kiinnitetty.getTyyppi() + " ,id: " + kiinnitetty.getID() + ", x: " + kiinnitetty.getX() + ", y: " + kiinnitetty.getY());
-//                        System.out.println("Suunta: " + suunta);
                         return;
                     }
                     return;
@@ -154,7 +151,28 @@ public abstract class Nappula {
         }
         
     }
+    /**
+     * Ilmoittaa shakista ja päivittää shakkauksen tiedot.
+     * @param suunta suunta mistä kuningasta shakataan.
+     */
+    public void shakita(int suunta) {
+        if (lauta.shakitus > 0) {
+            // Jos shakitus on jo yli 1, joku toinen nappula on shakittanut kuninkaan.
+            // Palautetaan -1 joka tarkoittaa, että kaksi nappulaa shakkaa kuningasta.
+            lauta.shakitus = -1;
+            return;
+        }
+        lauta.shakitus = suunta;
+        lauta.shakittajanX = x;
+        lauta.shakittajanY = y;
+        
+    }
     
+    /**
+     * Palauttaa halutun kuninkaan suunnan, -1 jos ei ole suoraa suuntaa.
+     * @param vari
+     * @return 
+     */
     public int kuninkaanSuunta(int vari) {
         
         int kuninkaanX;
@@ -187,7 +205,9 @@ public abstract class Nappula {
         return -1;
     }
     
-    // Paivittaa siirrot jos kuningas on nappulan linjalla tai jos nappulalla on kiinnitys
+    /**
+     * Päivittää siirrot jos kuningas on nappulan linjalla tai jos nappulalla on kiinnitys.
+     */
     public void paivitaJos() {
         
         if (kiinnitysSuunta != 0) {
@@ -211,6 +231,9 @@ public abstract class Nappula {
     
     public void paivitaSiirrot() {}
     
+    /**
+     * Päivittää nappulan siirrot ja lisää siirtojen sekä mahdollisen kiinnityksen tiedot tehdytsiirto-listaan.
+     */
     public void paivita() {
         
         if (viimeksiPaivitetty == this.lauta.tehdytSiirrot.size()) return;
@@ -256,10 +279,12 @@ public abstract class Nappula {
 
     }
     
-    /*
-    Päivittää siirrot kun oma kuningas on shakissa
-    */
-    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut, int[][] hyokatyt) {
+    /**
+     * Päivittää nappuloiden siirrot shakissa.
+     * @param ruudut shakkauksen linjan ruudut eli nappula voi blokata shakin liikkumalla listan ruutuihin.
+     * jos shakitus on -1, shakkia ei voi blokata ja kuningas on ainoa nappula jota voi siirtää.
+     */
+    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut) {
         this.siirrotShakissa.clear();
         
         if (lauta.shakitus == -1) {
@@ -280,6 +305,11 @@ public abstract class Nappula {
         }
     }
     
+    /**
+     * Päivittää halutun värin hyökätyt-taulukonarvoja.
+     * @param p -1 jos otetaan arvoja pois, +1 jos lisätään.
+     * @param hyokatyt jomman kumman värin hyökätyt-lista.
+     */
     public void päivitäHyökätyt(int p, int[][] hyokatyt) {
         for (int i = 0; i < this.siirrot.size(); i++) {
             hyokatyt[this.siirrot.get(i).getUusX()][this.siirrot.get(i).getUusY()] += p;
@@ -317,8 +347,6 @@ public abstract class Nappula {
         onLiikkunut = true;
     }
     
-    
-    
     public ArrayList<Siirto> getSiirrot() {
         return this.siirrot;
     }
@@ -347,6 +375,7 @@ public abstract class Nappula {
         return y;
     }
     
+    // Metodin avulla nappula tuodaan takaisin peruSiirto-metodissa.
     public void tuoTakaisin() {
         if (this.vari == 0) {
             päivitäHyökätyt(1, lauta.valkoisenHyökätyt);
@@ -355,8 +384,11 @@ public abstract class Nappula {
         }
         this.syoty = false;
     }
-    
+    /**
+     * Metodin avulla nappula syödään.
+     */
     public void syö() {
+        // Poistetaan nappulan hyökätyt ruudut, eli miinustetaan hyökätyistä ruuduista 1
         if (this.vari == 0) {
             päivitäHyökätyt(-1, lauta.valkoisenHyökätyt);
         } else {
@@ -388,26 +420,6 @@ public abstract class Nappula {
     public int getKiinnitys() {
         return this.kiinnitys;
     }
-    
-    public int getPaikanArvo() {
-        return this.paikanArvo;
-    }
-    
-    public void paivitaArvio(Nappula[][] lauta) {
-        
-    }
-    
-    public void shakita(int suunta) {
-        if (lauta.shakitus > 0) {
-            lauta.shakitus = -1;
-            return;
-        }
-        lauta.shakitus = suunta;
-        lauta.shakittajanX = x;
-        lauta.shakittajanY = y;
-        
-    }
-    
     
     public int nappulanArvio() {
         return 0;

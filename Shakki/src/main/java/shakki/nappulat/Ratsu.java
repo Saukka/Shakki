@@ -12,7 +12,6 @@ public class Ratsu extends Nappula {
         super(id, x, y, vari, lauta);
         
         this.tyyppi = TYYPPI.RATSU;
-        this.paikanArvo = 0;
         
         if (vari == 0) {
             this.numero = 2;
@@ -79,24 +78,6 @@ public class Ratsu extends Nappula {
         this.blokit.add(new Koordinaatit(x, y));
     }
     
-    @Override
-    public void paivitaArvio(Nappula[][] lauta) {
-        this.paikanArvo = 0;
-        if (this.syoty) {
-            return;
-        }
-        
-        if (this.x > 2 && this.x < 7 && this.y > 3 && this.y < 8) {
-            this.paikanArvo += 3;
-        }
-        
-        this.paikanArvo += this.siirrot.size() * 2;
-        
-        if (this.vari > 0) {
-            this.paikanArvo *= -1;
-        }
-        this.paikanArvo += this.arvo;
-    }
     
     @Override
     public int nappulanArvio() {

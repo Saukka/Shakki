@@ -31,23 +31,6 @@ public class Lähetti extends Nappula {
         
     }
     
-    @Override
-    public void paivitaArvio(Nappula[][] lauta) {
-        this.paikanArvo = 0;
-        if (this.syoty) {
-            return;
-        }
-        
-        if (this.siirrot.size() > 3) {
-            this.paikanArvo += 2;
-        }
-        
-        if (vari > 0) {
-            this.paikanArvo *= -1;
-        }
-        this.paikanArvo += this.arvo;
-    }
-    
     public int nappulanArvio() {
         int arvio = 30;
         

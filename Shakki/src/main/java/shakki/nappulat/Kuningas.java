@@ -13,6 +13,7 @@ public class Kuningas extends Nappula {
         super(id, x, y, vari, lauta);
         this.tyyppi = TYYPPI.KUNINGAS;
         this.arvo = 1000;
+        
         if (vari == 0) {
             this.numero = 6;
         } else {
@@ -64,7 +65,7 @@ public class Kuningas extends Nappula {
     }
     
     @Override
-    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut, int[][] hyokatyt) {
+    public void paivitaKunShakissa(ArrayList<Koordinaatit> ruudut) {
         
         this.siirrotShakissa.clear();
         for (Siirto s: this.siirrot) {

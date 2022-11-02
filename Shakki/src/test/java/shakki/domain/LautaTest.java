@@ -18,7 +18,6 @@ public class LautaTest {
     public void siirtojenMääräTesti() {
         lauta = new Lauta();
         lauta.asetaLauta("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-        
         int syvyysYksi = 0;
         int syvyysKaksi = 0;
         int syvyysKolme = 0;
@@ -41,9 +40,7 @@ public class LautaTest {
                         for (Siirto p : lauta.getSiirrot(0, true)) {
                             lauta.teeSiirto(p.getX(), p.getY(), p.getUusX(), p.getUusY());
                             syvyysViisi++;
-                            
                             syvyysKuusi += lauta.getSiirrot(1, false).size();
-                            
                             lauta.peruSiirto();
                         }
                         lauta.peruSiirto();

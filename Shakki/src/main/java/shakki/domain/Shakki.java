@@ -100,7 +100,7 @@ public class Shakki {
                         }
                     }
                     CompletableFuture.delayedExecutor(0, TimeUnit.SECONDS).execute(() -> {
-                        tekoAlySiirra();
+                        //tekoAlySiirra();
                     });
                     
 //                    for (int i = 9; i > 1; i--) {
