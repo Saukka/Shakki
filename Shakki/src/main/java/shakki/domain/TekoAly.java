@@ -147,8 +147,10 @@ public class TekoAly {
             arvio -= lauta.mustanNappulat.get(i).nappulanArvio();
         }
         
-        if (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size() < 10) {
+        if (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size() < 8) {
+            arvio = arvio / 2;
             arvio -= loppuPelinArvio();
+            
         }
         
         return arvio;
@@ -160,16 +162,17 @@ public class TekoAly {
         int y = lauta.valkoisenNappulat.get(0).getY();
         // valkoisen kuninkaan etäisyys keskustaan
         int kuningasKeskustaan = (Math.abs(5 - x) + Math.abs(6 - y));
-        arvio += kuningasKeskustaan;
+        arvio += 4 * kuningasKeskustaan;
         
         int omaX = lauta.mustanNappulat.get(0).getX();
         int omaY = lauta.mustanNappulat.get(0).getY();
         
         int kuninkaidenEtäisyys = Math.abs(x - omaX) + Math.abs(y - omaY);
         
-        arvio += 18 - (kuninkaidenEtäisyys * 2);
+        arvio += 2 * (14 - kuninkaidenEtäisyys);
         
-        arvio = arvio * (5 / (double) (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size()));
+        arvio = arvio * (2 / (double) (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size()));
+        System.out.println(arvio);
         return (int) arvio;
         
     }

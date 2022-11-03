@@ -86,14 +86,14 @@ public class Kuningas extends Nappula {
             hyökätyt = lauta.mustanHyökätyt;
             
             if (y < 3) {
-                arvio += 5;
+                arvio += lauta.valkoisenNappulat.size() / 2;
             }
         } else {
             puolustetut = lauta.mustanHyökätyt;
             hyökätyt = lauta.valkoisenHyökätyt;
             
             if (y > 8) {
-                arvio += 5;
+                arvio += lauta.mustanNappulat.size() / 2;
             }
         }
         if (x < 4 || x > 5) {

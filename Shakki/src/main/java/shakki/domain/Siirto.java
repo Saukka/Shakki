@@ -1,7 +1,9 @@
 
 package shakki.domain;
 
-
+/**
+ * Nappulan siirto
+ */
 public class Siirto {
     
     int x;
