@@ -92,8 +92,8 @@ public class TekoAly {
         
     /**
      * Minimax-algoritmin max-osa.
-     * @param alpha
-     * @param beta
+     * @param alpha suurin saavutettu arvio
+     * @param beta pienin saavutettu arvio
      * @param syvyys haun syvyys
      * @return pelitilanteen arvio siirron jälkeen.
      */
@@ -115,7 +115,6 @@ public class TekoAly {
             int uusX = siirrot.get(i).getUusX();
             int uusY = siirrot.get(i).getUusY();
             
-            //System.out.println("Valkoinen tekee siirron " + lauta.lauta[x][y].getTyyppi() +  " x: " + x + ", y: " + y + ", uusX:  " + uusX + ", uus Y: " + uusY);
             int s = lauta.teeSiirto(x, y, uusX, uusY);
             if (s != -1) {
                 int min = minArvo(alpha, beta, syvyys - 1);
@@ -171,7 +170,6 @@ public class TekoAly {
         arvio += 18 - (kuninkaidenEtäisyys * 2);
         
         arvio = arvio * (5 / (double) (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size()));
-        //System.out.println("Loppu pelin arvio: " + (int) arvio);
         return (int) arvio;
         
     }
