@@ -68,20 +68,20 @@ public class TekoAly {
             return 0;
         }
         
-        for (int i = 0; i < siirrot.size(); i++) {
-            int x = siirrot.get(i).getX();
-            int y = siirrot.get(i).getY();
-            int uusX = siirrot.get(i).getUusX();
-            int uusY = siirrot.get(i).getUusY();
+        for (Siirto s : siirrot) {
+            int x = s.getX();
+            int y = s.getY();
+            int uusX = s.getUusX();
+            int uusY = s.getUusY();
             
-            int s = lauta.teeSiirto(x, y, uusX, uusY);
-            if (s != -1) {
+            int p = lauta.teeSiirto(x, y, uusX, uusY);
+            if (p != -1) {
                 int max = maxArvo(alpha, beta, syvyys - 1);
                 lauta.peruSiirto();
                 v = Math.min(v, max);
                 beta = Math.min(beta, v);
                 if (syvyys == this.syvyys && v == max) {
-                    minArvot.put(v, siirrot.get(i));
+                    minArvot.put(v, s);
                 }
             }
 
@@ -109,14 +109,14 @@ public class TekoAly {
             if (lauta.shakitus != 0) return -1000 * syvyys;
             return 0;
         }
-        for (int i = 0; i < siirrot.size(); i++) {
-            int x = siirrot.get(i).getX();
-            int y = siirrot.get(i).getY();
-            int uusX = siirrot.get(i).getUusX();
-            int uusY = siirrot.get(i).getUusY();
+        for (Siirto s : siirrot) {
+            int x = s.getX();
+            int y = s.getY();
+            int uusX = s.getUusX();
+            int uusY = s.getUusY();
             
-            int s = lauta.teeSiirto(x, y, uusX, uusY);
-            if (s != -1) {
+            int p = lauta.teeSiirto(x, y, uusX, uusY);
+            if (p != -1) {
                 int min = minArvo(alpha, beta, syvyys - 1);
                 lauta.peruSiirto();
             
@@ -160,19 +160,19 @@ public class TekoAly {
         double arvio = 0;
         int x = lauta.valkoisenNappulat.get(0).getX();
         int y = lauta.valkoisenNappulat.get(0).getY();
+        
         // valkoisen kuninkaan etäisyys keskustaan
         int kuningasKeskustaan = (Math.abs(5 - x) + Math.abs(6 - y));
-        arvio += 4 * kuningasKeskustaan;
+        arvio += 5 * kuningasKeskustaan;
         
         int omaX = lauta.mustanNappulat.get(0).getX();
         int omaY = lauta.mustanNappulat.get(0).getY();
         
         int kuninkaidenEtäisyys = Math.abs(x - omaX) + Math.abs(y - omaY);
         
-        arvio += 2 * (14 - kuninkaidenEtäisyys);
+        arvio += 3 * (14 - kuninkaidenEtäisyys);
         
         arvio = arvio * (2 / (double) (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size()));
-        System.out.println(arvio);
         return (int) arvio;
         
     }

@@ -100,12 +100,14 @@ public class Lauta {
             
         }
         
-        for (Nappula n : valkoisenNappulat) {
-            n.paivita();
+        for (int i = 1; i < valkoisenNappulat.size(); i++) {
+            valkoisenNappulat.get(i).paivita();
         }
-        for (Nappula n : mustanNappulat) {
-            n.paivita();
+        for (int i = 1; i < mustanNappulat.size(); i++) {
+            mustanNappulat.get(i).paivita();
         }
+        
+        paivitaKuninkaat(1);
         
         if (valkoisenVuoro) {
             valkoisenSiirrot = getSiirrot(0, false);
@@ -281,11 +283,6 @@ public class Lauta {
             valkoisenVuoro = !valkoisenVuoro;
             
             if (shakitus != 0) {
-//                if (n.getVari() == 0) {
-//                    System.out.println("Valkoisen shakitus x: " + shakittajanX + ", y: " + shakittajanY + ", " + lauta[shakittajanX][shakittajanY].getTyyppi());
-//                } else {
-//                    System.out.println("Mustan shakitus x: " + shakittajanX + ", y: " + shakittajanY + ", " + lauta[shakittajanX][shakittajanY].getTyyppi());
-//                }
                 paivitaShakissa(shakittajanX, shakittajanY, shakitus);
             }
 
@@ -579,7 +576,6 @@ public class Lauta {
                 return false;
             }
             int kuninkaanSuunta = kuninkaanSuunta(vari, x, y);
-            System.out.println(kuninkaanSuunta);
             if (kuninkaanSuunta > 0 && kuninkaanSuunta < 3) {
                 int xSuunta = 1;
                 if (kuninkaanSuunta == 2) {
