@@ -114,7 +114,12 @@ public class Lauta {
         }
         
     }
-    
+    /**
+     * Metodi tarkistaa kirjaimen ja kutsuu lisäänappula-metodia
+     * @param k fen-merkkijonossa oleva kirjain
+     * @param x x-koordinaatti
+     * @param y y-koordinaatti
+     */
     public void lisaaKirjaimella(char k, int x, int y) {
         id++;
         int vari = 0;
@@ -138,7 +143,13 @@ public class Lauta {
             lisaaNappula(6, x, y, vari);
         }
     }
-    
+    /**
+     * Metodi lisää numeron perusteella nappulan laudalle 
+     * @param numero lisättävä nappula
+     * @param x ruudun x-koordinaatti
+     * @param y ruudun y-koordinaatti
+     * @param vari nappulan väri
+     */
     public void lisaaNappula(int numero, int x, int y, int vari) {
         switch (numero) {
             case 1:
@@ -481,7 +492,7 @@ public class Lauta {
         
     }
     /**
-     * 
+     * Metodi päivittää kuninkaiden siirrot. Kuninkaiden siirrot päivitetään muiden nappuloiden jälkeen.
      * @param vari viimeisimmän siirron suorittajan väri
      */
     public void paivitaKuninkaat(int vari) {
@@ -493,7 +504,12 @@ public class Lauta {
             valkoisenNappulat.get(0).paivita();
         }
     }
-    
+    /**
+     * Palauttaa halutun värin siirrot.
+     * @param vari halutun värisen armeijan siirrot
+     * @param päivitä päivitetäänkö siirrot samalla.
+     * @return siirrot
+     */
     public ArrayList<Siirto> getSiirrot(int vari, boolean päivitä) {
         ArrayList<Siirto> siirrot = new ArrayList<>();
         
@@ -545,6 +561,13 @@ public class Lauta {
         return siirrot;
     }
     
+    /**
+     * Metodi tutkii kiinnityksen perusteella voiko nappulaa siirtää. 
+     * Jos siirto on ohestalyönti, metodi varmistaa ettei kuningas paljastu siirron jälkeen.
+     * @param s siirto
+     * @param kiinnitys nappulan kiinnitys
+     * @return true tai false
+     */
     public boolean voiSiirtää(Siirto s, int kiinnitys) {
         if (s.getOhestalyönti()) {
             int x = s.getX();
@@ -601,9 +624,9 @@ public class Lauta {
     
     /**
      * Päivittää siirrot shakki-tilanteessa.
-     * @param x
-     * @param y
-     * @param suunta
+     * @param x shakittajan x-koordinaatti.
+     * @param y shakittajan y-koordinaatti.
+     * @param suunta shakittajan suunta kuninkaaseen.
      */
     public void paivitaShakissa(int x, int y, int suunta) {
         
@@ -679,7 +702,13 @@ public class Lauta {
         }
         
     }
-    
+    /**
+     * Metodi palauttaa halutun värisen kuninkaan suunnan.
+     * @param vari halutun kuninkaan väri
+     * @param x x-koordinaatti josta suunta katsotaan
+     * @param y y-koordinaatti josta suunta katsotaan
+     * @return kuninkaan suunta. -1 jos suuntaa ei ole.
+     */
     public int kuninkaanSuunta(int vari, int x, int y) {
         
         int kuninkaanX;
@@ -714,7 +743,7 @@ public class Lauta {
     
     /**
      * Poistaa nappulan nappuloiden listalta.
-     * @param n
+     * @param n poistettaba nappula
      */
     public void poistaNappula(Nappula n) {
         if (n.getVari() == 0) {
@@ -724,10 +753,9 @@ public class Lauta {
         }
     }
     /**
-     * Tuleva peruSiirto, joka korvaa laudan kopioinnin tarpeen.
+     * Metodi peruu viimeisimmän tehdyn siirron.
      */
     public void peruSiirto() {
-        //System.out.println("Peru siirto");
         
         TehtySiirto siirto = this.tehdytSiirrot.get(this.tehdytSiirrot.size() - 1);
         
@@ -742,6 +770,8 @@ public class Lauta {
         lauta[x][y] = siirto.nappula;
         siirto.nappula.asetaKoordinaatit(x, y, false);
         if (siirto.oliLiikkunut == false) siirto.nappula.liikutettu(false);
+        
+        // Palautetaan myös syöty nappula, tai mahdollinen linnoituksessa myös siirtynyt torni.
         lauta[vanhaX][vanhaY] = null;
         if (siirto.syotyNappula != null) {
             lauta[siirto.syotyNappula.getX()][siirto.syotyNappula.getY()] = siirto.syotyNappula;
@@ -771,6 +801,7 @@ public class Lauta {
             siirto.nappula.kiinnitysSuunta = 0;
         }
         
+        
         for (Nappula n : siirto.nappulat) {
             n.siirrot = siirto.nappuloidenSiirrot.get(n);
             n.blokit = siirto.nappuloidenBlokit.get(n);
@@ -778,9 +809,6 @@ public class Lauta {
             
             Nappula uusiKiinnitetty = siirto.uudetKiinnitetyt.get(n);
             if (uusiKiinnitetty != null) {
-//                System.out.println("");
-//                System.out.println("Siirrossa " + this.tehdytSiirrot.size());
-//                System.out.println("kiinnitys peruminen (uusi): kiinnitetylle " + uusiKiinnitetty.getTyyppi() + ", id: " + uusiKiinnitetty.getID() + " palautetaan kiinnitys " + siirto.kiinnitysEnnen.get(n));
                 uusiKiinnitetty.kiinnitys = siirto.kiinnitysEnnen.get(n);
                 n.kiinnitetty = null;
                 n.kiinnitysSuunta = 0;
