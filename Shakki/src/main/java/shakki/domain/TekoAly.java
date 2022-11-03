@@ -11,15 +11,13 @@ import shakki.nappulat.Nappula;
 
 
 /**
- * Luokka arvioi peliä ja tekee siirron minimax-algoritmin avulla. 
+ * Luokka laskee minimax-algoritmin ja heuristisen arvion avulla suoritettavan siirron.
  */
 public class TekoAly {
     
     Lauta lauta;
     
     int syvyys;
-    
-    int mini;
     
     HashMap<Integer, Siirto> minArvot;
     
@@ -29,13 +27,11 @@ public class TekoAly {
     
     /**
      * Tekoäly laskee minimax-algoritmia käyttäen siirron.
-     * @return Koordinaatit-lista, ensimmäinen arvo kertoo nappulan koordinaatit. Toinen, mihin nappula siirretään
+     * @return Suoritettava siirto
      */
     public Siirto LaskeSiirto() {
 
         syvyys = 4;
-        
-        mini = 100000;
         
         minArvot = new HashMap();
         minArvot.clear();
@@ -47,12 +43,18 @@ public class TekoAly {
             }
         } 
         
-        int re = minArvo(-1000000, 1000000, syvyys);
+        int mini = minArvo(-1000000, 1000000, syvyys);
         
         return minArvot.get(mini);
     }
     
-    
+    /**
+     * Minimax-algoritmin min-osa.
+     * @param alpha
+     * @param beta
+     * @param syvyys haun syvyys
+     * @return pelitilanteen arvio siirron jälkeen.
+     */
     public int minArvo(int alpha, int beta, int syvyys) {
         if (syvyys == 0) {
             return lautaArvio();
@@ -61,10 +63,6 @@ public class TekoAly {
         int v = 100000;
         
         ArrayList<Siirto> siirrot = lauta.getSiirrot(1, false);
-        if (syvyys == this.syvyys) {
-            //System.out.println("Mustien siirtojen koko: " + siirrot.size());
-            //System.out.println("Shakitus: " + lauta.shakitus);
-        }
         if (siirrot.isEmpty()) {
             if (lauta.shakitus != 0) return 1000 * syvyys;
             return 0;
@@ -76,7 +74,6 @@ public class TekoAly {
             int uusX = siirrot.get(i).getUusX();
             int uusY = siirrot.get(i).getUusY();
             
-            //System.out.println("Musta tekee siirron " + lauta.lauta[x][y].getTyyppi() +  " x: " + x + ", y: " + y + ", uusX:  " + uusX + ", uus Y: " + uusY);
             int s = lauta.teeSiirto(x, y, uusX, uusY);
             if (s != -1) {
                 int max = maxArvo(alpha, beta, syvyys - 1);
@@ -84,7 +81,6 @@ public class TekoAly {
                 v = Math.min(v, max);
                 beta = Math.min(beta, v);
                 if (syvyys == this.syvyys && v == max) {
-                    mini = v;
                     minArvot.put(v, siirrot.get(i));
                 }
             }
@@ -94,6 +90,13 @@ public class TekoAly {
         return v;
     }
         
+    /**
+     * Minimax-algoritmin max-osa.
+     * @param alpha
+     * @param beta
+     * @param syvyys haun syvyys
+     * @return pelitilanteen arvio siirron jälkeen.
+     */
     public int maxArvo(int alpha, int beta, int syvyys) {
         if (syvyys == 0) {
             return lautaArvio();

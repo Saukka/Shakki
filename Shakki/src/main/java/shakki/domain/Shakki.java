@@ -12,8 +12,8 @@ import shakki.nappulat.Nappula;
 import shakki.ui.PeliUI;
 
 /**
- * Luokka katsoo pelaajan siirrot ja ilmoittaa ne lauta-luokalle, 
- * sekä päivittää laudan näkymän PeliUI-luokan avulla.
+ * Luokka katsoo pelaajan siirrot ja ilmoittaa ne lauta-luokalle, sekä päivittää laudan näkymän PeliUI-luokan avulla.
+ * Luokka myös suorittaa tekoälyn siirrot.
  */
 public class Shakki {
     
@@ -122,6 +122,9 @@ public class Shakki {
             
     }
     
+    /**
+     * Metodi peruu siirron ja päivittää laudan näkymän.
+     */
     public void peruSiirto() {
         TehtySiirto t = lauta.tehdytSiirrot.get(lauta.tehdytSiirrot.size() - 1);
         int x = t.x;
@@ -134,22 +137,17 @@ public class Shakki {
     }
     
     /**
-     * Tekoälylle annetaan lauta ja palauttaa siirtonsa.
+     * Metodi suorittaa tekoälyn laskeman siirron.
      */
     public void tekoAlySiirra() {
         
-//        for (int i = 9; i > 1; i--) {
-//            System.out.print(i - 1 + ": ");
-//            for (int j = 1; j < 9; j++) {
-//                System.out.print(lauta.valkoisenHyökätyt[j][i]);
-//            }
-//            System.out.println("");
-//        }
-//        System.out.println("   ABCDEFGH");
-        
         Siirto siirto = tekoAly.LaskeSiirto();
         if (siirto == null) {
-            System.out.println("Valkoisen voitto");
+            if (lauta.shakitus != 0) {
+                System.out.println("Valkoisen voitto");
+            } else {
+                System.out.println("Tasapeli");
+            }
             return;
         }
         int x = siirto.getX();
@@ -177,19 +175,12 @@ public class Shakki {
             }
         }
         if (lauta.getSiirrot(0, false).isEmpty()) {
-            System.out.println("Mustan voitto");
+            if (lauta.shakitus != 0) {
+                System.out.println("Mustan voitto");
+            } else {
+                System.out.println("Tasapeli");
+            }
         }
-//        System.out.println("");
-//        Scanner lukija = new Scanner(System.in);
-//        System.out.println("Minkä id siirrot haluat nähdä?");
-//        String viesti = lukija.nextLine();
-//        for (int i = 0; i < lauta.valkoisenNappulat.size(); i++) {
-//            if (lauta.valkoisenNappulat.get(i).getID() == Integer.valueOf(viesti)) {
-//                for (Siirto b : lauta.valkoisenNappulat.get(i).siirrot) {
-//                    System.out.println("x: " + b.getX() + ", y: " + b.getY() + ", uus x: " + b.getUusX() + ", uus y: " + b.getUusY());
-//                }
-//            }
-//        }
         
     }
     

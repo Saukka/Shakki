@@ -801,7 +801,7 @@ public class Lauta {
             siirto.nappula.kiinnitysSuunta = 0;
         }
         
-        
+        // Palautetaan siirtoon vaikuttaneiden nappuloiden siirrot ja kiinnitykset ennalleen.
         for (Nappula n : siirto.nappulat) {
             n.siirrot = siirto.nappuloidenSiirrot.get(n);
             n.blokit = siirto.nappuloidenBlokit.get(n);
@@ -816,9 +816,6 @@ public class Lauta {
             
             Nappula vanhaKiinnitetty = siirto.kiinnitetyt.get(n);
             if (vanhaKiinnitetty != null) {
-//                System.out.println("");
-//                System.out.println("Siirrossa " + this.tehdytSiirrot.size());
-//                System.out.println("Kiinnitys palautetaan nappulalle " + n.getTyyppi() + ", kiinnitetty " + vanhaKiinnitetty.getTyyppi() + ", id: " + vanhaKiinnitetty.getID() + ", suunta: " + siirto.kiinnitykset.get(n));
                 n.kiinnitetty = vanhaKiinnitetty;
                 n.kiinnitysSuunta = siirto.kiinnitykset.get(n);
                 vanhaKiinnitetty.kiinnitys = n.kiinnitysSuunta;
@@ -844,6 +841,7 @@ public class Lauta {
         valkoisenVuoro = !valkoisenVuoro;
         
         this.tehdytSiirrot.remove(tehdytSiirrot.size() - 1);
+        // palautetaan siirrot ennalleen.
         if (valkoisenVuoro) {
             getSiirrot(0, true);
         } else {

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import shakki.nappulat.*;
 
+/**
+ * Tehdyn siirron luokka. Luokka säilyttää kaikki oleelliset tiedot laudan palauttamiseen edelliseen tilaan.
+ */
 public class TehtySiirto {
     
     Nappula nappula;
@@ -37,9 +40,6 @@ public class TehtySiirto {
     int[][] mustanHyokatyt;
     
     
-    // int uusX;
-    // int uusY;
-    
     public TehtySiirto(int x, int y, Nappula nappula, Nappula torni, Nappula syotyNappula, boolean oliLiikkunut, int shakitus) {
         
         this.x = x;
@@ -71,10 +71,19 @@ public class TehtySiirto {
         mustanHyokatyt = new int[10][12];
     }
     
+    /**
+     * Lisää nappulan siirron vaikuttaneiden nappuloiden listaan.
+     * @param n lisättävä nappula
+     */
     public void lisaaNappula(Nappula n) {
         nappulat.add(n);
     }
     
+    /**
+     * Lisää nappulan siirrot listaan.
+     * @param n
+     * @param siirrot 
+     */
     public void lisaaSiirrot(Nappula n, ArrayList<Siirto> siirrot) {
         
         ArrayList <Siirto> siirrotKopio = new ArrayList<>();
