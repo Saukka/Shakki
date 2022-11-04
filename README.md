@@ -1,11 +1,15 @@
 # Shakki
 Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille
 
-Projekti on vielä vähän kesken. Yritän saada ohjelman viimeisteltyä tänään keskiviikkona. Pelaaminen yleensä toimii, mutta shakin logiikan toiminnassa on jonkinlainen virhe, jonka takia joskus saattaa saattaa ilmestyä erroria, tai laillinen siirto ei toimi.
-
 Tekoäly on nyt parempi ja osaa välillä matittaa, mutta joskus menee looppiin edestakaisten siirtojen kanssa ja ei pääse pidemmälle.
 
 Siirtojen tekeminen toimii klikkaamalla nappulaa ja sitten klikkaamalla ruutua mihin nappulan haluaa siirtää.
+
+Ohjelman voi suorittaa komentoriviltä seuraavalla komennolla 
+
+```
+mvn compile exec:java -Dexec.mainClass=shakki.ui.MenuUI
+```
 
 Pelaamisen kuuluisi näyttää tältä. Jostain syystä nappuloiden kuvat eivät kuitenkaan välttämättä näy laitoksen koneella.
 
@@ -16,6 +20,10 @@ Pelaamisen kuuluisi näyttää tältä. Jostain syystä nappuloiden kuvat eivät
 [Määrittelydokumentti](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/M%C3%A4%C3%A4rittelydokumentti.md)
 
 [Testausdokumentti](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Testaus.md)
+
+[Käyttöohje](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/K%C3%A4ytt%C3%B6ohje.md)
+
+[Toteutusdokumentti](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Toteutusdokumentti.md)
 
 [Viikkoraportti 1](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%201.md)
 
@@ -28,3 +36,5 @@ Pelaamisen kuuluisi näyttää tältä. Jostain syystä nappuloiden kuvat eivät
 [Viikkoraportti 5](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%205.md)
 
 [Viikkoraportti 6](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/Viikkoraportti%206.md)
+
+
