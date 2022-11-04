@@ -9,12 +9,12 @@ public class Lähetti extends Nappula {
     public Lähetti(int id, int x, int y, int vari, Lauta lauta) {
         super(id, x, y, vari, lauta);
         this.tyyppi = TYYPPI.LAHETTI;
+        this.arvo = 30;
+        
         if (vari == 0) {
             this.numero = 3;
-            this.arvo = 30;
         } else {
             this.numero = -3;
-            this.arvo = -30;
         }
     }
     
@@ -31,6 +31,7 @@ public class Lähetti extends Nappula {
         
     }
     
+    @Override
     public int nappulanArvio() {
         int arvio = 30;
         

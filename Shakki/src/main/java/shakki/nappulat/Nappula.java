@@ -136,11 +136,14 @@ public abstract class Nappula {
                         continue;
                     }
                     if (lauta.lauta[x][y].vari != this.vari && lauta.lauta[x][y].tyyppi == tyyppi.KUNINGAS) {
-                        kiinnitysEnnen = lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys;
+                        if (lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys > 0) {
+                            kiinnitysEnnen = lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys;
+                        } else {
+                            kiinnitysEnnen = lauta.tehdytSiirrot.get(lauta.tehdytSiirrot.size() - 1).NappulanVanhaKiinnitys(lauta.lauta[kiinnitettavanX][kiinnitettavanY]);
+                        }
                         lauta.lauta[kiinnitettavanX][kiinnitettavanY].kiinnitys = suunta;
                         kiinnitetty = lauta.lauta[kiinnitettavanX][kiinnitettavanY];
                         kiinnitysSuunta = suunta;
-                        
                         return;
                     }
                     return;
@@ -171,7 +174,7 @@ public abstract class Nappula {
     /**
      * Palauttaa halutun kuninkaan suunnan, -1 jos ei ole suoraa suuntaa.
      * @param vari
-     * @return 
+     * @return kuninkaan suunta
      */
     public int kuninkaanSuunta(int vari) {
         
@@ -375,7 +378,9 @@ public abstract class Nappula {
         return y;
     }
     
-    // Metodin avulla nappula tuodaan takaisin peruSiirto-metodissa.
+    /**
+     * Metodin avulla nappula tuodaan takaisin peruSiirto-metodissa.
+     */
     public void tuoTakaisin() {
         if (this.vari == 0) {
             päivitäHyökätyt(1, lauta.valkoisenHyökätyt);
@@ -424,6 +429,6 @@ public abstract class Nappula {
     public int nappulanArvio() {
         return 0;
     }
-    
-    
+
+
 }

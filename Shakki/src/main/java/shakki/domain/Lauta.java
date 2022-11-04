@@ -1,6 +1,7 @@
 package shakki.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import shakki.nappulat.*;
 
@@ -37,7 +38,9 @@ public class Lauta {
     public int[][] valkoisenHyökätyt; //
     public int[][] mustanHyökätyt;
     
-    int id = 0; // nappuloiden id
+    int id = 0; // nappuloiden lisäämisessä käytettävä muuttuja
+    
+    public int tilanne = 2; // 1 jos valkoinen on voittanut, -1 jos musta, 0 jos tasapeli.
     
     public Lauta() {
 
@@ -175,6 +178,9 @@ public class Lauta {
             case 4:
                 Torni torni = new Torni(id, x, y, vari, this);
                 lauta[x][y] = torni;
+                if (!((x == 1 || x == 8) && ((vari == 0 && y == 2) || vari == 1 && y == 9))) {
+                    torni.liikutettu(true);
+                }
                 if (vari == 0) valkoisenNappulat.add(torni);
                 else mustanNappulat.add(torni);
                 break;
@@ -187,6 +193,9 @@ public class Lauta {
             case 6:
                 Kuningas kuningas = new Kuningas(id, x, y, vari, this);
                 lauta[x][y] = kuningas;
+                if (!(x == 5 && ((vari == 0 && y == 2) || vari == 1 && y == 9))) {
+                    kuningas.liikutettu(true);
+                }
                 if (vari == 0) valkoisenNappulat.add(0, kuningas);
                 else mustanNappulat.add(0, kuningas);
                 break;
@@ -196,11 +205,12 @@ public class Lauta {
     }
     
     /**
-     * Metodi suorittaa nappuloiden siirrot. Metodille annetaan nappulan koordinaatit ja koordinaatit mihin nappula siirretään.
+     * Metodi suorittaa nappuloiden siirrot.Metodille annetaan nappulan koordinaatit ja koordinaatit mihin nappula siirretään.
      * @param x siirrettävän nappulan x-koordinaatti.
      * @param y siirrettävän nappulan y-koordinaatti.
      * @param uusX nappulan uusi x-koordinaatti.
      * @param uusY nappulan uusi y-koordinaatti.
+     * @param lisäys lisätäänkö tilanteen hashcode käytyihin tilanteisiin.
      * @return Jos siirrolla syötiin nappula, palautetaan sen id. Jos ei, palautetaan 0. Jos siirto epäonnistui, palautetaan -1.
      */
     public int teeSiirto(int x, int y, int uusX, int uusY) {
@@ -225,7 +235,7 @@ public class Lauta {
             }
         }
 
-        if (mahdollinenSiirto) {
+        if (mahdollinenSiirto && tilanne > 1) {
 
             Nappula n = lauta[x][y];
 
@@ -287,15 +297,24 @@ public class Lauta {
             }
 
             if (valkoisenVuoro) {
-                valkoisenSiirrot = getSiirrot(0, true);
+                getSiirrot(0, true);
+                if (valkoisenSiirrot.isEmpty()) {
+                    if (shakitus != 0) {
+                        tilanne = -1;
+                    } else tilanne = 0;
+                }
             } else {
                 mustanSiirrot = getSiirrot(1, true);
+                if (mustanSiirrot.isEmpty()) {
+                    if (shakitus != 0) {
+                        tilanne = 1;
+                    } else tilanne = 0;
+                }
             }
             
             return s; 
         }
         
-        System.out.println("Siirto epäonnistui");
         // siirtoa ei voitu suorittaa
         return -1;
     }
@@ -326,7 +345,6 @@ public class Lauta {
      * @return tornin id+50.
      */
     public int teeLinnoitus(Nappula kuningas, int x, int y, int uusX) {
-        
         
         int torniX = 0;
         int torniUusX = 0;
@@ -366,8 +384,18 @@ public class Lauta {
         
         if (valkoisenVuoro) {
             getSiirrot(0, true);
+            if (valkoisenSiirrot.isEmpty()) {
+                if (shakitus != 0) {
+                    tilanne = -1;
+                } else tilanne = 0;
+            }
         } else {
-            getSiirrot(1, true);
+            mustanSiirrot = getSiirrot(1, true);
+            if (mustanSiirrot.isEmpty()) {
+                if (shakitus != 0) {
+                    tilanne = 1;
+                } else tilanne = 0;
+            }
         }
         
         return torni.getID() + 50;
@@ -441,7 +469,6 @@ public class Lauta {
             }
         }
         // Tarkistetaan tarvitseeko vastustajan sotilaita päivittää.
-        
         if (vari == 0) {
             if (lauta[uusX + 1][uusY + 1] != null && lauta[uusX + 1][uusY + 1].getNumero() == -1) {
                 lauta[uusX + 1][uusY + 1].paivita();
@@ -752,7 +779,6 @@ public class Lauta {
      * Metodi peruu viimeisimmän tehdyn siirron.
      */
     public void peruSiirto() {
-        
         TehtySiirto siirto = this.tehdytSiirrot.get(this.tehdytSiirrot.size() - 1);
         
         int x = siirto.x; // koordinaatit, johon nappula palautetaan
@@ -796,7 +822,7 @@ public class Lauta {
             siirto.nappula.kiinnitetty = null;
             siirto.nappula.kiinnitysSuunta = 0;
         }
-        
+
         // Palautetaan siirtoon vaikuttaneiden nappuloiden siirrot ja kiinnitykset ennalleen.
         for (Nappula n : siirto.nappulat) {
             n.siirrot = siirto.nappuloidenSiirrot.get(n);
@@ -813,7 +839,7 @@ public class Lauta {
             Nappula vanhaKiinnitetty = siirto.kiinnitetyt.get(n);
             if (vanhaKiinnitetty != null) {
                 n.kiinnitetty = vanhaKiinnitetty;
-                n.kiinnitysSuunta = siirto.kiinnitykset.get(n);
+                n.kiinnitysSuunta = siirto.kiinnitykset.get(vanhaKiinnitetty);
                 vanhaKiinnitetty.kiinnitys = n.kiinnitysSuunta;
             }
         }
@@ -834,7 +860,7 @@ public class Lauta {
         valkoisenHyökätyt = siirto.valkoisenHyokatyt;
         mustanHyökätyt = siirto.mustanHyokatyt;
         
-        valkoisenVuoro = !valkoisenVuoro;
+        valkoisenVuoro = !valkoisenVuoro;  
         
         this.tehdytSiirrot.remove(tehdytSiirrot.size() - 1);
         // palautetaan siirrot ennalleen.
@@ -843,9 +869,31 @@ public class Lauta {
         } else {
             getSiirrot(1, true);
         }
+        tilanne = 2;
         
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + Arrays.deepHashCode(this.lauta);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Lauta other = (Lauta) obj;
+        return true;
+    }
     
-    
-    
+
 }

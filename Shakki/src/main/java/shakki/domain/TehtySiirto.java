@@ -118,7 +118,7 @@ public class TehtySiirto {
     
     public void lisaaVanhaKiinnitys(Nappula n, Nappula kiinnitetty, int kiinnitys) {
         kiinnitetyt.put(n, kiinnitetty);
-        kiinnitykset.put(n, kiinnitys);
+        kiinnitykset.put(kiinnitetty, kiinnitys);
     }
     
     public void lisaaUusiKiinnitys (Nappula n, Nappula kiinnitetty, int kiinnitys) {
@@ -126,5 +126,8 @@ public class TehtySiirto {
         kiinnitysEnnen.put(n, kiinnitys);
     }
     
+    public int NappulanVanhaKiinnitys (Nappula n) {
+        return kiinnitykset.getOrDefault(n, 0);
+    }
     
 }

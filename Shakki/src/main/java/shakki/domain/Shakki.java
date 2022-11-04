@@ -103,14 +103,7 @@ public class Shakki {
                         tekoAlySiirra();
                     });
                     
-//                    for (int i = 9; i > 1; i--) {
-//                        System.out.print(i - 1 + ": ");
-//                        for (int j = 1; j < 9; j++) {
-//                            System.out.print(lauta.valkoisenHyökätyt[j][i]);
-//                        }
-//                        System.out.println("");
-//                    }
-//                    System.out.println("   ABCDEFGH");
+
                     
                 } else {
                 }
@@ -140,10 +133,11 @@ public class Shakki {
      * Metodi suorittaa tekoälyn laskeman siirron.
      */
     public void tekoAlySiirra() {
-        
+        Long aloitusAika = System.currentTimeMillis();
         Siirto siirto = tekoAly.LaskeSiirto();
+        Long loppuAika = System.currentTimeMillis();
         if (siirto == null) {
-            if (lauta.shakitus != 0) {
+            if (lauta.tilanne == 1) {
                 System.out.println("Valkoisen voitto");
             } else {
                 System.out.println("Tasapeli");
@@ -157,7 +151,8 @@ public class Shakki {
         
         int id = lauta.lauta[x][y].getID();
         
-        System.out.println("Tekoälyn siirto: x: " + x + ", y: " + y + ", uus x: " + uusX + ", uus y: " + uusY + " " + lauta.lauta[x][y].getTyyppi());
+        System.out.println("Tekoälyn siirto: " + lauta.lauta[x][y].getTyyppi() + " x: " + x + ", y: " + y + ", uusi x: " + uusX + ", uusi y: " + uusY);
+        System.out.println("Siirron kesto: " + (loppuAika - aloitusAika) + "ms syvyys: " + tekoAly.syvyys);
         
         int s = lauta.teeSiirto(x, y, uusX, uusY);
         
@@ -168,16 +163,16 @@ public class Shakki {
         ui.siirräNappula(id, uusX - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
         
         if (s > 50) {
-            if (x < y) {
+            if (x < uusX) {
                 ui.siirräNappula(s - 50, uusX - 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
             } else {
                 ui.siirräNappula(s - 50, uusX + 1 - lauta.ulkoL, 7 + lauta.ulkoP - uusY);
             }
         }
-        if (lauta.getSiirrot(0, false).isEmpty()) {
-            if (lauta.shakitus != 0) {
+        if (lauta.tilanne < 2) {
+            if (lauta.tilanne == -1) {
                 System.out.println("Mustan voitto");
-            } else {
+            } else if (lauta.tilanne == 0) {
                 System.out.println("Tasapeli");
             }
         }

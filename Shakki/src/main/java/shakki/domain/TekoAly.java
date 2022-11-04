@@ -31,8 +31,6 @@ public class TekoAly {
      */
     public Siirto LaskeSiirto() {
 
-        syvyys = 4;
-        
         minArvot = new HashMap();
         minArvot.clear();
         
@@ -41,6 +39,8 @@ public class TekoAly {
             if (lauta.valkoisenNappulat.size() + lauta.mustanNappulat.size() < 6) {
                 syvyys = 6;
             }
+        } else {
+            syvyys = 4;
         } 
         
         int mini = minArvo(-1000000, 1000000, syvyys);
@@ -56,6 +56,12 @@ public class TekoAly {
      * @return pelitilanteen arvio siirron jälkeen.
      */
     public int minArvo(int alpha, int beta, int syvyys) {
+        
+        if (lauta.tilanne < 2) {
+            if (lauta.tilanne == 0) return 0;
+            if (lauta.tilanne == -1) return -1000 * syvyys;
+            return 1000 * syvyys;
+        }
         if (syvyys == 0) {
             return lautaArvio();
         }
@@ -63,10 +69,6 @@ public class TekoAly {
         int v = 100000;
         
         ArrayList<Siirto> siirrot = lauta.getSiirrot(1, false);
-        if (siirrot.isEmpty()) {
-            if (lauta.shakitus != 0) return 1000 * syvyys;
-            return 0;
-        }
         
         for (Siirto s : siirrot) {
             int x = s.getX();
@@ -98,6 +100,11 @@ public class TekoAly {
      * @return pelitilanteen arvio siirron jälkeen.
      */
     public int maxArvo(int alpha, int beta, int syvyys) {
+        if (lauta.tilanne < 2) {
+            if (lauta.tilanne == 0) return 0;
+            if (lauta.tilanne == -1) return -1000 * syvyys;
+            return 1000 * syvyys;
+        }
         if (syvyys == 0) {
             return lautaArvio();
         }
@@ -119,11 +126,9 @@ public class TekoAly {
             if (p != -1) {
                 int min = minArvo(alpha, beta, syvyys - 1);
                 lauta.peruSiirto();
-            
                 v = Math.max(v, min);
                 alpha = Math.max(alpha, v);
             }
-            
             if (alpha > beta) return v;
         }
         return v;

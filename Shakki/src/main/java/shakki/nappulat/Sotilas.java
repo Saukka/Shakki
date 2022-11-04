@@ -193,8 +193,8 @@ public class Sotilas extends Nappula {
         }
         if (hyökätyt[x][y] - 1 > puolustetut[x][y]) {
             arvio -= 2;
-        } else if (hyökätyt[x][y] < puolustetut[x][y]) {
-            arvio += 1;
+        } else if (hyökätyt[x][y] <= puolustetut[x][y]) {
+            arvio += 2;
         }
         
         if (x > 2 && x < 7 && y > 3 && y < 8) {
@@ -210,20 +210,20 @@ public class Sotilas extends Nappula {
         
         if (vari == 0) {
             if (lauta.lauta[x - 1][y - 1] != null && lauta.lauta[x - 1][y - 1].getNumero() == 1) {
-                arvio += 2;
+                arvio += 1;
             }
             if (lauta.lauta[x + 1][y - 1] != null && lauta.lauta[x + 1][y - 1].getNumero() == 1) {
-                arvio += 2;
+                arvio += 1;
             }
-            if (y > 3) arvio += 2;
+            if (y > 4) arvio += 2;
         } else {
             if (lauta.lauta[x - 1][y + 1] != null && lauta.lauta[x - 1][y + 1].getNumero() == -1) {
-                arvio += 2;
+                arvio += 1;
             }
             if (lauta.lauta[x + 1][y + 1] != null && lauta.lauta[x + 1][y + 1].getNumero() == -1) {
-                arvio += 2;
+                arvio += 1;
             }
-            if (y < 8) arvio += 2;
+            if (y < 7) arvio += 2;
         }
         
         arvio += puolustetut[x][y];
