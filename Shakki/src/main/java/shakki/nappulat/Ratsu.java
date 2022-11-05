@@ -26,8 +26,11 @@ public class Ratsu extends Nappula {
     public void paivitaSiirrot() {
        
         int[][] hyokatyt;
-        if (this.vari == 0) hyokatyt = lauta.mustanHyökätyt;
-        else hyokatyt = lauta.valkoisenHyökätyt;
+        if (this.vari == 0) {
+            hyokatyt = lauta.mustanHyökätyt;
+        } else {
+            hyokatyt = lauta.valkoisenHyökätyt;
+        }
         
         katso(hyokatyt, x + 1, y + 2);
         

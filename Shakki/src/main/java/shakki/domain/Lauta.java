@@ -872,28 +872,4 @@ public class Lauta {
         tilanne = 2;
         
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + Arrays.deepHashCode(this.lauta);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Lauta other = (Lauta) obj;
-        return true;
-    }
-    
-
 }

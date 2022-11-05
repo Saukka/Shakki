@@ -3,8 +3,8 @@
 <module name='Checker'>
 
     <!-- asetetaan kieliasetukset englanniksi. -->
-    <property name="localeCountry" value="EN"/>
-    <property name="localeLanguage" value="en"/>
+    <property name="localeCountry" value="FI"/>
+    <property name="localeLanguage" value="fi"/>
 
     <module name='TreeWalker'>
 
@@ -31,7 +31,7 @@
         <module name="OneStatementPerLine"/>
         <module name="MethodLength">
             <property name="tokens" value="METHOD_DEF"/>
-            <property name="max" value="20"/>
+            <property name="max" value="70"/>
             <property name="countEmpty" value="false"/>
         </module>
 
@@ -46,7 +46,7 @@
         <module name='MethodTypeParameterName' />
 
         <module name='PackageName'>
-            <property name='format' value='^[a-z]+(\.[a-z][a-z0-9]*)*$' />
+            <property name='format' value='^[a-ö]+(\.[a-ö][a-z0-9]*)*$' />
         </module>
 
         <module name='ParameterName' />
@@ -83,6 +83,10 @@
 
     <module name='FileLength'>
         <property name='max' value='500' />
+    </module>
+    
+    <module name="SuppressionFilter">
+      <property name="file" value="skipped_files.xml" />
     </module>
 
 

@@ -9,7 +9,7 @@ import shakki.domain.Siirto;
 
 public class Kuningas extends Nappula {
     
-    public Kuningas (int id, int x, int y, int vari, Lauta lauta) {
+    public Kuningas(int id, int x, int y, int vari, Lauta lauta) {
         super(id, x, y, vari, lauta);
         this.tyyppi = TYYPPI.KUNINGAS;
         this.arvo = 1000;
@@ -39,11 +39,11 @@ public class Kuningas extends Nappula {
         }
         
         //linnoitus oikealle
-        if (!this.onLiikkunut && lauta.lauta[x + 1][y] == null && hyokatyt[x + 1][y] < 1 && lauta.lauta[x + 2][y] == null && hyokatyt[x + 2][y] < 1 && lauta.lauta[x + 3][y] != null && lauta.lauta[x + 3][y].tyyppi == TYYPPI.TORNI &&!lauta.lauta[x + 3][y].onLiikkunut) {
+        if (!this.onLiikkunut && lauta.lauta[x + 1][y] == null && hyokatyt[x + 1][y] < 1 && lauta.lauta[x + 2][y] == null && hyokatyt[x + 2][y] < 1 && lauta.lauta[x + 3][y] != null && lauta.lauta[x + 3][y].tyyppi == TYYPPI.TORNI && !lauta.lauta[x + 3][y].onLiikkunut) {
             this.siirrot.add(new Siirto(x, y, x + 2, y, 0, 3, false));
         }
         //linnoitus vasemmalle
-        if (!this.onLiikkunut && lauta.lauta[x - 1][y] == null && hyokatyt[x - 1][y] < 1 && lauta.lauta[x - 2][y] == null && hyokatyt[x - 2][y] < 1 && lauta.lauta[x - 3][y] == null && lauta.lauta[x - 4][y] != null && lauta.lauta[x - 4][y].tyyppi == TYYPPI.TORNI &&!lauta.lauta[x - 4][y].onLiikkunut) {
+        if (!this.onLiikkunut && lauta.lauta[x - 1][y] == null && hyokatyt[x - 1][y] < 1 && lauta.lauta[x - 2][y] == null && hyokatyt[x - 2][y] < 1 && lauta.lauta[x - 3][y] == null && lauta.lauta[x - 4][y] != null && lauta.lauta[x - 4][y].tyyppi == TYYPPI.TORNI && !lauta.lauta[x - 4][y].onLiikkunut) {
             this.siirrot.add(new Siirto(x, y, x - 2, y, 0, 2, false));
         }
         
@@ -70,7 +70,7 @@ public class Kuningas extends Nappula {
         this.siirrotShakissa.clear();
         for (Siirto s: this.siirrot) {
             if (Math.abs(s.getUusX() - s.getX()) < 2) {
-               this.siirrotShakissa.add(s); 
+                this.siirrotShakissa.add(s); 
             }
         }
     }

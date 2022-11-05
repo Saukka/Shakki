@@ -12,7 +12,7 @@ public abstract class Nappula {
     
     Lauta lauta; // nappulan lauta
     
-    enum TYYPPI{
+    enum TYYPPI {
         SOTILAS, LAHETTI, RATSU, TORNI, KUNINGATAR, KUNINGAS, EPANAPPULA
     }
     
@@ -77,9 +77,13 @@ public abstract class Nappula {
      * @return true tai false
      */
     public boolean omaNappula(Nappula n) {
-        if (n == null) return false;
+        if (n == null) {
+            return false;
+        }
         
-        if (n.getID() == -1) return true;
+        if (n.getID() == -1) {
+            return true;
+        }
         
         return this.vari == n.getVari();
     }
