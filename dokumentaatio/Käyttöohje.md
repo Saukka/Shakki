@@ -10,7 +10,7 @@ Fen-merkkijonon lopussa välilyöntien jälkeen kerrotaan muitakin asioita kuten
 
 ### Pelaaminen 
     
-Pelaaminen toimii normaaleilla shakin säännöillä, paitsi sotilaiden korottamista en ole ehtinyt lisäämään. Aion jatkaa ohjelman kehittämistä ja tekoälyn parantamista tulevaisuudessakin jolloin tulen lisäämään nappuloiden korotuksen. Nappuloiden liikuttaminen onnistuu ensiksi painamalla liikutettavaa nappulaa, ja sen jälkeen painamalla ruutua mihin nappulan haluaa siirtää.
+Pelaaminen toimii normaaleilla shakin säännöillä, paitsi sotilaiden korottamista en ole ehtinyt lisäämään. Aion jatkaa ohjelman kehittämistä ja tekoälyn parantamista tulevaisuudessakin jolloin tulen lisäämään nappuloiden korotuksen. Nappuloiden liikuttaminen onnistuu ensiksi painamalla liikutettavaa nappulaa, ja sen jälkeen painamalla ruutua mihin nappulan haluaa siirtää. Painamalla mitä tahansa näppäimistön näppäintä, viimeiset kaksi siirtoa laudalla perutaan, jolloin valkoinen voi yrittää toista siirtoa.
     
 <img width="1042" alt="Pelitilanne" src="https://user-images.githubusercontent.com/80990021/194730212-91bc7e97-7450-44c2-af15-a2efe31ae019.png">
 
