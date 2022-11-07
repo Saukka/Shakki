@@ -107,7 +107,7 @@ public abstract class Nappula {
             
             if (lauta.lauta[x][y] == null) {
                 // jos tyhjä ruutu
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0, false));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, siirronVahvuus(x, y), false));
                 x += xSuunta;
                 y += ySuunta;
                 sisalla = x >= lauta.ulkoL && x < 9 && y >= lauta.ulkoP && y < 10;
@@ -117,7 +117,7 @@ public abstract class Nappula {
                 return;
             } else {
                 // jos vastustajan nappula
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, 0, false));
+                this.siirrot.add(new Siirto(this.x, this.y, x, y, suunta, siirronVahvuus(x, y), false));
                 int kiinnitettavanX = x;
                 int kiinnitettavanY = y;
                 
@@ -419,11 +419,61 @@ public abstract class Nappula {
         }
     }
     
-    public boolean vahvempiNappula(Nappula n) {
-        if (this.vari == 0) {
-            return n.arvo < this.arvo * (-1);
+    /**
+     * Metodi antaa arvion siirron vahvuudesta.
+     * @param x siirron x-koordinaatti
+     * @param y siirron y-koordinaatti
+     * @return arvio siirron vahvuudesta
+     */
+    public int siirronVahvuus(int x, int y) {
+        
+        int[][] puolustetut;
+        int[][] hyökätyt;
+        if (vari == 0) {
+            puolustetut = lauta.valkoisenHyökätyt;
+            hyökätyt = lauta.mustanHyökätyt;
+        } else {
+            puolustetut = lauta.mustanHyökätyt;
+            hyökätyt = lauta.valkoisenHyökätyt;
         }
-        return n.arvo > this.arvo * (-1);
+        
+        if (lauta.lauta[x][y] != null) {
+            
+            if (lauta.lauta[x][y].getArvo() > this.arvo) {
+                if (puolustetut[x][y] >= hyökätyt[x][y]) {
+                    return 5;
+                }
+                return 4;
+            }
+            
+            if (lauta.lauta[x][y].getArvo() == this.arvo) {
+                if (puolustetut[x][y] >= hyökätyt[x][y]) {
+                    return 2;
+                }
+                return 0;
+            }
+            
+            if (hyökätyt[x][y] == 0) {
+                return 2;
+            }
+            
+            if (puolustetut[x][y] >= hyökätyt[x][y]) {
+                return 1;
+            }
+            
+            if (hyökätyt[x][y] > puolustetut[x][y]) {
+                return -1;
+            }
+            return 0;
+        }
+        
+        if (puolustetut[x][y] == 0 && hyökätyt[x][y] > 0) {
+            return -2;
+        }
+        if (hyökätyt[x][y] == 0) {
+            return 1;
+        }
+        return 0;
     }
     
     public int getKiinnitys() {

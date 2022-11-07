@@ -12,13 +12,12 @@ public class Ratsu extends Nappula {
         super(id, x, y, vari, lauta);
         
         this.tyyppi = TYYPPI.RATSU;
+        this.arvo = 30;
         
         if (vari == 0) {
             this.numero = 2;
-            this.arvo = 30;
         } else {
             this.numero = -2;
-            this.arvo = -30;
         }
     }
     
@@ -52,18 +51,8 @@ public class Ratsu extends Nappula {
     public void katso(int[][] hyokatyt, int x, int y) {
         
         if (lauta.lauta[x][y] != null && !omaNappula(lauta.lauta[x][y])) {
-            
-            if (vahvempiNappula(lauta.lauta[x][y])) {
-                if (hyokatyt[x][y] < 1) {
-                    this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 5, false));
-                } else {
-                    this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 4, false));
-                }
-            } else if (hyokatyt[x][y] < 1) {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 2, false));
-            } else {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0, false));
-            }
+            // vastustajan nappula
+            this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, siirronVahvuus(x, y), false));
             
             if (lauta.lauta[x][y].getTyyppi() == TYYPPI.KUNINGAS) {
                 shakita(10);
@@ -71,11 +60,7 @@ public class Ratsu extends Nappula {
             return;
         } 
         if (lauta.lauta[x][y] == null) {
-            if (hyokatyt[x][y] < 1) {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 1, false));
-            } else {
-                this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, 0, false));
-            }
+            this.siirrot.add(new Siirto(this.x, this.y, x, y, 0, siirronVahvuus(x, y), false));
             return;
         }
         this.blokit.add(new Koordinaatit(x, y));
@@ -107,7 +92,7 @@ public class Ratsu extends Nappula {
             }
         }
         
-        arvio += this.siirrot.size() / 2;
+        arvio += this.siirrot.size() / 4;
         
         return arvio;
     }

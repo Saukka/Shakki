@@ -16,6 +16,7 @@ public class LautaTest {
     
     @Test
     public void siirtojenMääräTesti() {
+        long aloitus = System.currentTimeMillis();
         lauta = new Lauta();
         lauta.asetaLauta("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
         int syvyysYksi = 0;
@@ -51,6 +52,8 @@ public class LautaTest {
             }
             lauta.peruSiirto();
         }
+        long loppu = System.currentTimeMillis();
+        assertTrue(loppu - aloitus < 60000);
         assertEquals(20, syvyysYksi);
         assertEquals(400, syvyysKaksi);
         assertEquals(8902, syvyysKolme);

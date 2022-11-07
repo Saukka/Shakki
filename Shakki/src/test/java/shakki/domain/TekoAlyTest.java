@@ -30,7 +30,7 @@ public class TekoAlyTest {
         assertEquals(3, lauta.tehdytSiirrot.size());
     }
     
-    // Testataan että tekoäly voittaa tornilla ja kuninkaalla.
+    // Testataan että tekoäly voittaa tornilla ja kuninkaalla ja että siirtoihin kestää alle 1.1 sekuntia.
     @Test
     public void tekoAlyVoittaa() {
         lauta = new Lauta();
@@ -41,8 +41,11 @@ public class TekoAlyTest {
             Random x = new Random();
             Siirto s = lauta.valkoisenSiirrot.get(x.nextInt(lauta.valkoisenSiirrot.size()));
             lauta.teeSiirto(s.getX(), s.getY(), s.getUusX(), s.getUusY());
+            long aloitus = System.currentTimeMillis();
             Siirto taS = tekoAly.LaskeSiirto();
+            long loppu = System.currentTimeMillis();
             lauta.teeSiirto(taS.getX(), taS.getY(), taS.getUusX(), taS.getUusY());
+            assertTrue(loppu - aloitus < 1100);
         }
         
         assertEquals(-1, lauta.tilanne);

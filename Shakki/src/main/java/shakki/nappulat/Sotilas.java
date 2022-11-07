@@ -37,7 +37,7 @@ public class Sotilas extends Nappula {
             // jos valkoinen
             if (!onLiikkunut) {
                 if (lauta.lauta[x][y + 2] == null && lauta.lauta[x][y + 1] == null) {
-                    this.siirrot.add(new Siirto(x, y, x, y + 2, 4,0, false));
+                    this.siirrot.add(new Siirto(x, y, x, y + 2, 4, siirronVahvuus(x, y), false));
                 } 
                 else if ((lauta.lauta[x][y + 1] == null && lauta.lauta[x][y + 2] != null) && (kiinnitys == 0)) {
                     blokit.add(new Koordinaatit(x, y + 2));
@@ -45,20 +45,20 @@ public class Sotilas extends Nappula {
             }
                 
             if (lauta.lauta[x][y + 1] == null) {
-                this.siirrot.add(new Siirto(x, y, x, y + 1, 4, 0, false));
+                this.siirrot.add(new Siirto(x, y, x, y + 1, 4, siirronVahvuus(x, y), false));
             } else {
                 blokit.add(new Koordinaatit(x, y + 1));
             }
             
             if (lauta.lauta[x - 1][y + 1] != null && !omaNappula(lauta.lauta[x - 1][y + 1])) {
-                this.siirrot.add(new Siirto(x, y, x - 1, y + 1, 6, 0, false));
+                this.siirrot.add(new Siirto(x, y, x - 1, y + 1, 6, siirronVahvuus(x, y), false));
                 if (lauta.lauta[x - 1][y + 1].getTyyppi() == TYYPPI.KUNINGAS) {
                     shakita(10); 
                 }
             }
             
             if (lauta.lauta[x + 1][y + 1] != null && !omaNappula(lauta.lauta[x + 1][y + 1])) {
-                this.siirrot.add(new Siirto(x, y, x + 1, y + 1, 8, 0, false));
+                this.siirrot.add(new Siirto(x, y, x + 1, y + 1, 8, siirronVahvuus(x, y), false));
                 if (lauta.lauta[x + 1][y + 1].getTyyppi() == TYYPPI.KUNINGAS) {
                     shakita(10); 
                 }
@@ -67,11 +67,11 @@ public class Sotilas extends Nappula {
             // OhestaLyönti. Tässä siirto lisätään jos vastustajan sotilas on vieressä. 
             // Siirtoja haettaessa katsotaan saako ohestalyöntiä oikeasti suorittaa.
             if (lauta.lauta[x + 1][y + 1] == null && lauta.lauta[x + 1][y] != null && lauta.lauta[x + 1][y].getNumero() == -1) {
-                this.siirrot.add(new Siirto (x, y, x + 1, y + 1, 8, 3, true));
+                this.siirrot.add(new Siirto (x, y, x + 1, y + 1, 8, 2, true));
             }
             
             if (lauta.lauta[x - 1][y + 1] == null && lauta.lauta[x - 1][y] != null && lauta.lauta[x - 1][y].getNumero() == -1) {
-                this.siirrot.add(new Siirto (x, y, x - 1, y + 1, 6, 3, true));
+                this.siirrot.add(new Siirto (x, y, x - 1, y + 1, 6, 2, true));
             }
             
         } else {
@@ -79,27 +79,27 @@ public class Sotilas extends Nappula {
             // jos musta
             if (!onLiikkunut) {
                 if (lauta.lauta[x][y - 2] == null && lauta.lauta[x][y - 1] == null) {
-                    this.siirrot.add(new Siirto(x, y, x, y - 2, 3, 0, false));
+                    this.siirrot.add(new Siirto(x, y, x, y - 2, 3, siirronVahvuus(x, y), false));
                 } else if (lauta.lauta[x][y - 1] == null && lauta.lauta[x][y - 2] != null && (kiinnitys == 0 || kiinnitys == 2)) {
                     blokit.add(new Koordinaatit(x, y - 2));
                 }
             }
                 
             if (lauta.lauta[x][y - 1] == null) {
-                this.siirrot.add(new Siirto(x, y, x, y - 1, 3, 0, false));
+                this.siirrot.add(new Siirto(x, y, x, y - 1, 3, siirronVahvuus(x, y), false));
             } else {
                 blokit.add(new Koordinaatit(x, y - 1));
             }
             
             if (lauta.lauta[x - 1][y - 1] != null && !omaNappula(lauta.lauta[x - 1][y - 1])) {
-                this.siirrot.add(new Siirto(x, y, x - 1, y - 1, 7, 0, false));
+                this.siirrot.add(new Siirto(x, y, x - 1, y - 1, 7, siirronVahvuus(x, y), false));
                 if (lauta.lauta[x - 1][y - 1].getTyyppi() == TYYPPI.KUNINGAS) {
                     shakita(10); 
                 }
             }
             
             if (lauta.lauta[x + 1][y - 1] != null && !omaNappula(lauta.lauta[x + 1][y - 1])) {
-                this.siirrot.add(new Siirto(x, y, x + 1, y - 1, 5, 0, false));
+                this.siirrot.add(new Siirto(x, y, x + 1, y - 1, 5, siirronVahvuus(x, y), false));
                 if (lauta.lauta[x + 1][y - 1].getTyyppi() == TYYPPI.KUNINGAS) {
                     shakita(10); 
                 }
@@ -108,11 +108,11 @@ public class Sotilas extends Nappula {
             // OhestaLyönti. Tässä siirto lisätään jos vastustajan sotilas on vieressä. 
             // Siirtoja haettaessa katsotaan saako ohestalyöntiä oikeasti suorittaa.
             if (lauta.lauta[x + 1][y - 1] == null && lauta.lauta[x + 1][y] != null && lauta.lauta[x + 1][y].getNumero() == 1) {
-                this.siirrot.add(new Siirto (x, y, x + 1, y - 1, 5, 3, true));
+                this.siirrot.add(new Siirto (x, y, x + 1, y - 1, 5, 2, true));
             }
             
             if (lauta.lauta[x - 1][y - 1] == null && lauta.lauta[x - 1][y] != null && lauta.lauta[x - 1][y].getNumero() == 1) {
-                this.siirrot.add(new Siirto (x, y, x - 1, y - 1, 7, 3, true));
+                this.siirrot.add(new Siirto (x, y, x - 1, y - 1, 7, 2, true));
             }
             
         }
