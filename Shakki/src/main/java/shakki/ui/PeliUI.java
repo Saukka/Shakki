@@ -149,7 +149,8 @@ public class PeliUI {
         int y = 0;
         
         for (int i = 0; i < fen.length(); i++) {
-            if (x > 8 && y > 8) {
+            System.out.println(x);
+            if (x > 8 || y > 8) {
                 System.out.println("yli 8");
                 return false;
             }

@@ -61,8 +61,10 @@ public class Shakki {
         
         näkymä.setOnKeyPressed(e -> {
             if (lauta.tehdytSiirrot.size() > 2) {
-                // Perutaan kaksi viimeistä siirtoa
-                peruSiirto();
+                // Perutaan kaksi viimeistä siirtoa, tai yksi jos valkoinen on juuri matittanut tai patittanut.
+                if (lauta.tilanne > 1 || lauta.tilanne == -1 || (lauta.tilanne == 0 && lauta.valkoisenVuoro)) {
+                    peruSiirto();
+                }
                 peruSiirto();
             }
             

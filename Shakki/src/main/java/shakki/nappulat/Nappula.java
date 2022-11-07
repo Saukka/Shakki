@@ -458,7 +458,7 @@ public abstract class Nappula {
             }
             
             if (puolustetut[x][y] >= hyökätyt[x][y]) {
-                return 1;
+                return 0;
             }
             
             if (hyökätyt[x][y] > puolustetut[x][y]) {
