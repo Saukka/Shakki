@@ -1,20 +1,18 @@
 # Shakki
-Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille
+Shakkiohjelmani Helsingin yliopiston tietorakenteet ja algoritmit harjoitustyö -kurssille. 
 
-Tekoäly on nyt parempi ja osaa välillä matittaa, mutta joskus menee looppiin edestakaisten siirtojen kanssa ja ei pääse pidemmälle.
+Pelissä käyttäjä pelaa shakkia Minimax-algoritmia käyttävää ja alpha-beta karsintaa hyödyntävää tekoälyä vastaan. 
+Ohjeet pelaamiseen löytyvät pelin [Käyttöohjeesta](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/K%C3%A4ytt%C3%B6ohje.md).
+<img width="1042" alt="Pelitilanne" src="https://user-images.githubusercontent.com/80990021/194730212-91bc7e97-7450-44c2-af15-a2efe31ae019.png">
 
-Siirtojen tekeminen toimii klikkaamalla nappulaa ja sitten klikkaamalla ruutua mihin nappulan haluaa siirtää.
+## Ohjelman suorittaminen
+Ohjelman suorittaminen vaatii JDK:n version 11 sekä käännösautomaatiotyökalu [Mavenin](https://maven.apache.org/).
 
-Ohjelman voi suorittaa komentoriviltä seuraavalla komennolla 
+Ohjelman voi suorittaa komentoriviltä projektin sisällä seuraavalla komennolla 
 
 ```
 mvn compile exec:java -Dexec.mainClass=shakki.ui.MenuUI
 ```
-
-Pelaamisen kuuluisi näyttää tältä. Jostain syystä nappuloiden kuvat eivät kuitenkaan välttämättä näy laitoksen koneella.
-
-<img width="1042" alt="Pelitilanne" src="https://user-images.githubusercontent.com/80990021/194730212-91bc7e97-7450-44c2-af15-a2efe31ae019.png">
-
 
 ## Dokumentaatio
 [Määrittelydokumentti](https://github.com/Saukka/Shakki/blob/main/dokumentaatio/M%C3%A4%C3%A4rittelydokumentti.md)
